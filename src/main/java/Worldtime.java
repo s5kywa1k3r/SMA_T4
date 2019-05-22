@@ -6,9 +6,10 @@ public class Worldtime implements Mode{
     private RealTime realTime;
     private Calendar worldTime;
     private Calendar currTime;
-    private String[] city;
-    private int currCity;
-    private int maxCity;
+    private String[] nation;
+    private String[] nationTimeZone;
+    private int currNation;
+    private int maxNation = 27;
 
     public Worldtime(RealTime realTime){
         this.worldTime = Calendar.getInstance();
@@ -16,10 +17,20 @@ public class Worldtime implements Mode{
 
         this.realTime = realTime;
         this.currTime = realTime.requestRealTime();
+        this.nation = new String[]{
+                "MAR", "GHA", "ESP", "UK", "FRA", "NGR", "GER", "ITA", "GRE",
+                "RSA", "UKR", "EGY", "KEN", "AF", "PAK", "IND", "THA", "CHN",
+                "MAS", "KOR", "AUS", "JPN", "CAN", "USA", "MEX", "CHI", "BRA"
+        };
 
-        this.maxCity = 100;
-        this.city = new String[this.maxCity];
-        this.currCity = 0;
+        this.nationTimeZone = new String[]{
+                "Etc/GMT", "Africa/Accra", "Europe/Madrid", "Europe/London", "Europe/Paris", "Etc/GMT+1", "Europe/Berlin",
+                "Europe/Rome", "Europe/Athens", "Etc/GMT+2", "Etc/GMT+2", "Africa/Cairo", "Etc/GMT+3", "Asia/Kabul",
+                "Etc/GMT+5", "Etc/GMT+5", "Asia/Bangkok", "Etc/GMT+8", "Asia/Kuala_Lumpur", "Asia/Seoul", "Australia/Canberra",
+                "Asia/Tokyo", "Canada/Central", "Etc/GMT-5", "Mexico/General", "America/Santiago", "Etc/GMT-3"
+        };
+
+        this.currNation = 19;
 
         this.worldTime.set(Calendar.MILLISECOND, this.currTime.get(Calendar.MILLISECOND));
         this.worldTime.set(
@@ -31,16 +42,16 @@ public class Worldtime implements Mode{
         );
     }
 
-    public void nextCity(){
-        if(++this.currCity == this.city.length)
-            this.currCity = 0;
-        //this.worldTime.setTimeZone(TimeZone.getTimeZone(this.city[this.currCity]));
+    public void nextNation(){
+        if(++this.currNation == this.maxNation)
+            this.currNation = 0;
+        this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
     }
 
-    public void prevCity(){
-        if(--this.currCity < 0)
-            this.currCity = this.city.length - 1;
-        //this.worldTime.setTimeZone(TimeZone.getTimeZone(this.city[this.currCity]));
+    public void prevNation(){
+        if(--this.currNation == -1)
+            this.currNation = this.maxNation - 1;
+        this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
     }
 
     public void changeSummerTime(){
@@ -59,7 +70,7 @@ public class Worldtime implements Mode{
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
         );
-        this.worldTime.setTimeZone(TimeZone.getTimeZone(this.city[this.currCity]));
+        this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
     }
 
     public void showWorldTime(){
@@ -73,10 +84,10 @@ public class Worldtime implements Mode{
     public void setWorldTime(Calendar worldTime) { this.worldTime = worldTime; }
     public Calendar getCurrTime() { return currTime; }
     public void setCurrTime(Calendar currTime) { this.currTime = currTime; }
-    public String[] getCity() { return city; }
-    public void setCity(String[] city) { this.city = city; }
-    public int getCurrCity() { return currCity; }
-    public void setCurrCity(int currCity) { this.currCity = currCity; }
-    public int getMaxCity() { return maxCity; }
-    public void setMaxCity(int maxCity) { this.maxCity = maxCity; }
+    public String[] getNation() { return nation; }
+    public void setNation(String[] nation) { this.nation = nation; }
+    public int getCurrNation() { return currNation; }
+    public void setCurrNation(int currNation) { this.currNation = currNation; }
+    public int getMaxNation() { return maxNation; }
+    public void setMaxNation(int maxNation) { this.maxNation = maxNation; }
 }
