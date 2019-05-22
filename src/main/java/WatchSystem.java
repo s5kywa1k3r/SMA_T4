@@ -162,12 +162,12 @@ public class WatchSystem {
     public void pressAlarmOnOff(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmOnOff(); }
 
     // Worldtime
-    public void nextWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).nextCity(); }
-    public void prevWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).prevCity(); }
+    public void nextWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).nextNation(); }
+    public void prevWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).prevNation(); }
     public void pressSummerTime(){ ((Worldtime)this.menu.get(this.currMode)).changeSummerTime(); }
 
     // Sun
     public void pressSetRise(){ ((Sun)this.menu.get(this.currMode)).requestSetRise(); }
-    public void nextSunCity(){ ((Sun)this.menu.get(this.currMode)).requestNextCity(); }
-    public void prevSunCity(){ ((Sun)this.menu.get(this.currMode)).requestPrevCity(); }
+    public void nextSunCity(){ ((Sun)this.menu.get(this.currMode)).requestNextNation(); }
+    public void prevSunCity(){ ((Sun)this.menu.get(this.currMode)).requestPrevNation(); }
 }
