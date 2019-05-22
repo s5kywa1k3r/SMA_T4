@@ -43,7 +43,7 @@ public class WatchSystem {
         this.menu.add(new TimeSetting((RealTime)this.menu.get(0)));
         this.menu.add(new Stopwatch());
         this.menu.add(new Timer());
-        this.menu.add(new Alarm((RealTime)this.menu.get(0)));
+        //this.menu.add(new Alarm((RealTime)this.menu.get(0)));
 
         this.currMode = 0; // [currMode] 0: Always RealTime
         this.maxCnt = 4;
