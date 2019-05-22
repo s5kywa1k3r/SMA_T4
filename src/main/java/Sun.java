@@ -82,12 +82,12 @@ public class Sun implements Mode {
 
     public void requestSetRise(){ this.currMode = this.currMode == 0 ? 1 : 0; }
 
-    public void requestNextCity(){
+    public void requestNextNation(){
         if(++this.currNation == this.maxNation)
             this.currNation = 0;
     }
 
-    public void requestPrevCity(){
+    public void requestPrevNation(){
         if(--this.currNation == -1)
             this.currNation = this.maxNation - 1;
     }

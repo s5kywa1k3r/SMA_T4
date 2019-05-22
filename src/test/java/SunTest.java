@@ -21,14 +21,14 @@ public class SunTest {
     }
 
     @Test
-    public void requestNextCity() {
+    public void requestNextNation() {
         RealTime realTime = new RealTime();
         Sun sun = new Sun(realTime);
         // Test requestNextCity at Last City
-        sun.setCurrCity(sun.getMaxCity() - 1);
-        sun.requestNextCity();
-        sun.requestNextCity();
-        assertEquals(1, sun.getCurrCity());
+        sun.setCurrNation(sun.getMaxNation() - 1);
+        sun.requestNextNation();
+        sun.requestNextNation();
+        assertEquals(1, sun.getCurrNation());
     }
 
     @Test
@@ -36,9 +36,9 @@ public class SunTest {
         RealTime realTime = new RealTime();
         Sun sun = new Sun(realTime);
         // Test requestPrevCity at First City
-        sun.setCurrCity(0);
-        sun.requestPrevCity();
-        sun.requestPrevCity();
-        assertEquals(sun.getMaxCity() - 2, sun.getCurrCity());
+        sun.setCurrNation(0);
+        sun.requestPrevNation();
+        sun.requestPrevNation();
+        assertEquals(sun.getMaxNation() - 2, sun.getCurrNation());
     }
 }
