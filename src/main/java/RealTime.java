@@ -98,7 +98,7 @@ public class RealTime implements Mode {
     public void calculateTime(){ this.realTime.add(Calendar.MILLISECOND, 10); }
     public void requestChangeType(){}
     public void showRealTime(){
-        System.out.printf("[RealTime] %d YEAR %d MONTH %d DAY %d H %d M %d S %d\n",
+        /*System.out.printf("[RealTime] %d YEAR %d MONTH %d DAY %d H %d M %d S %d\n",
                 this.realTime.get(Calendar.YEAR),
                 this.realTime.get(Calendar.MONTH),
                 this.realTime.get(Calendar.DATE),
@@ -106,7 +106,7 @@ public class RealTime implements Mode {
                 this.realTime.get(Calendar.MINUTE),
                 this.realTime.get(Calendar.SECOND),
                 this.realTime.get(Calendar.MILLISECOND) / 10
-        );
+        );*/
     }
 
     // Getters and Setters

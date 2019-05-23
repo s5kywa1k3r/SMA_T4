@@ -111,7 +111,7 @@ public class Timer implements Mode {
     private void startRingingTimer(){}
     public void realTimeTimerTask(){
 
-        System.out.println("[Timer]");
+        //System.out.println("[Timer]");
         if(this.status == 1){ // 1: Continued
             this.timerTime.add(Calendar.MILLISECOND, -10);
             if(this.timerTime.getTimeInMillis() == -32400000){
