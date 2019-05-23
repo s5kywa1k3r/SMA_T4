@@ -30,13 +30,11 @@ public class WatchSystem {
     // Worked by thread
     public void realTimeTask() {
         if(this.currMode == 0){
-            //((ModeSetting)this.menu.get(0)).realTimeModeSetting();
-            //((ModeSetting)this.menu.get(0)).showModeSetting();
+            watchGUI.realtimeGUI(((ModeSetting) menu.get(0)).showModeSetting());
         }
-
-        for(int i = 1; i <= this.maxCnt; i++){
+        for (int i = 1; i <= this.maxCnt; i++) {
             Object menu = this.menu.get(i);
-            switch(menu.getClass().getTypeName()) {
+            switch (menu.getClass().getTypeName()) {
                 case "RealTime":
                     ((RealTime) menu).calculateTime();
                     if (this.currMode == i) watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
@@ -44,7 +42,7 @@ public class WatchSystem {
 
                 case "TimeSetting":
                     ((TimeSetting) menu).realTimeTaskTimeSetting();
-                    if (this.currMode == i)  watchGUI.realtimeGUI(((TimeSetting) menu).showTimeSetting());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((TimeSetting) menu).showTimeSetting());
                     break;
 
                 case "Stopwatch":
@@ -54,12 +52,12 @@ public class WatchSystem {
 
                 case "Timer":
                     ((Timer) menu).realTimeTimerTask();
-                    if (this.currMode == i)  watchGUI.realtimeGUI(((Timer) menu).showTimer());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Timer) menu).showTimer());
                     break;
 
                 case "Alarm":
                     ((Alarm) menu).realTimeTaskAlarm();
-                    if (this.currMode == i)  watchGUI.realtimeGUI(((Alarm) menu).showAlarm());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Alarm) menu).showAlarm());
                     break;
 
                 case "Worldtime":
@@ -69,7 +67,7 @@ public class WatchSystem {
 
                 case "Sun":
                     ((Sun) menu).realTimeTaskSun();
-                    if (this.currMode == i) ((Sun) menu).showSun();
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Sun) menu).showSun());
                     break;
 
                 default:

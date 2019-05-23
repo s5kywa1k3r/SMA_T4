@@ -108,6 +108,7 @@ public class RealTime {
         data += (realTime.get(Calendar.SECOND) < 10 ? "0" : "")+realTime.get(Calendar.SECOND);
         if(this.is24H) {
             data += (realTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + realTime.get(Calendar.HOUR_OF_DAY);
+            data += "  ";
         }
         else {
             data += (realTime.get(Calendar.HOUR) < 10 ? "0" : "")+realTime.get(Calendar.HOUR);

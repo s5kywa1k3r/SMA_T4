@@ -1,6 +1,7 @@
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.luckycatlabs.sunrisesunset.dto.Location;
 
+import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -119,8 +120,16 @@ public class Sun {
         this.initSun();
     }
 
-    public void showSun(){
-
+    public String showSun(){
+        // Problem is comes from AM/PM
+        String data = "";
+        // 0 Rise, 1 Set
+        data += currMode;
+        data += (this.sun[currMode].get(Calendar.HOUR) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.HOUR);
+        data += (this.sun[currMode].get(Calendar.MINUTE) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.MINUTE);
+        data += (this.sun[currMode].get(Calendar.SECOND) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.SECOND);
+        data += (this.nation[currNation]);
+        return data;
     }
 
     private void initSun(){

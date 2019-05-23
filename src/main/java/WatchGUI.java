@@ -43,6 +43,8 @@ public class WatchGUI implements ActionListener {
     // Smallest Size
     private Font subsubFont;
 
+    private int blinkCount;
+
     public WatchGUI(WatchSystem system) {
         this.presentModeIndex = 0;
         this.flag = 0;
@@ -275,9 +277,18 @@ public class WatchGUI implements ActionListener {
     }
 
     public void realtimeGUI(String data) {
+        if(++blinkCount > 100) blinkCount = 0;
         switch(presentModeIndex) {
             // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
             case 0 :
+                year.setText(" MODE ");
+                showDate[0].setText(data.substring(0, 2));
+                showDate[2].setText(data.substring(2, 4));
+                subTime[0].setText(data.substring(4, 6));
+                subTime[2].setText(data.substring(6,8));
+                showTime[0].setText(data.substring(8, 10));
+                showTime[1].setText(data.substring(10, 12));
+                showTime[2].setText(data.substring(12));
                 break;
             case 1 :
             case 2 :
@@ -288,10 +299,17 @@ public class WatchGUI implements ActionListener {
                 showTime[1].setText(data.substring(10, 12));
                 showTime[2].setText(data.substring(12, 14));
                 showTime[0].setText(data.substring(14, 16));
-                if(data.length() == 18)
-                    subTime[1].setText(data.substring(16,18));
-                else
-                    subTime[1].setText("");
+                subTime[1].setText(data.substring(16,18));
+                if(presentModeIndex == 2 && blinkCount > 50) {
+                    switch (Integer.parseInt(data.substring(18))) {
+                        case 0: showTime[2].setText("  ");break;
+                        case 1: showTime[1].setText("  ");break;
+                        case 2: showTime[0].setText("  ");break;
+                        case 3: showDate[2].setText("  ");break;
+                        case 4: showDate[1].setText("  ");break;
+                        case 5: year.setText("    ");break;
+                    }
+                }
                 break;
             case 3 :
                 year.setText("STOPWC");
@@ -322,9 +340,34 @@ public class WatchGUI implements ActionListener {
                 else cities.setText("OFF");
                 break;
             case 6 :
-
+                year.setText(data.substring(0, 4));
+                showDate[0].setText(data.substring(4, 6));
+                showDate[1].setText(data.substring(6, 8));
+                showDate[2].setText(data.substring(8, 10));
+                showTime[1].setText(data.substring(10, 12));
+                showTime[2].setText(data.substring(12, 14));
+                showTime[0].setText(data.substring(14, 16));
+                if(data.substring(16,18).equals("  "))
+                    subTime[1].setText("");
+                else
+                    subTime[1].setText(data.substring(16,18));
+                cities.setText(data.substring(18));
                 break;
             case 7:
+                if(data.substring(0, 1).equals("1")) {
+                    showDate[0].setText("");
+                    showDate[1].setText("SE");
+                    showDate[2].setText("T");
+                }
+                else  {
+                    showDate[0].setText("R");
+                    showDate[1].setText("IS");
+                    showDate[2].setText("E");
+                }
+                showTime[0].setText(data.substring(1,3));
+                showTime[1].setText(data.substring(3,5));
+                showTime[2].setText(data.substring(5,7));
+                cities.setText(data.substring(7));
                 break;
             default: break;
         }

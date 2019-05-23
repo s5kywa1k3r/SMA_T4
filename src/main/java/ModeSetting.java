@@ -140,6 +140,12 @@ public class ModeSetting {
         return confirmMode;
     }
 
+    public String showModeSetting() {
+        String data = "";
+
+        return data;
+    }
+
     public ArrayList exitSetMode(){ return oldMode; }
 
     // Getters and Setters
