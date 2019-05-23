@@ -60,7 +60,20 @@ public class Alarm {
     public Alarm(RealTime realTime, ArrayList db) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this(realTime);
         if(db != null){
+            this.reservedAlarm = (Calendar[])db.get(0);
+            this.alarm = (Calendar[])db.get(1);
+            this.frequency = (Calendar[])db.get(2);
+            this.bell = (Bell[])db.get(3);
+            this.repeat = (int[])db.get(4);
 
+            this.tmpRepeat = new int[]{1,1,1,1};                // To protect repeat from ringing Again, -1: stop Call again
+            this.bellIndex = new int[]{0,0,0,0};
+            this.alarmState = new boolean[]{false, false, false, false};
+            this.isRinging = -1;
+
+            this.status = 0;
+            this.currAlarm = 0;
+            this.realTime = realTime;
         }
     }
 
@@ -162,7 +175,7 @@ public class Alarm {
                 if(++bellIndex[this.currAlarm] == 4) {
                     bellIndex[this.currAlarm] = 0;
                 }
-                bell[bellIndex[this.currAlarm]].play(1);
+                bell[bellIndex[this.currAlarm]].play(2);
                 break;
             default:
                 break;
@@ -214,7 +227,7 @@ public class Alarm {
                 if(bellIndex[this.currAlarm]-- == 0) {
                     bellIndex[this.currAlarm] = 3;
                 }
-                bell[bellIndex[this.currAlarm]].play(1);
+                bell[bellIndex[this.currAlarm]].play(2);
                 break;
             default:
                 break;
@@ -226,9 +239,9 @@ public class Alarm {
         if(this.status == 0) // 0: List
             this.status = 1; // 1: Alarm Setting
     }
-    public void requestAlarmPrevSection(){
+    /*public void requestAlarmPrevSection(){
         // This function is only for 'Setting Bell', I don't think it needs....
-    }
+    }*/
     public void requestNextAlarm(){
         if(++this.currAlarm == 4)
             this.currAlarm = 0;

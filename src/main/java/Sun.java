@@ -31,8 +31,6 @@ public class Sun {
             this.sun[i].clear();
         }
 
-        this.location = new Location("37.571303", "127.018495");
-        this.calculatorSun = new SunriseSunsetCalculator(location, "Asia/Seoul");
 
         this.nation = new String[]{
                 "MAR", "GHA", "ESP", "UK", "FRA", "NGR", "GER", "ITA", "GRE",
@@ -68,11 +66,13 @@ public class Sun {
     public Sun(RealTime realTime, ArrayList db){
         this(realTime);
         if(db != null){
-            for(int i = 0; i < db.size(); i++){
-                if(i == 0){ this.currNation = (int)db.get(i); }
-            }
+            this.sun = (Calendar[])db.get(0);
+            this.currNation = (int)db.get(1);
+            this.currMode = (int)db.get(2);
         }
     }
+
+
     public void realTimeTaskSun(){
         this.currTime = this.realTime.requestRealTime();
         // Apply World Time Zone
@@ -130,6 +130,22 @@ public class Sun {
 
         else // Today's SunSet
             this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
+    }
+
+    public ArrayList getSunData(){
+
+        ArrayList save = new ArrayList();
+
+        save.add(this.sun, this.currNation, this.currMode);
+        save.add(this.splitTime);
+        save.add(this.status);
+
+
+        this.sun = (Calendar[])db.get(0);
+        this.currNation = (int)db.get(1);
+        this.currMode = (int)db.get(2);
+
+        return save;
     }
 
     // Getters and Setters

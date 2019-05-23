@@ -103,11 +103,10 @@ public class ModeSetting {
 
             if (flag == true) {
                 confirmMode.add(this.oldMode.get(this.oldMode.indexOf(this.currMode.get(this.currMode.indexOf(newMode)))));
-                this.currMode.remove(this.currMode.indexOf(newMode));
+                this.currMode.set(this.currMode.indexOf(newMode), null);
             }
 
             else {
-                    //Load 하고 새로 만들어야지
                 switch(newMode) {
                     case "TimeSetting":
                         confirmMode.add(new TimeSetting());
@@ -142,7 +141,27 @@ public class ModeSetting {
 
 
         for (String oldMode : this.currMode) {
-        //    db.saveData(int j, ArrayList arr);
+            switch(oldMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun
+                case "Stopwatch":
+                    this.db.saveData(0, ((Stopwatch)this.oldMode.get(this.currMode.indexOf(oldMode))).getStopwatchData());
+                    break;
+
+                case "Timer":
+                    break;
+
+                case "Alarm":
+                    break;
+
+                case "Worldtime":
+                    break;
+
+                case "Sun":
+                    break;
+
+                default:
+                    //System.out.println("{Exception}[WatchSystem][realTimeTask] NotValidModeException");
+                    break;
+            }
         }
 
         return confirmMode;

@@ -6,7 +6,7 @@ public class Timer {
     private Calendar timerTime;
     private Calendar rsvTime;
 
-    private int status; //0: Stopped, 1: Continued, 2: Setting
+    private int status; // 0: Stopped, 1: Continued, 2: Setting
     private int currSection = 0; // 0: Second, 1: Minute, 2: Hour
 
     public Timer(){
@@ -21,12 +21,10 @@ public class Timer {
     }
 
     public Timer(ArrayList db){
-        this();
-        if(db != null){
-            for(int i = 0; i < db.size(); i++){
-
-            }
-        }
+        this.timerTime = (Calendar)db.get(0);
+        this.rsvTime = (Calendar)db.get(1);
+        this.status = 0;
+        this.currSection = 0;
     }
 
     // Getters and Setters
@@ -137,5 +135,15 @@ public class Timer {
             this.changeStatus(0); // [Status] 2: Setting -> 0: Stopped
             this.currSection = 0; // [CurrSection] 0: Second -> Setting Section initialization
         }
+    }
+
+
+    public ArrayList getTimerData(){
+        ArrayList data = new ArrayList();
+
+        data.add(this.timerTime);
+        data.add(this.rsvTime);
+
+        return data;
     }
 }
