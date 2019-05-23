@@ -100,6 +100,9 @@ public class RealTime implements Mode {
     public void showRealTime(){
        /*
         System.out.printf("[RealTime] %d YEAR %d MONTH %d DAY %d H %d M %d S %d\n",
+=======
+        /*System.out.printf("[RealTime] %d YEAR %d MONTH %d DAY %d H %d M %d S %d\n",
+>>>>>>> e13655e920aab77ca99cb9534e3de65763072088
                 this.realTime.get(Calendar.YEAR),
                 this.realTime.get(Calendar.MONTH),
                 this.realTime.get(Calendar.DATE),
@@ -107,6 +110,7 @@ public class RealTime implements Mode {
                 this.realTime.get(Calendar.MINUTE),
                 this.realTime.get(Calendar.SECOND),
                 this.realTime.get(Calendar.MILLISECOND) / 10
+<<<<<<< HEAD
         );
 
         */

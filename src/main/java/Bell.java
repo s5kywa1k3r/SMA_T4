@@ -16,7 +16,7 @@ public class Bell {
         audioInputStream = AudioSystem.getAudioInputStream(new File(Bell.class.getResource("").getPath()+"sounds/Alarm"+index+".wav"));
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        //clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void play(int sec) {

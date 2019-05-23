@@ -40,11 +40,12 @@ public class WatchSystem {
         menu.add(new RealTime());
         menu.add(new TimeSetting());
         menu.add(new Stopwatch());
-        menu.add(new Timer());
+        //menu.add(new Timer());
         menu.add(new Alarm((RealTime)menu.get(0)));
         this.currMode = 0; // [currMode] 0: Always RealTime
         this.maxCnt = 4;
         watchGUI = new WatchGUI(this);
+        watchGUI.setMode(menu.get(0));
         watchGUI.designMode(true);
         timeThread.run();
     }
@@ -56,7 +57,7 @@ public class WatchSystem {
 
     // Worked by thread
     public void realTimeTask() {
-        for(int i = 0; i <= this.maxCnt; i++){
+        for(int i = 0; i < this.maxCnt; i++){
             Mode menu = this.menu.get(i);
             switch(menu.getClass().getTypeName()) {
                 case "RealTime":
@@ -99,7 +100,7 @@ public class WatchSystem {
                     break;
             }
         }
-
+        watchGUI.realtimeGUI();
     }
 
     public void pressChangeMode() {

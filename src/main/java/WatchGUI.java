@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class WatchGUI implements ActionListener {
     // 0 : RealTime, 1 : TimeSetting, 2 : Stopwatch, 3 : Timer, 4. Alarm
@@ -163,34 +165,28 @@ public class WatchGUI implements ActionListener {
         switch (mode.getClass().getTypeName()) {
             case "RealTime" :
                 presentModeIndex = 0;
-                presentMode = (RealTime)mode;
                 break;
             case "TimeSetting" :
                 presentModeIndex = 1;
-                presentMode = (TimeSetting)mode;
                 break;
             case "Stopwatch" :
                 presentModeIndex = 2;
-                presentMode = (Stopwatch)mode;
                 break;
             case "Timer" :
                 presentModeIndex = 3;
-                presentMode = (Timer)mode;
                 break;
             case "Alarm" :
                 presentModeIndex = 4;
-                presentMode = (Alarm)mode;
                 break;
             case "Worldtime":
                 presentModeIndex = 5;
-                presentMode = (Worldtime)mode;
                 break;
             case "Sun" :
                 presentModeIndex = 6;
-                presentMode = (Sun)mode;
                 break;
             default: break;
         }
+        presentMode = mode;
     }
 
     public void designMode(boolean isActive) {
@@ -265,6 +261,43 @@ public class WatchGUI implements ActionListener {
                 colonForTime[1].setEnabled(isActive);
                 subTime[1].setEnabled(isActive);
                 cities.setEnabled(isActive);
+                break;
+            default: break;
+        }
+    }
+
+    public void realtimeGUI() {
+        switch(presentModeIndex) {
+            case 0 :
+                Calendar time = ((RealTime)presentMode).requestRealTime();
+                year.setText(time.get(Calendar.YEAR)+"");
+                // Maybe that part is going to be a problem
+                showDate[0].setText(time.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREA));
+                showDate[1].setText(time.get(Calendar.MONTH)+"");
+                showDate[2].setText(time.get(Calendar.DAY_OF_MONTH)+"");
+                showTime[0].setText(time.get(Calendar.HOUR)+"");
+                showTime[1].setText(time.get(Calendar.MINUTE)+"");
+                showTime[2].setText(time.get(Calendar.SECOND)+"");
+                // How to figure it out that is 12H or 24H
+                subTime[1].setText("");
+                break;
+            case 1 :
+
+                break;
+            case 2 :
+
+                break;
+            case 3 :
+
+                break;
+            case 4 :
+
+                break;
+            case 5 :
+
+                break;
+            case 6 :
+
                 break;
             default: break;
         }

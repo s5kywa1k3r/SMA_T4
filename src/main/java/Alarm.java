@@ -41,8 +41,8 @@ public class Alarm implements Mode {
         }
 
         this.bell = new Bell[4];
-        for(int i = 0; i < 3; i++) {
-            this.bell[i] = new Bell(i);
+        for(int i =0; i<4; i++) {
+            this.bell[i] = new Bell(i+1);
         }
 
         this.repeat = new int[]{1,1,1,1};
