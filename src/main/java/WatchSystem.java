@@ -129,18 +129,18 @@ public class WatchSystem {
 
     // Alarm
     public void enterSetAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).requestSettingAlarm(); }
-    public void nextAlarmTimeSection(){}
+    public void nextAlarmTimeSection(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection();}
     public void increaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).increaseSection(); }
     public void decreaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).decreaseSection(); }
-    public void enterSetAlarmFrequency(){}
-    public void nextFrequencySection(){}
-    public void increaseCount(){}
-    public void increaseFrequency(){}
-    public void decreaseCount(){}
-    public void decreaseFrequency(){}
-    public void enterSetAlarmBell(){}
-    public void nextBell(){}
-    public void prevBell(){}
+    //public void enterSetAlarmFrequency(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection(); }
+    //public void nextFrequencySection(){}
+    //public void increaseCount(){}
+    //public void increaseFrequency(){}
+    //public void decreaseCount(){}
+    //public void decreaseFrequency(){}
+    //public void enterSetAlarmBell(){}
+    //public void nextBell(){}
+    //public void prevBell(){}
     public void pressNextAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestNextAlarm(); }
     public void pressStopRingingAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestStopRinging(); }
     public void pressAlarmOnOff(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmOnOff(); }

@@ -272,8 +272,8 @@ public class WatchGUI implements ActionListener {
                 Calendar time = ((RealTime)presentMode).requestRealTime();
                 year.setText(time.get(Calendar.YEAR)+"");
                 // Maybe that part is going to be a problem
-                showDate[0].setText(time.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREA));
-                showDate[1].setText(time.get(Calendar.MONTH)+"");
+                showDate[0].setText(time.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2));
+                showDate[1].setText(time.get(Calendar.MONTH)+1 < 10 ? "0"+time.get(Calendar.MONTH) : ""+time.get(Calendar.MONTH));
                 showDate[2].setText(time.get(Calendar.DAY_OF_MONTH)+"");
                 showTime[0].setText(time.get(Calendar.HOUR)+"");
                 showTime[1].setText(time.get(Calendar.MINUTE)+"");
