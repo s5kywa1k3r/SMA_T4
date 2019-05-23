@@ -41,7 +41,7 @@ public class Alarm implements Mode {
         }
 
         this.bell = new Bell[4];
-        for(int i =1; i<=4; i++) {
+        for(int i = 0; i < 3; i++) {
             this.bell[i] = new Bell(i);
         }
 
@@ -81,7 +81,7 @@ public class Alarm implements Mode {
 
     // Operations
     public void realTimeTaskAlarm(){
-        System.out.println("[Alarm]");
+        //System.out.println("[Alarm]");
         for(int i = 0; i < 4; i++){
             if(this.alarmState[i]){
                 if((this.alarm[i].getTimeInMillis() - this.realTime.requestRealTime().getTimeInMillis()) == 0){

@@ -49,6 +49,7 @@ public class WatchGUI implements ActionListener {
         try {
             // /build/classes/java/main/DS-DIGIB.TTF
             this.mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(WatchSystem.class.getResource("").getPath() + "DS-DIGI.TTF"));
+            System.out.println(this.mainFont.getFontName());
         } catch (Exception e) {
             e.printStackTrace();
         }

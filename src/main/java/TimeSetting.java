@@ -11,7 +11,9 @@ public class TimeSetting implements Mode {
     public void requestIncreaseTimeSection(){ this.realTime.increaseTime(); }
     public void requestDecreaseTimeSection(){ this.realTime.decreaseTime(); }
     public void requestResetSecond(){ this.realTime.setSecond(0); }
-    public void realTimeTaskTimeSetting(){ System.out.println("[TimeSetting]"); }
+    public void realTimeTaskTimeSetting(){
+        //System.out.println("[TimeSetting]");
+    }
 
     // Getters and Setters
     public RealTime getRealTime() { return realTime; }

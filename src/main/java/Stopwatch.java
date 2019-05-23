@@ -34,7 +34,7 @@ public class Stopwatch implements Mode {
 
     // Operations
     public void realTimeTaskStopwatch(){
-        System.out.println("[Stopwatch]");
+        //System.out.println("[Stopwatch]");
         if(this.status == 1) // 1: Continued
             this.stpTime.add(Calendar.MILLISECOND, 10);
     }
