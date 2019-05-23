@@ -62,7 +62,16 @@ public class Stopwatch {
     }
 
     public void showStopwatch(){
+    }
 
+    public ArrayList getStopwatchData(){
+        ArrayList save = new ArrayList();
+
+        save.add(this.stpTime);
+        save.add(this.splitTime);
+        save.add(this.status);
+
+        return save;
     }
 
 }

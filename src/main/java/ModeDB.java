@@ -4,7 +4,7 @@ public class ModeDB {
     private ArrayList<ArrayList> db;
     public ModeDB(){
         for(int i = 0; i < 5; i++)
-            db.add(null); //
+            db.add(null); // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun
     }
 
     public ArrayList loadData(int index){ return this.db.get(index); }
