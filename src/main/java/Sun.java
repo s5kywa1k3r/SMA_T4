@@ -1,10 +1,11 @@
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.luckycatlabs.sunrisesunset.dto.Location;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class Sun implements Mode {
+public class Sun {
 
     private RealTime realTime;
     private Calendar currTime;
@@ -64,6 +65,14 @@ public class Sun implements Mode {
         this.initSun();
     }
 
+    public Sun(RealTime realTime, ArrayList db){
+        this(realTime);
+        if(db != null){
+            for(int i = 0; i < db.size(); i++){
+                if(i == 0){ this.currNation = (int)db.get(i); }
+            }
+        }
+    }
     public void realTimeTaskSun(){
         this.currTime = this.realTime.requestRealTime();
         // Apply World Time Zone

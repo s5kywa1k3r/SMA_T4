@@ -1,6 +1,7 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Stopwatch implements Mode {
+public class Stopwatch {
 
     private Calendar stpTime;
     private Calendar splitTime;
@@ -18,11 +19,14 @@ public class Stopwatch implements Mode {
     }
 
     // For load stored data
-    /*
-    public Stopwatch(int centiSec, int sec, int min, int hour){
-        this.stpTime = new int[]{centiSec, sec, min, hour};
+    public Stopwatch(ArrayList db){
+        this();
+        if(db != null){
+            this.stpTime = (Calendar)db.get(0);
+            this.splitTime = (Calendar)db.get(1);
+            this.status = (int)db.get(2);
+        }
     }
-    */
 
     // Getters and Setters
     public Calendar getStpTime() { return stpTime; }

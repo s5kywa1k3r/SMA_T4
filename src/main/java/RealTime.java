@@ -1,6 +1,6 @@
 import java.util.Calendar;
 
-public class RealTime implements Mode {
+public class RealTime {
     private Calendar realTime; // day, month, year
     private int currSection;
 

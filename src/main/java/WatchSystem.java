@@ -7,7 +7,7 @@ import java.util.TimeZone;
 
 public class WatchSystem {
 
-    private ArrayList<Mode> menu;
+    private ArrayList menu;
     private int currMode;
     private int maxCnt;
     private WatchGUI watchGUI;
@@ -36,7 +36,7 @@ public class WatchSystem {
 
     public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         TimeThread timeThread = new TimeThread(this);
-        this.menu = new ArrayList<Mode>(){};
+        this.menu = new ArrayList(){};
         menu.add(new RealTime());
         menu.add(new TimeSetting());
         menu.add(new Stopwatch());
@@ -58,7 +58,7 @@ public class WatchSystem {
     // Worked by thread
     public void realTimeTask() {
         for(int i = 0; i < this.maxCnt; i++){
-            Mode menu = this.menu.get(i);
+            Object menu = this.menu.get(i);
             switch(menu.getClass().getTypeName()) {
                 case "RealTime":
                     ((RealTime) menu).calculateTime();
@@ -123,7 +123,9 @@ public class WatchSystem {
     public void pressNextMode(){}
     public void pressSelectMode(){}
     public void confirmSelectMode(){}
-    public void exitSelectMode(){}
+    public void exitSelectMode(){
+        //(ModeSetting)this.menu.requestExitModeSetting();
+    }
 
     // Time Setting
     public void nextTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
@@ -174,4 +176,8 @@ public class WatchSystem {
     public void pressSetRise(){ ((Sun)this.menu.get(this.currMode)).requestSetRise(); }
     public void nextSunCity(){ ((Sun)this.menu.get(this.currMode)).requestNextNation(); }
     public void prevSunCity(){ ((Sun)this.menu.get(this.currMode)).requestPrevNation(); }
+
+    // Getters and Setters
+    public ArrayList getMenu(){ return this.menu; }
+    public Object getMenu(int i){ return this.menu.get(i); }
 }

@@ -1,6 +1,7 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Timer implements Mode {
+public class Timer {
 
     private Calendar timerTime;
     private Calendar rsvTime;
@@ -17,6 +18,15 @@ public class Timer implements Mode {
 
         this.status = 0;
         this.currSection = 0;
+    }
+
+    public Timer(ArrayList db){
+        this();
+        if(db != null){
+            for(int i = 0; i < db.size(); i++){
+
+            }
+        }
     }
 
     // Getters and Setters

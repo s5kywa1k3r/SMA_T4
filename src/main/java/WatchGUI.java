@@ -9,7 +9,7 @@ import java.util.Locale;
 public class WatchGUI implements ActionListener {
     // 0 : RealTime, 1 : TimeSetting, 2 : Stopwatch, 3 : Timer, 4. Alarm
     private int presentModeIndex;
-    private Mode presentMode;
+    private Object presentMode;
     private JFrame jFrame;
     private JButton[] button = new JButton[4];
     private WatchSystem system;
@@ -160,7 +160,7 @@ public class WatchGUI implements ActionListener {
         return textField;
     }
 
-    public void setMode(Mode mode) {
+    public void setMode(Object mode) {
         // 0 : RealTime, 1 : TimeSetting, 2 : Stopwatch, 3 : Timer, 4. Alarm
         switch (mode.getClass().getTypeName()) {
             case "RealTime" :

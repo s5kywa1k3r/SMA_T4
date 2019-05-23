@@ -1,4 +1,4 @@
-public class TimeSetting implements Mode {
+public class TimeSetting {
 
     private  RealTime realTime;
 

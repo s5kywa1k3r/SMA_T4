@@ -1,7 +1,8 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class Worldtime implements Mode {
+public class Worldtime {
 
     private RealTime realTime;
 
@@ -43,6 +44,14 @@ public class Worldtime implements Mode {
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
         );
+    }
+
+    public Worldtime(RealTime realTime, ArrayList db){
+        this(realTime);
+        if(db != null){
+            for(int i = 0; i < db.size(); i++){
+            }
+        }
     }
 
     public void nextNation() {

@@ -1,9 +1,10 @@
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Alarm implements Mode {
+public class Alarm {
 
     private RealTime realTime;
 
@@ -56,27 +57,12 @@ public class Alarm implements Mode {
         this.realTime = realTime;
     }
 
-    // Getters and Setters
-    public Calendar[] getReservated() { return reservedAlarm; }
-    public Calendar getReservated(int i){ return this.reservedAlarm[i]; }
-    public void setReservated(Calendar[] reservated) { this.reservedAlarm = reservated; }
-    public void setReservated(Calendar reservated){this.reservedAlarm[this.currAlarm] = reservated;}
-    public Calendar[] getFrequency() { return frequency; }
-    public Calendar getFrequency(int i){ return frequency[i]; }
-    public void setFrequency(Calendar[] frequency) { this.frequency = frequency; }
-    public void setFrequency(int i, Calendar frequency) { this.frequency[i] = frequency; }
-    public int[] getRepeat() { return repeat; }
-    public int getRepeat(int i){ return repeat[i]; }
-    public void setRepeat(int[] repeat) { this.repeat = repeat; }
-    public void setRepeat(int i, int repeat) { this.repeat[i] = repeat; }
-    public int getStatus() { return status; }
-    public void setStatus(int status ) { this.status = status; }
-    public RealTime getRealTime() { return realTime; }
-    public void setRealTime(RealTime realTime) { this.realTime = realTime; }
-    public boolean getAlarmCurrAlarmStatus(){return this.alarmState[this.currAlarm];}
-    public int getCurrAlarm(){ return this.currAlarm; }
-    public void setCurrAlarm(int i) { this.currAlarm = i; }
-    public int getCurrSection() { return this.currSection; }
+    public Alarm(RealTime realTime, ArrayList db) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        this(realTime);
+        if(db != null){
+
+        }
+    }
 
 
     // Operations
@@ -253,4 +239,27 @@ public class Alarm implements Mode {
     }
     public void requestAlarmOnOff(){ this.alarmState[this.currAlarm] = !this.alarmState[this.currAlarm]; }
     public void showAlarm(){}
+
+
+    // Getters and Setters
+    public Calendar[] getReservated() { return reservedAlarm; }
+    public Calendar getReservated(int i){ return this.reservedAlarm[i]; }
+    public void setReservated(Calendar[] reservated) { this.reservedAlarm = reservated; }
+    public void setReservated(Calendar reservated){this.reservedAlarm[this.currAlarm] = reservated;}
+    public Calendar[] getFrequency() { return frequency; }
+    public Calendar getFrequency(int i){ return frequency[i]; }
+    public void setFrequency(Calendar[] frequency) { this.frequency = frequency; }
+    public void setFrequency(int i, Calendar frequency) { this.frequency[i] = frequency; }
+    public int[] getRepeat() { return repeat; }
+    public int getRepeat(int i){ return repeat[i]; }
+    public void setRepeat(int[] repeat) { this.repeat = repeat; }
+    public void setRepeat(int i, int repeat) { this.repeat[i] = repeat; }
+    public int getStatus() { return status; }
+    public void setStatus(int status ) { this.status = status; }
+    public RealTime getRealTime() { return realTime; }
+    public void setRealTime(RealTime realTime) { this.realTime = realTime; }
+    public boolean getAlarmCurrAlarmStatus(){return this.alarmState[this.currAlarm];}
+    public int getCurrAlarm(){ return this.currAlarm; }
+    public void setCurrAlarm(int i) { this.currAlarm = i; }
+    public int getCurrSection() { return this.currSection; }
 }
