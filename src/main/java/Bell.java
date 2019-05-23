@@ -7,8 +7,10 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class Bell {
+public class Bell extends Thread{
     private Clip clip;
+    private int sec;
+    private boolean isContinue = false;
     private AudioInputStream audioInputStream;
 
     public Bell(int index) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
@@ -16,16 +18,22 @@ public class Bell {
         audioInputStream = AudioSystem.getAudioInputStream(new File(Bell.class.getResource("").getPath()+"sounds/Alarm"+index+".wav"));
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
-        //clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void play(int sec) {
-        long time = System.currentTimeMillis();
-        clip.start();
-        while(System.currentTimeMillis() - time < (sec * 1000));
-        pause();
+        this.sec = sec;
+        isContinue = true;
+        this.run();
     }
     public void pause() {
+        System.out.println("is Paused?");
+        isContinue = false;
         clip.stop();
+    }
+    public void run() {
+        long time = System.currentTimeMillis();
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        while(System.currentTimeMillis() - time < (1000 * sec) && isContinue) { }
     }
 }
