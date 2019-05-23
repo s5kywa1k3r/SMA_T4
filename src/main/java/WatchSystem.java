@@ -14,7 +14,7 @@ public class WatchSystem {
         this.menu = new ArrayList(){};
         menu.add(new ModeSetting(this));
         menu.add(new RealTime());
-        menu.add(new TimeSetting());
+        menu.add(new TimeSetting((RealTime)menu.get(1)));
         menu.add(new Stopwatch());
         menu.add(new Timer());
         menu.add(new Alarm((RealTime)menu.get(1)));
@@ -44,7 +44,7 @@ public class WatchSystem {
 
                 case "TimeSetting":
                     ((TimeSetting) menu).realTimeTaskTimeSetting();
-                    if (this.currMode == i)  watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
+                    if (this.currMode == i)  watchGUI.realtimeGUI(((TimeSetting) menu).showTimeSetting());
                     break;
 
                 case "Stopwatch":

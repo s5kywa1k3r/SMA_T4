@@ -31,4 +31,7 @@ public class TimeSetting {
     public RealTime getRealTime() { return realTime; }
     public void setRealTime(RealTime realTime) { this.realTime = realTime; }
     public int getCurrSection() { return this.realTime.getCurrSection(); }
+    public String showTimeSetting() {
+        return realTime.showRealTime();
+    }
 }
