@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.Calendar;
 
 import static org.junit.Assert.*;
@@ -7,11 +10,11 @@ import static org.junit.Assert.*;
 public class AlarmTest {
 
     @Test
-    public void realTimeTaskAlarm() {
+    public void realTimeTaskAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
     }
 
     @Test
-    public void requestSettingAlarm() {
+    public void requestSettingAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
         alarm.requestSettingAlarm();
@@ -19,14 +22,14 @@ public class AlarmTest {
     }
 
     @Test
-    public void requestAlarmNextSection() {
+    public void requestAlarmNextSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
         //alarm.req
     }
 
     @Test
-    public void increaseSection() {
+    public void increaseSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
         assertEquals(0, alarm.getCurrSection()); // 0: Minutes
@@ -79,19 +82,19 @@ public class AlarmTest {
     }
 
     @Test
-    public void decreaseSection() {
+    public void decreaseSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
     }
 
     @Test
-    public void requestSettingBellAlarm() {
+    public void requestSettingBellAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
     }
 
     @Test
-    public void requestAlarmPrevSection() {
+    public void requestAlarmPrevSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
     }
 
     @Test
-    public void requestNextAlarm() {
+    public void requestNextAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
         alarm.setCurrAlarm(3); // [currAlarm] Point last alarm
@@ -101,11 +104,11 @@ public class AlarmTest {
     }
 
     @Test
-    public void requestStopRinging() {
+    public void requestStopRinging() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
     }
 
     @Test
-    public void requestAlarmOnOff() {
+    public void requestAlarmOnOff() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
         alarm.requestAlarmOnOff();

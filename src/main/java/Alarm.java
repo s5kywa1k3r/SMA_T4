@@ -1,25 +1,31 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.Calendar;
 
 public class Alarm implements Mode {
 
     private RealTime realTime;
 
-    private Calendar[] reservated;
+    private Calendar[] reservedAlarm;
     private Calendar[] alarm;
     private Calendar[] frequency;
-    private int[] repeat;
+    private Bell[] bell;
+    private int [] repeat;
+    private int [] tmpRepeat;
+    private int isRinging;          // -1: not Activated, 0~3 : index of Ringing Bell
+    private int [] bellIndex;
     private boolean[] alarmState;
-    private int[] bell;
 
     private int status; // 0: List, 1: Alarm Time Setting, 2: Alarm Frequency, 3: Alarm Bell Setting
     private int currSection; // 0: Minute, 1: Hour, 2: Frequency_Second, 3: Frequency_Minute, 4: Count, 5: Bell
     private int currAlarm;
 
-    public Alarm(RealTime realTime){
-        this.reservated = new Calendar[4];
+    public Alarm(RealTime realTime) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        this.reservedAlarm = new Calendar[4];
         for(int i = 0; i < 4; i++){
-            this.reservated[i] = Calendar.getInstance();
-            this.reservated[i].clear();
+            this.reservedAlarm[i] = Calendar.getInstance();
+            this.reservedAlarm[i].clear();
         }
 
         this.alarm = new Calendar[4];
@@ -34,9 +40,16 @@ public class Alarm implements Mode {
             this.frequency[i].clear();
         }
 
-        this.repeat = new int[]{0,0,0,0};
-        this.bell = new int[]{0,0,0,0};
+        this.bell = new Bell[4];
+        for(int i =1; i<=4; i++) {
+            this.bell[i] = new Bell(i);
+        }
+
+        this.repeat = new int[]{1,1,1,1};
+        this.tmpRepeat = new int[]{1,1,1,1};                // To protect repeat from ringing Again, -1: stop Call again
+        this.bellIndex = new int[]{0,0,0,0};
         this.alarmState = new boolean[]{false, false, false, false};
+        this.isRinging = -1;
 
         this.status = 0;
         this.currAlarm = 0;
@@ -44,10 +57,10 @@ public class Alarm implements Mode {
     }
 
     // Getters and Setters
-    public Calendar[] getReservated() { return reservated; }
-    public Calendar getReservated(int i){ return this.reservated[i]; }
-    public void setReservated(Calendar[] reservated) { this.reservated = reservated; }
-    public void setReservated(Calendar reservated){this.reservated[this.currAlarm] = reservated;}
+    public Calendar[] getReservated() { return reservedAlarm; }
+    public Calendar getReservated(int i){ return this.reservedAlarm[i]; }
+    public void setReservated(Calendar[] reservated) { this.reservedAlarm = reservated; }
+    public void setReservated(Calendar reservated){this.reservedAlarm[this.currAlarm] = reservated;}
     public Calendar[] getFrequency() { return frequency; }
     public Calendar getFrequency(int i){ return frequency[i]; }
     public void setFrequency(Calendar[] frequency) { this.frequency = frequency; }
@@ -68,24 +81,37 @@ public class Alarm implements Mode {
 
     // Operations
     public void realTimeTaskAlarm(){
-
         System.out.println("[Alarm]");
         for(int i = 0; i < 4; i++){
-            if(this.alarmState[i] == true){
+            if(this.alarmState[i]){
                 if((this.alarm[i].getTimeInMillis() - this.realTime.requestRealTime().getTimeInMillis()) == 0){
-                    // Beep
+                    if(isRinging != -1) {
+                        // If Alarm is already Ringing, should be change to other one
+                        bell[bellIndex[isRinging]].pause();
+                    }
+                    isRinging = i;
+                    bell[bellIndex[i]].play(30);
+                    if(tmpRepeat[i]-- > 0) {
+                        alarm[i].add(Calendar.MINUTE, frequency[i].get(Calendar.MINUTE));
+                        alarm[i].add(Calendar.SECOND, frequency[i].get(Calendar.SECOND));
+                    }
+                    else {
+                        tmpRepeat[i] = repeat[i];
+                        alarm[i] = reservedAlarm[i];
+                    }
                 }
             }
-
         }
-
-
-
     }
+
     public void requestSettingAlarm(){
-        if(this.status == 0)
+        if(this.status == 0) {
+            // Because while Setting specific Alarm, should NOT ring
+            alarmState[this.currAlarm] = false;
             this.status = 1;
+        }
     }
+
     public void requestAlarmNextSection(){
         switch(++this.currSection){
             case 2 :
@@ -111,18 +137,19 @@ public class Alarm implements Mode {
             case 1: // 1. Alarm Setting
                 switch(this.currSection){
                     case 0: // 0: Minute
-                        this.reservated[this.currAlarm].add(Calendar.MINUTE, 1);
-                        if(this.reservated[this.currAlarm].get(Calendar.MINUTE) == 0)
-                            this.reservated[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
+                        this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, 1);
+                        if(this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 0)
+                            this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
                         break;
                     case 1: // 1: Hour
-                        this.reservated[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
-                        if(this.reservated[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 0)
-                            this.reservated[this.currAlarm].add(Calendar.DATE, -1);
+                        this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
+                        if(this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 0)
+                            this.reservedAlarm[this.currAlarm].add(Calendar.DATE, -1);
                         break;
                     default :
                         break;
                 }
+                alarm[this.currAlarm] = reservedAlarm[this.currAlarm];
                 break;
             case 2: // 2. Alarm Frequency
                 switch(this.currSection){
@@ -145,9 +172,11 @@ public class Alarm implements Mode {
                         break;
                 }
                 break;
-            case 3: // 3. Alarm Bell Setting
-                // 4: Bell
-
+            case 3: // 3. Alarm Bell
+                if(++bellIndex[this.currAlarm] == 4) {
+                    bellIndex[this.currAlarm] = 0;
+                }
+                bell[bellIndex[this.currAlarm]].play(1);
                 break;
             default:
                 break;
@@ -161,14 +190,14 @@ public class Alarm implements Mode {
             case 1: // 1. Alarm Setting
                 switch (this.currSection) {
                     case 0: // 0: Minute
-                        this.reservated[this.currAlarm].add(Calendar.MINUTE, -1);
-                        if (this.reservated[this.currAlarm].get(Calendar.MINUTE) == 59)
-                            this.reservated[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
+                        this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, -1);
+                        if (this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 59)
+                            this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
                         break;
                     case 1: // 1: Hour
-                        this.reservated[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
-                        if (this.reservated[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 23)
-                            this.reservated[this.currAlarm].add(Calendar.DATE, 1);
+                        this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
+                        if (this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 23)
+                            this.reservedAlarm[this.currAlarm].add(Calendar.DATE, 1);
                         break;
                     default:
                         break;
@@ -178,13 +207,13 @@ public class Alarm implements Mode {
                 switch (this.currSection) {
                     case 2: // 2: Frequency_Second
                         this.frequency[this.currAlarm].add(Calendar.SECOND, -1);
-                        if (this.reservated[this.currAlarm].get(Calendar.SECOND) == 59)
-                            this.reservated[this.currAlarm].add(Calendar.MINUTE, 1);
+                        if (this.reservedAlarm[this.currAlarm].get(Calendar.SECOND) == 59)
+                            this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, 1);
                         break;
                     case 3: // 3: Frequency_Minute
                         this.frequency[this.currAlarm].add(Calendar.MINUTE, -1);
-                        if (this.reservated[this.currAlarm].get(Calendar.MINUTE) == 59)
-                            this.reservated[this.currAlarm].add(Calendar.MINUTE, 10);
+                        if (this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 59)
+                            this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, 10);
                         break;
 
                     case 4: // 4: Count
@@ -195,9 +224,11 @@ public class Alarm implements Mode {
                         break;
                 }
                 break;
-            case 3: // 3. Alarm Bell Setting
-                // 4: Bell
-
+            case 3: // 3. Alarm Bell
+                if(bellIndex[this.currAlarm]-- == 0) {
+                    bellIndex[this.currAlarm] = 3;
+                }
+                bell[bellIndex[this.currAlarm]].play(1);
                 break;
             default:
                 break;
@@ -205,19 +236,21 @@ public class Alarm implements Mode {
     }
 
 
-    //public void requestAlarmNextSection(){}
     public void requestSettingBellAlarm(){
         if(this.status == 0) // 0: List
             this.status = 1; // 1: Alarm Setting
     }
     public void requestAlarmPrevSection(){
-
+        // This function is only for 'Setting Bell', I don't think it needs....
     }
     public void requestNextAlarm(){
         if(++this.currAlarm == 4)
             this.currAlarm = 0;
     }
-    public void requestStopRinging(){}
+    public void requestStopRinging(){
+        if(isRinging != -1)
+            bell[isRinging].pause();
+    }
     public void requestAlarmOnOff(){ this.alarmState[this.currAlarm] = !this.alarmState[this.currAlarm]; }
     public void showAlarm(){}
 }
