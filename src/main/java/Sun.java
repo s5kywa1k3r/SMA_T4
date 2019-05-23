@@ -25,7 +25,6 @@ public class Sun {
     public Sun() {
         this.realTime = null;
         this.currTime = null;
-
         this.sun = new Calendar[2];
         for (int i = 0; i < 2; i++) {
             this.sun[i] = Calendar.getInstance();
@@ -58,6 +57,9 @@ public class Sun {
                 101.687675, 126.991333, 149.1298, 139.768531, -75.696552, -77.035156, -102.177707, -70.665665, -47.89328
         };
 
+        this.location = new Location(this.nationLatitude[this.currNation], this.nationLongitude[this.currNation]);
+        this.calculatorSun = new SunriseSunsetCalculator(this.location, this.nationTimeZone[this.currNation]);
+
         this.currNation = 19;
         this.currMode = 0;
     }
@@ -66,10 +68,9 @@ public class Sun {
         this();
         this.realTime = realTime;
         this.currTime = this.realTime.requestRealTime();
-
         this.initSun();
     }
-
+    
     public Sun(RealTime realTime, ArrayList db){
         this(realTime);
         if(db != null){
