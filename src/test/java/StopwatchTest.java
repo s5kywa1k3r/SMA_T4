@@ -11,14 +11,10 @@ public class StopwatchTest {
         Stopwatch stp = new Stopwatch();
         stp.requestStartStopwatch(); // 0: Stopped -> 1: Continued
 
-        assertEquals(0, stp.getStpTime().get(Calendar.MILLISECOND));
-        assertEquals(0, stp.getStpTime().get(Calendar.SECOND));
-        assertEquals(0, stp.getStpTime().get(Calendar.MINUTE));
-        assertEquals(0, stp.getStpTime().get(Calendar.HOUR_OF_DAY));
-        assertEquals(1, stp.getStpTime().get(Calendar.DATE));
-        assertEquals(0, stp.getStpTime().get(Calendar.MONTH));
-        assertEquals(1970, stp.getStpTime().get(Calendar.YEAR));
-        assertEquals(-32400000, stp.getStpTime().getTimeInMillis());
+        Calendar temp = Calendar.getInstance();
+        temp.clear();
+
+        assertEquals(temp, stp.getStpTime());
 
         for(int i = 0; i < 10002; i++)
             stp.realTimeTaskStopwatch();
