@@ -13,24 +13,8 @@ public class WatchSystem {
     private int maxCnt;
 
     public static void main(String[] args) {
-        /*
-      SeparateSection test = new SeparateSection();
-      System.out.println(test.getClass().getTypeName());
-      WatchSystem run = new WatchSystem();
-      run.realTimeTask();
-
-
-        Calendar cal = Calendar.getInstance();
-        Location location = new Location("37.571303", "127.018495");
-        SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(location, "Asia/Seoul");
-
-        System.out.println("Sunrise = " + calculator.getOfficialSunriseForDate(cal));
-        System.out.println("Sunset = " + calculator.getOfficialSunsetForDate(cal));
-    */
-        String[] test = TimeZone.getAvailableIDs();
-        for(String str : test){
-            System.out.println(str);
-        }
+        WatchSystem run = new WatchSystem();
+        run.realTimeTask();
     }
 
     public WatchSystem() {
