@@ -1,24 +1,31 @@
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ModeSetting {
+    private WatchSystem sys;
+    private ModeDB db;
+    private RealTime realTime;
 
     private ArrayList<String> menu_all;
     private ArrayList<String> currMode;
     private ArrayList<String> newMode;
     private ArrayList oldMode;
 
-    private ModeDB db;
-    private WatchSystem sys;
     private int currIndex;
 
-    public ModeSetting(WatchSystem sys, ArrayList currList) {
-        this.sys = sys;
+    public ModeSetting(){
+        this.sys = null;
         this.db = new ModeDB();
 
         this.menu_all = new ArrayList<String>();
+        this.currMode = new ArrayList<String>();
+        this.newMode = new ArrayList<String>();
+        this.oldMode = new ArrayList();
+
         this.menu_all.add("Stopwatch");
         this.menu_all.add("Timer");
         this.menu_all.add("Alarm");
@@ -26,42 +33,20 @@ public class ModeSetting {
         this.menu_all.add("Sun");
         this.menu_all.add("TimeSetting");
 
-        for (Object menu : currList) {
-            switch (menu.getClass().getTypeName()) {
-                case "Stopwatch":
-                    this.currMode.add("Stopwatch");
-                    break;
-
-                case "Timer":
-                    this.currMode.add("Timer");
-                    break;
-
-                case "Alarm":
-                    this.currMode.add("Alarm");
-                    break;
-
-                case "Worldtime":
-                    this.currMode.add("Worldtime");
-                    break;
-
-                case "Sun":
-                    this.currMode.add("Sun");
-                    break;
-
-                case "TimeSetting":
-                    this.currMode.add("TimeSetting");
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        this.oldMode.addAll(currList);
         this.currIndex = 0;
     }
 
-    //public void requestModeSetting(){}
+    public ModeSetting(WatchSystem sys, ArrayList currList) {
+        this();
+        this.sys = sys;
+
+        for (Object menu : currList)
+            if(this.menu_all.indexOf(menu.getClass().getTypeName()) != -1)
+                this.currMode.add(menu.getClass().getTypeName());
+
+        this.oldMode.addAll(currList);
+    }
+
     public void requestNextMode() {
         if (++this.currIndex == 6)
             this.currIndex = 0;
@@ -77,27 +62,13 @@ public class ModeSetting {
             this.newMode.remove(0);
         this.newMode.add(this.menu_all.get(this.currIndex));
     }
-    //public void getUnselectedMode(){}
-    /*
-    public boolean hasNewMode(){
-        for(String temp : this.newMode)
-            if(this.currMode.indexOf(temp) == -1)
-                return false;
-        return true;
-    }
-    */
 
-    //public void createNewMode(){}
-    //public Mode getUnselectedMode(){}
-    //public void sendOldMode(){}
-    //public void requestDeleteMode(){}
     public ArrayList confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList confirmMode = new ArrayList();
         for (String newMode : this.newMode) {
             boolean flag = false; // True: Match, False: Not Match
-            for (String oldMode : this.currMode) {
+            for (String oldMode : this.currMode)
                 if (oldMode.equals(newMode)) flag = true;
-            }
 
             if (flag == true) {
                 confirmMode.add(this.oldMode.get(this.oldMode.indexOf(this.currMode.get(this.currMode.indexOf(newMode)))));
@@ -105,11 +76,7 @@ public class ModeSetting {
             }
 
             else {
-                switch(newMode) {
-                    case "TimeSetting":
-                        confirmMode.add(new TimeSetting());
-                        break;
-
+                switch(newMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun, 5: TimeSetting
                     case "Stopwatch":
                         confirmMode.add(new Stopwatch(db.loadData(this.menu_all.indexOf(newMode))));
                         break;
@@ -128,6 +95,10 @@ public class ModeSetting {
 
                     case "Sun":
                         confirmMode.add(new Sun((RealTime)this.sys.getMenu(0),db.loadData(this.menu_all.indexOf(newMode))));
+                        break;
+
+                    case "TimeSetting":
+                        confirmMode.add(new TimeSetting());
                         break;
 
                     default:
@@ -168,5 +139,24 @@ public class ModeSetting {
 
         return confirmMode;
     }
+
+    public ArrayList exitSetMode(){ return oldMode; }
+
+    // Getters and Setters
+    public ArrayList<String> getMenu_all() { return menu_all; }
+    public void setMenu_all(ArrayList<String> menu_all) { this.menu_all = menu_all; }
+    public ArrayList<String> getCurrMode() { return currMode; }
+    public void setCurrMode(ArrayList<String> currMode) { this.currMode = currMode; }
+    public ArrayList<String> getNewMode() { return newMode; }
+    public void setNewMode(ArrayList<String> newMode) { this.newMode = newMode; }
+    public ArrayList getOldMode() { return oldMode; }
+    public void setOldMode(ArrayList oldMode) { this.oldMode = oldMode; }
+    public ModeDB getDb() { return db; }
+    public void setDb(ModeDB db) { this.db = db; }
+    public WatchSystem getSys() { return sys; }
+    public void setSys(WatchSystem sys) { this.sys = sys; }
+    public int getCurrIndex() { return currIndex; }
+    public void setCurrIndex(int currIndex) { this.currIndex = currIndex; }
+
 }
 
