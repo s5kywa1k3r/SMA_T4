@@ -18,7 +18,7 @@ public class Alarm {
     private int [] bellIndex;
     private boolean[] alarmState;
 
-    private int status; // 0: List, 1: Alarm Time Setting, 2: Alarm Frequency, 3: Alarm Bell Setting
+    private int status; // 0: List, 1: Alarm Time Setting, 2: Alarm Frequency, 3: Alarm Bell Setting, 4: Ringing
     private int currSection; // 0: Minute, 1: Hour, 2: Frequency_Second, 3: Frequency_Minute, 4: Count, 5: Bell
     private int currAlarm;
 
@@ -85,6 +85,7 @@ public class Alarm {
         for(int i = 0; i < 4; i++){
             if(this.alarmState[i]){
                 if((this.alarm[i].getTimeInMillis() - this.realTime.requestRealTime().getTimeInMillis()) == 0){
+                    this.status = 4;
                     if(RingingIndex != -1) {
                         // If Alarm is already Ringing, should be change to other one
                         bell[RingingIndex-1].pause();
@@ -130,6 +131,11 @@ public class Alarm {
             default:
                 break;
         }
+    }
+
+    public void requestExitAlarmSetting(){
+        this.status = 0;
+        this.currSection = 0;
     }
 
     public void increaseSection(){
@@ -235,7 +241,6 @@ public class Alarm {
         }
     }
 
-
     /*public void requestSettingBellAlarm(){
         if(this.status == 0) // 0: List
             this.status = 1; // 1: Alarm Setting
@@ -251,11 +256,12 @@ public class Alarm {
         if(RingingIndex != -1) {
             bell[RingingIndex-1].pause();
             RingingIndex = -1;
+            this.status = 0;
         }
     }
     public void requestAlarmOnOff(){ this.alarmState[this.currAlarm] = !this.alarmState[this.currAlarm]; }
     public void showAlarm(){}
-
+    public int requestAlarmFlag(){ return this.status; }
 
     // Getters and Setters
     public Calendar[] getReservated() { return reservedAlarm; }

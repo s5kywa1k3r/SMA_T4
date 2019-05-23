@@ -60,8 +60,10 @@ public class Stopwatch {
         }
     }
 
+    public int requestStopwatchFlag(){ return this.status; }
     public void showStopwatch(){
     }
+
 
     public ArrayList getStopwatchData(){
         ArrayList save = new ArrayList();

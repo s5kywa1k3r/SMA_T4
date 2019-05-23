@@ -1,14 +1,18 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class WatchGUI implements ActionListener {
     // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
     private int presentModeIndex;
+    private int flag;
     private Object presentMode;
     private JFrame jFrame;
     private JButton[] button = new JButton[4];
@@ -41,6 +45,7 @@ public class WatchGUI implements ActionListener {
 
     public WatchGUI(WatchSystem system) {
         this.presentModeIndex = 0;
+        this.flag = 0;
         this.system = system;
         jFrame = new JFrame();
         jFrame.setResizable(false);
@@ -313,46 +318,140 @@ public class WatchGUI implements ActionListener {
         }
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == button[0]) {            // A
-            reaction(0);
-        }
-        if(e.getSource() == button[1]) {            // B
-            reaction(1);
-        }
-        if(e.getSource() == button[2]) {            // C
-            reaction(2);
-        }
-        if(e.getSource() == button[3]) {            // D
-            reaction(3);
+
+        int index = -1;
+        if(e.getSource() == button[0]) { index = 0; }
+        if(e.getSource() == button[1]) { index = 1; }
+        if(e.getSource() == button[2]) { index = 2; }
+        if(e.getSource() == button[3]) { index = 3; }
+
+        try {
+            reaction(index);
+        } catch (UnsupportedAudioFileException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (LineUnavailableException ex) {
+            ex.printStackTrace();
         }
     }
 
-    public void reaction(int buttonIndex) {
+    public void reaction(int buttonIndex) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         switch(presentModeIndex) {
-            case 0 :                                // Mode Setting
+            case 0 : // Mode Setting
+                switch(buttonIndex){
+                    case 0: system.confirmSelectMode();break;
+                    case 1: system.pressSelectMode();break;
+                    case 2: system.exitSelectMode();break;
+                    case 3: system.pressNextMode();break;
+                    default:break;
+                }
                 break;
-            case 1 :                                // RealTime
-                if(buttonIndex == 3)
-                    system.pressShowType();
+            case 1 : // RealTime
+                switch(buttonIndex){
+                    case 0 : system.enterModeSetting(); break;
+                    case 1 : break;
+                    case 2 : system.pressChangeMode();break;
+                    case 3 : system.pressShowType();break;
+                    default: break;
+                }
                 break;
-            case 2 :
 
+            case 2 : // TimeSetting
+                this.flag = system.getTimeSettingFlag();
+                switch(buttonIndex){
+                    case 0 : system.nextTimeSection();break;
+                    case 1 :
+                        if(this.flag == 0) system.pressResetSecond();
+                        else system.increaseTimeSection();
+                        break;
+                    case 2 :
+                        system.exitTimeSetting();
+                        system.pressChangeMode();
+                        break;
+                    case 3 : if(this.flag != 0) system.decreaseTimeSection();break;
+                    default: break;
+                }
                 break;
-            case 3 :
 
+            case 3 : // Stopwatch
+                this.flag = system.getStopwatchFlag();
+                switch(buttonIndex){
+                    case 0 : system.pressSplitStopwatch();break;
+                    case 1 :
+                        if(this.flag == 0) system.pressStartStopwatch();
+                        else system.pressStopStopwatch();
+                        break;
+                    case 2 : system.pressChangeMode();break;
+                    case 3 : system.pressResetStopwatch();break;
+                    default: break;
+                }
                 break;
-            case 4 :
-
+            case 4 : // Timer
+                this.flag = system.getTimerFlag();
+                switch(buttonIndex){
+                    case 0 :
+                        if(this.flag == 0) system.enterSetTimerTime();
+                        else if(this.flag == 2)system.nextTimerTimeSection();
+                        break;
+                    case 1 :
+                        if(this.flag == 0) system.pressStartTimer();
+                        else if(this.flag == 1) system.pressStopTimer();
+                        else if(this.flag == 3) system.pressStopRingingTimer();
+                        else system.increaseTimerTimeSection();
+                        break;
+                    case 2 :
+                        if(flag == 2) system.exitSetTimerTime();
+                        else system.pressChangeMode();
+                        break;
+                    case 3:
+                        if(flag == 2) system.decreaseTimerTimeSection();
+                        else system.pressResetTimer();
+                        break;
+                    default: break;
+                }
                 break;
-            case 5 :
-
+            case 5 : // Alarm
+                this.flag = system.getAlarmFlag();
+                switch(buttonIndex){
+                    case 0 :
+                        if(flag == 0) system.enterSetAlarmTime();
+                        else system.nextAlarmTimeSection();
+                        break;
+                    case 1 :
+                        if(flag == 0) system.pressAlarmOnOff();
+                        else if(flag == 4) system.pressStopRingingAlarm();
+                        else system.increaseAlarmTime();
+                        break;
+                    case 2 :
+                        if(flag != 0) system.exitSetAlarmSetting();
+                        else system.pressChangeMode();
+                        break;
+                    case 3 :
+                        if(flag == 0) system.pressNextAlarm();
+                        else system.decreaseAlarmTime();
+                        break;
+                    default: break;
+                }
                 break;
-            case 6 :
-
+            case 6 : // Worldtime
+                switch(buttonIndex){
+                    case 0 : break;
+                    case 1 : system.prevWorldtimeCity();break;
+                    case 2 : system.pressChangeMode();break;
+                    case 3 : system.nextWorldtimeCity();break;
+                    default: break;
+                }
                 break;
-            case 7:
+            case 7 : // Sun
+                switch(buttonIndex){
+                    case 0 : system.pressSetRise();break;
+                    case 1 : system.prevSunCity();break;
+                    case 2 : system.pressChangeMode();break;
+                    case 3 : system.nextSunCity();break;
+                    default: break;
+                }
                 break;
             default: break;
         }
