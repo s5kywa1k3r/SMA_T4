@@ -67,6 +67,17 @@ public class Alarm {
         }
     }
 
+    public ArrayList getAlarmData(){
+        ArrayList data = new ArrayList();
+
+        data.add(this.reservedAlarm);
+        data.add(this.alarm);
+        data.add(this.frequency);
+        data.add(this.repeat);
+
+        return data;
+    }
+
 
     // Operations
     public void realTimeTaskAlarm(){
