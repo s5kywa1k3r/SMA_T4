@@ -168,7 +168,7 @@ public class WatchSystem {
     // Worldtime
     public void nextWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).nextNation(); }
     public void prevWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).prevNation(); }
-    public void pressSummerTime(){ ((Worldtime)this.menu.get(this.currMode)).changeSummerTime(); }
+    //public void pressSummerTime(){ ((Worldtime)this.menu.get(this.currMode)).changeSummerTime(); }
 
     // Sun
     public void pressSetRise(){ ((Sun)this.menu.get(this.currMode)).requestSetRise(); }
