@@ -1,17 +1,20 @@
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class Worldtime implements Mode{
+public class Worldtime implements Mode {
 
     private RealTime realTime;
+
     private Calendar worldTime;
     private Calendar currTime;
+
     private String[] nation;
     private String[] nationTimeZone;
+
     private int currNation;
     private int maxNation = 27;
 
-    public Worldtime(RealTime realTime){
+    public Worldtime(RealTime realTime) {
         this.worldTime = Calendar.getInstance();
         this.worldTime.clear();
 
@@ -30,7 +33,7 @@ public class Worldtime implements Mode{
                 "Asia/Tokyo", "Canada/Central", "Etc/GMT-5", "Mexico/General", "America/Santiago", "Etc/GMT-3"
         };
 
-        this.currNation = 19;
+        this.currNation = 19; // 19: Asia/Seoul
 
         this.worldTime.set(Calendar.MILLISECOND, this.currTime.get(Calendar.MILLISECOND));
         this.worldTime.set(
@@ -42,38 +45,37 @@ public class Worldtime implements Mode{
         );
     }
 
-    public void nextNation(){
-        if(++this.currNation == this.maxNation)
+    public void nextNation() {
+        if (++this.currNation == this.maxNation)
             this.currNation = 0;
         this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
     }
 
-    public void prevNation(){
-        if(--this.currNation == -1)
+    public void prevNation() {
+        if (--this.currNation == -1)
             this.currNation = this.maxNation - 1;
         this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
     }
 
-    public void changeSummerTime(){
+    // Remove Function
+    //public void changeSummerTime(){ }
 
-    }
-
-    public void realTimeTaskWorldtime(){
-
-        System.out.println("[Worldtime]");
+    public void realTimeTaskWorldtime() {
         this.currTime = this.realTime.requestRealTime();
+        this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
         this.worldTime.set(Calendar.MILLISECOND, this.currTime.get(Calendar.MILLISECOND));
         this.worldTime.set(
                 this.currTime.get(Calendar.YEAR),
+                this.currTime.get(Calendar.MONTH),
                 this.currTime.get(Calendar.DATE),
                 this.currTime.get(Calendar.HOUR_OF_DAY),
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
         );
-        this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
+        this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[19]));
     }
 
-    public void showWorldTime(){
+    public void showWorldTime() {
 
     }
 
@@ -86,6 +88,12 @@ public class Worldtime implements Mode{
     public void setCurrTime(Calendar currTime) { this.currTime = currTime; }
     public String[] getNation() { return nation; }
     public void setNation(String[] nation) { this.nation = nation; }
+    public String getNation(int i) { return nation[i]; }
+    public void setNation(int i, String nation) { this.nation[i] = nation; }
+    public String[] getNationTimeZone() { return nationTimeZone; }
+    public void setNationTimeZone(String[] nationTimeZone) { this.nationTimeZone = nationTimeZone; }
+    public String getNationTimeZone(int i) { return nationTimeZone[i]; }
+    public void setNationTimeZone(int i, String nationTimeZone) { this.nationTimeZone[i] = nationTimeZone; }
     public int getCurrNation() { return currNation; }
     public void setCurrNation(int currNation) { this.currNation = currNation; }
     public int getMaxNation() { return maxNation; }
