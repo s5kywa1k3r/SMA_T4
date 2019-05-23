@@ -133,19 +133,13 @@ public class Sun {
     }
 
     public ArrayList getSunData(){
+        ArrayList data = new ArrayList();
 
-        ArrayList save = new ArrayList();
+        data.add(this.sun);
+        data.add(this.currNation);
+        data.add(this.currMode);
 
-        save.add(this.sun, this.currNation, this.currMode);
-        save.add(this.splitTime);
-        save.add(this.status);
-
-
-        this.sun = (Calendar[])db.get(0);
-        this.currNation = (int)db.get(1);
-        this.currMode = (int)db.get(2);
-
-        return save;
+        return data;
     }
 
     // Getters and Setters

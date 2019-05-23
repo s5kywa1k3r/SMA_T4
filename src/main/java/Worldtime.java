@@ -49,9 +49,25 @@ public class Worldtime {
     public Worldtime(RealTime realTime, ArrayList db){
         this(realTime);
         if(db != null){
-            for(int i = 0; i < db.size(); i++){
-            }
+            this.currNation = (int)db.get(0);
+            this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
+            this.worldTime.set(Calendar.MILLISECOND, this.currTime.get(Calendar.MILLISECOND));
+            this.worldTime.set(
+                    this.currTime.get(Calendar.YEAR),
+                    this.currTime.get(Calendar.DATE),
+                    this.currTime.get(Calendar.HOUR_OF_DAY),
+                    this.currTime.get(Calendar.MINUTE),
+                    this.currTime.get(Calendar.SECOND)
+            );
         }
+    }
+
+    public ArrayList getWorldtimeData(){
+        ArrayList data = new ArrayList();
+
+        data.add(this.currNation);
+
+        return data;
     }
 
     public void nextNation() {

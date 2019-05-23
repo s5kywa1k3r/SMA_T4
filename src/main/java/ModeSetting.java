@@ -28,7 +28,6 @@ public class ModeSetting {
 
         for (Object menu : currList) {
             switch (menu.getClass().getTypeName()) {
-
                 case "Stopwatch":
                     this.currMode.add("Stopwatch");
                     break;
@@ -48,7 +47,6 @@ public class ModeSetting {
                 case "Sun":
                     this.currMode.add("Sun");
                     break;
-
 
                 case "TimeSetting":
                     this.currMode.add("TimeSetting");
@@ -147,15 +145,19 @@ public class ModeSetting {
                     break;
 
                 case "Timer":
+                    this.db.saveData(1, ((Timer)this.oldMode.get(this.currMode.indexOf(oldMode))).getTimerData());
                     break;
 
                 case "Alarm":
+                    this.db.saveData(2, ((Alarm)this.oldMode.get(this.currMode.indexOf(oldMode))).getAlarmData());
                     break;
 
                 case "Worldtime":
+                    this.db.saveData(3, ((Worldtime)this.oldMode.get(this.currMode.indexOf(oldMode))).getWorldtimeData());
                     break;
 
                 case "Sun":
+                    this.db.saveData(4, ((Sun)this.oldMode.get(this.currMode.indexOf(oldMode))).getSunData());
                     break;
 
                 default:
