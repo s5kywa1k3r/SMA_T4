@@ -1,9 +1,7 @@
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 public class WatchSystem {
 
@@ -11,9 +9,7 @@ public class WatchSystem {
     private int currMode;
     private int maxCnt;
     private WatchGUI watchGUI;
-
-
-
+    private int flag;
     public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.menu = new ArrayList(){};
         menu.add(new ModeSetting(this));
@@ -27,6 +23,7 @@ public class WatchSystem {
         watchGUI = new WatchGUI(this);
         watchGUI.setMode(menu.get(1));
         watchGUI.designMode(true);
+        this.flag = -1;
     }
 
 
@@ -115,12 +112,15 @@ public class WatchSystem {
     public void increaseTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestIncreaseTimeSection(); }
     public void decreaseTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestDecreaseTimeSection(); }
     public void pressResetSecond(){ ((TimeSetting)this.menu.get(this.currMode)).requestResetSecond(); }
+    public void exitTimeSetting(){ ((TimeSetting)this.menu.get(this.currMode)).requestExitTimeSetting(); }
+    public int getTimeSettingFlag(){ return ((TimeSetting)this.menu.get(this.currMode)).requestTimeSettingFlag(); }
 
     // Stopwatch
     public void pressStartStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestStartStopwatch(); }
     public void pressStopStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestStopStopwatch(); }
     public void pressSplitStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestSplitStopwatch(); }
     public void pressResetStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestResetStopwatch(); }
+    public int getStopwatchFlag(){ return ((Stopwatch)this.menu.get(this.currMode)).requestStopwatchFlag(); }
 
     // Timer
     public void enterSetTimerTime(){ ((Timer)this.menu.get(this.currMode)).requestTimerTime(); }
@@ -130,25 +130,20 @@ public class WatchSystem {
     public void exitSetTimerTime(){ ((Timer)this.menu.get(this.currMode)).requestExitSetTimerTime(); }
     public void pressStartTimer(){ ((Timer)this.menu.get(this.currMode)).changeStatus(1); }
     public void pressStopTimer(){ ((Timer)this.menu.get(this.currMode)).changeStatus(0); }
+    public void pressResetTimer(){ ((Timer)this.menu.get(this.currMode)).requestResetTimer(); }
     public void pressStopRingingTimer(){ ((Timer)this.menu.get(this.currMode)).ringOff(); }
+    public int getTimerFlag(){ return ((Timer)this.menu.get(this.currMode)).requestTimerFlag(); }
 
     // Alarm
     public void enterSetAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).requestSettingAlarm(); }
     public void nextAlarmTimeSection(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection();}
     public void increaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).increaseSection(); }
     public void decreaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).decreaseSection(); }
-    //public void enterSetAlarmFrequency(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection(); }
-    //public void nextFrequencySection(){}
-    //public void increaseCount(){}
-    //public void increaseFrequency(){}
-    //public void decreaseCount(){}
-    //public void decreaseFrequency(){}
-    //public void enterSetAlarmBell(){}
-    //public void nextBell(){}
-    //public void prevBell(){}
     public void pressNextAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestNextAlarm(); }
     public void pressStopRingingAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestStopRinging(); }
     public void pressAlarmOnOff(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmOnOff(); }
+    public void exitSetAlarmSetting(){ ((Alarm)this.menu.get(this.currMode)).requestExitAlarmSetting(); }
+    public int getAlarmFlag(){ return ((Alarm)this.menu.get(this.currMode)).requestAlarmFlag(); }
 
     // Worldtime
     public void nextWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).nextNation(); }

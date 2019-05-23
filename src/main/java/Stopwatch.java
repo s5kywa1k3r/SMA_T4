@@ -70,7 +70,8 @@ public class Stopwatch {
         if (this.stpTime.get(Calendar.HOUR_OF_DAY) == 0)
             data += (this.stpTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.stpTime.get(Calendar.MILLISECOND)/10);
         return data;
-    }
+    public int requestStopwatchFlag(){ return this.status; }
+   
 
     public ArrayList getStopwatchData(){
         ArrayList save = new ArrayList();

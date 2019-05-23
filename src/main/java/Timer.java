@@ -6,7 +6,7 @@ public class Timer {
     private Calendar timerTime;
     private Calendar rsvTime;
 
-    private int status; // 0: Stopped, 1: Continued, 2: Setting
+    private int status; // 0: Stopped, 1: Continued, 2: Setting, 3: ringing
     private int currSection = 0; // 0: Second, 1: Minute, 2: Hour
 
     public Timer(){
@@ -28,16 +28,6 @@ public class Timer {
             this.currSection = 0;
         }
     }
-
-    // Getters and Setters
-    public Calendar getTimerTime(){ return this.timerTime; }
-    public void setTimerTime(Calendar timerTime){ this.timerTime = timerTime; }
-    public Calendar getRsvTime(){ return this.rsvTime; }
-    public void setRsvTime(Calendar rsvTime) { this.rsvTime = rsvTime; }
-    public int getStatus(){ return this.status; }
-    public void setStatus(int status) { this.status = status; }
-    public int getCurrSection(){ return this.currSection; }
-    public void setCurrSection(int currSection){ this.currSection = currSection; }
 
 
     public void requestTimerTime(){
@@ -98,7 +88,7 @@ public class Timer {
     }
 
     public void changeStatus(int i){
-        if(-1 < i && i < 3)
+        if(-1 < i && i < 4)
             this.status = i;
     }
     public void requestResetTimer(){
@@ -118,7 +108,7 @@ public class Timer {
     }
     //private void setTimerTime(){}
     public void ringOff(){}
-    private void startRingingTimer(){}
+    private void startRingingTimer(){ this.status = 3; }
     public void realTimeTimerTask(){
 
         //System.out.println("[Timer]");
@@ -126,7 +116,7 @@ public class Timer {
             this.timerTime.add(Calendar.MILLISECOND, -10);
             if(this.timerTime.getTimeInMillis() == -32400000){
                 this.startRingingTimer(); // Ring
-                this.changeStatus(0);
+                this.changeStatus(3);
             }
         }
 
@@ -154,4 +144,16 @@ public class Timer {
 
         return data;
     }
+
+    public int requestTimerFlag(){ return this.status; }
+
+    // Getters and Setters
+    public Calendar getTimerTime(){ return this.timerTime; }
+    public void setTimerTime(Calendar timerTime){ this.timerTime = timerTime; }
+    public Calendar getRsvTime(){ return this.rsvTime; }
+    public void setRsvTime(Calendar rsvTime) { this.rsvTime = rsvTime; }
+    public int getStatus(){ return this.status; }
+    public void setStatus(int status) { this.status = status; }
+    public int getCurrSection(){ return this.currSection; }
+    public void setCurrSection(int currSection){ this.currSection = currSection; }
 }
