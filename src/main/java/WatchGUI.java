@@ -269,40 +269,52 @@ public class WatchGUI implements ActionListener {
         }
     }
 
-    public void realtimeGUI() {
+    public void realtimeGUI(String data) {
         switch(presentModeIndex) {
-            case 0 :                                // Mode Setting
+            // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
+            case 0 :
                 break;
-            case 1 :                                // RealTime
-                Calendar time = ((RealTime)presentMode).requestRealTime();
-                year.setText(time.get(Calendar.YEAR)+"");
-                // Maybe that part is going to be a problem
-                showDate[0].setText(time.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2));
-                showDate[1].setText((time.get(Calendar.MONTH) < 9 ? "0" : "")+(time.get(Calendar.MONTH)+1));
-                showDate[2].setText((time.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + time.get(Calendar.DAY_OF_MONTH));
-                if(((RealTime) presentMode).isIs24H()) {
-                    showTime[0].setText((time.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + time.get(Calendar.HOUR_OF_DAY));
-                    subTime[1].setText("");
-                }
-                else {
-                    showTime[0].setText((time.get(Calendar.HOUR) < 10 ? "0" : "")+time.get(Calendar.HOUR));
-                    subTime[1].setText(time.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
-                }
-                showTime[1].setText((time.get(Calendar.MINUTE) < 10 ? "0" : "")+time.get(Calendar.MINUTE));
-                showTime[2].setText((time.get(Calendar.SECOND) < 10 ? "0" : "")+time.get(Calendar.SECOND));
-                break;
-
+            case 1 :
             case 2 :
-
+                year.setText(data.substring(0, 4));
+                showDate[0].setText(data.substring(4, 6));
+                showDate[1].setText(data.substring(6, 8));
+                showDate[2].setText(data.substring(8, 10));
+                showTime[1].setText(data.substring(10, 12));
+                showTime[2].setText(data.substring(12, 14));
+                showTime[0].setText(data.substring(14, 16));
+                if(data.length() == 18)
+                    subTime[1].setText(data.substring(16,18));
+                else
+                    subTime[1].setText("");
                 break;
             case 3 :
-
+                year.setText("STOPWC");
+                showTime[0].setText(data.substring(0, 2));
+                showTime[1].setText(data.substring(2, 4));
+                showTime[2].setText(data.substring(4, 6));
+                subTime[0].setText(data.substring(6, 8));
+                subTime[1].setText(data.substring(8, 10));
+                subTime[2].setText(data.substring(10, 12));
                 break;
             case 4 :
-
+                year.setText("TIMER");
+                showTime[0].setText(data.substring(0, 2));
+                showTime[1].setText(data.substring(2, 4));
+                showTime[2].setText(data.substring(4, 6));
                 break;
             case 5 :
-
+                year.setText("REP "+data.substring(0, 1));
+                showDate[0].setText("FQ");
+                showDate[1].setText(data.substring(1, 3));
+                showDate[2].setText(data.substring(3, 5));
+                showTime[0].setText(data.substring(5, 7));
+                showTime[1].setText(data.substring(7, 9));
+                subTime[0].setText("R");
+                subTime[1].setText("IN");
+                subTime[2].setText("G "+data.substring(9, 10));
+                if(data.substring(10, 11).equals("1")) cities.setText("ON");
+                else cities.setText("OFF");
                 break;
             case 6 :
 
@@ -334,10 +346,8 @@ public class WatchGUI implements ActionListener {
             case 0 :                                // Mode Setting
                 break;
             case 1 :                                // RealTime
-                if(buttonIndex == 3)
-                    system.pressShowType();
                 break;
-            case 2 :
+            case 2 :                                // TimeSetting
 
                 break;
             case 3 :

@@ -131,7 +131,13 @@ public class Timer {
         }
 
     }
-    public void showTimer(){}
+    public String showTimer(){
+        String data = "";
+        data += (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);
+        data += (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
+        data += (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
+        return data;
+    }
     public void requestExitSetTimerTime(){
         if(this.status == 2){ // [Status] 2: Setting
             this.changeStatus(0); // [Status] 2: Setting -> 0: Stopped

@@ -1,4 +1,5 @@
 import java.util.Calendar;
+import java.util.Locale;
 
 public class RealTime {
     private Calendar realTime; // day, month, year
@@ -94,11 +95,26 @@ public class RealTime {
                 break;
         }
     }
-
     public void setSecond(int i){ this.realTime.set(Calendar.MILLISECOND, i * 1000); }
     public void calculateTime(){ this.realTime.add(Calendar.MILLISECOND, 10); }
     public void requestChangeType(){ this.is24H = !this.is24H;}
-    public void showRealTime(){ }
+    public String showRealTime(){
+        String data = "";
+        data += realTime.get(Calendar.YEAR);
+        data += realTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
+        data += (realTime.get(Calendar.MONTH) < 9 ? "0" : "") + (realTime.get(Calendar.MONTH)+1);
+        data += (realTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + realTime.get(Calendar.DAY_OF_MONTH);
+        data += (realTime.get(Calendar.MINUTE) < 10 ? "0" : "")+realTime.get(Calendar.MINUTE);
+        data += (realTime.get(Calendar.SECOND) < 10 ? "0" : "")+realTime.get(Calendar.SECOND);
+        if(this.is24H) {
+            data += (realTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + realTime.get(Calendar.HOUR_OF_DAY);
+        }
+        else {
+            data += (realTime.get(Calendar.HOUR) < 10 ? "0" : "")+realTime.get(Calendar.HOUR);
+            data += (realTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+        }
+        return data;
+    }
     public boolean isIs24H(){return this.is24H;}
 
     // Getters and Setters

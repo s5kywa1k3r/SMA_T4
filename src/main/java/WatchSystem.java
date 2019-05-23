@@ -42,32 +42,32 @@ public class WatchSystem {
             switch(menu.getClass().getTypeName()) {
                 case "RealTime":
                     ((RealTime) menu).calculateTime();
-                    if (this.currMode == i) ((RealTime) menu).showRealTime();
+                    if (this.currMode == i) watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
                     break;
 
                 case "TimeSetting":
                     ((TimeSetting) menu).realTimeTaskTimeSetting();
-                    if (this.currMode == i) ((TimeSetting) menu).getRealTime().showRealTime();
+                    if (this.currMode == i)  watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
                     break;
 
                 case "Stopwatch":
                     ((Stopwatch) menu).realTimeTaskStopwatch();
-                    if (this.currMode == i) ((Stopwatch) menu).showStopwatch();
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Stopwatch) menu).showStopwatch());
                     break;
 
                 case "Timer":
                     ((Timer) menu).realTimeTimerTask();
-                    if (this.currMode == i) ((Timer) menu).showTimer();
+                    if (this.currMode == i)  watchGUI.realtimeGUI(((Timer) menu).showTimer());
                     break;
 
                 case "Alarm":
                     ((Alarm) menu).realTimeTaskAlarm();
-                    if (this.currMode == i) ((Alarm) menu).showAlarm();
+                    if (this.currMode == i)  watchGUI.realtimeGUI(((Alarm) menu).showAlarm());
                     break;
 
                 case "Worldtime":
                     ((Worldtime) menu).realTimeTaskWorldtime();
-                    if (this.currMode == i) ((Worldtime) menu).showWorldTime();
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Worldtime) menu).showWorldTime());
                     break;
 
                 case "Sun":
@@ -80,7 +80,6 @@ public class WatchSystem {
                     break;
             }
         }
-        watchGUI.realtimeGUI();
     }
 
     public void pressChangeMode() {

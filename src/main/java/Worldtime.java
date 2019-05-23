@@ -39,7 +39,7 @@ public class Worldtime {
         this.worldTime.set(Calendar.MILLISECOND, this.currTime.get(Calendar.MILLISECOND));
         this.worldTime.set(
                 this.currTime.get(Calendar.YEAR),
-                this.currTime.get(Calendar.DATE),
+                this.currTime.get(Calendar.MONTH),
                 this.currTime.get(Calendar.HOUR_OF_DAY),
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
@@ -54,7 +54,7 @@ public class Worldtime {
             this.worldTime.set(Calendar.MILLISECOND, this.currTime.get(Calendar.MILLISECOND));
             this.worldTime.set(
                     this.currTime.get(Calendar.YEAR),
-                    this.currTime.get(Calendar.DATE),
+                    this.currTime.get(Calendar.MONTH),
                     this.currTime.get(Calendar.HOUR_OF_DAY),
                     this.currTime.get(Calendar.MINUTE),
                     this.currTime.get(Calendar.SECOND)
@@ -98,8 +98,10 @@ public class Worldtime {
         this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[19]));
     }
 
-    public void showWorldTime() {
+    public String showWorldTime() {
+        String data = "";
 
+        return data;
     }
 
     // Getters and Setters

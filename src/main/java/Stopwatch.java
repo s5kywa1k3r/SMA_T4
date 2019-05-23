@@ -1,3 +1,4 @@
+import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -60,7 +61,15 @@ public class Stopwatch {
         }
     }
 
-    public void showStopwatch(){
+    public String showStopwatch(){
+        String data = "";
+        if(this.stpTime.get(Calendar.HOUR_OF_DAY) > 0)
+            data += (this.stpTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.stpTime.get(Calendar.HOUR_OF_DAY);
+        data += (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
+        data += (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
+        if (this.stpTime.get(Calendar.HOUR_OF_DAY) == 0)
+            data += (this.stpTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.stpTime.get(Calendar.MILLISECOND)/10);
+        return data;
     }
 
     public ArrayList getStopwatchData(){
