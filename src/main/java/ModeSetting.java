@@ -62,7 +62,6 @@ public class ModeSetting implements Mode {
         for(String temp : this.newMode)
             if(this.currMode.indexOf(temp) == -1)
                 return false;
-
         return true;
     }
     public void createNewMode(){}
