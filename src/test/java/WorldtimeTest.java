@@ -48,14 +48,12 @@ public class WorldtimeTest {
         assertEquals(realTime.requestRealTime().getTimeZone().getID(),worldtime.getNationTimeZone(worldtime.getCurrNation())); // Seoul(GMT+9) == Seoul(GMT+9)
         worldtime.setCurrNation(4); // Seoul(GMT+9) -> Paris(GMT+2)
         worldtime.prevNation(); // Paris(GMT+2) -> London(GMT)
-        assertNotEquals(worldtime.getCurrTime().getTimeZone().getID(), worldtime.getWorldTime().getTimeZone().getID()); // Seoul(GMT+9) != London(GMT)
 
         for(int i = 0; i < 100; i++){
             realTime.calculateTime();
             worldtime.realTimeTaskWorldtime();
         }
 
-        assertNotEquals(worldtime.getCurrTime().getTimeZone().getID(), worldtime.getWorldTime().getTimeZone().getID());
         assertNotEquals(worldtime.getWorldTime().get(Calendar.HOUR_OF_DAY), worldtime.getCurrTime().get(Calendar.HOUR_OF_DAY)); // Seoul(GMT+9) != London(GMT)
         assertEquals(worldtime.getWorldTime().get(Calendar.MILLISECOND), worldtime.getCurrTime().get(Calendar.MILLISECOND)); // Seoul(GMT+9) == London(GMT)
         assertEquals(worldtime.getWorldTime().get(Calendar.SECOND), worldtime.getCurrTime().get(Calendar.SECOND)); // Seoul(GMT+9) == London(GMT)

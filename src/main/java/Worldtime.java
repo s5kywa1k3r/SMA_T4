@@ -48,13 +48,11 @@ public class Worldtime implements Mode {
     public void nextNation() {
         if (++this.currNation == this.maxNation)
             this.currNation = 0;
-        this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
     }
 
     public void prevNation() {
         if (--this.currNation == -1)
             this.currNation = this.maxNation - 1;
-        this.worldTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
     }
 
     // Remove Function
