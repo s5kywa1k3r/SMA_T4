@@ -63,17 +63,7 @@ public class Alarm {
             this.reservedAlarm = (Calendar[])db.get(0);
             this.alarm = (Calendar[])db.get(1);
             this.frequency = (Calendar[])db.get(2);
-            this.bell = (Bell[])db.get(3);
-            this.repeat = (int[])db.get(4);
-
-            this.tmpRepeat = new int[]{1,1,1,1};                // To protect repeat from ringing Again, -1: stop Call again
-            this.bellIndex = new int[]{0,0,0,0};
-            this.alarmState = new boolean[]{false, false, false, false};
-            this.isRinging = -1;
-
-            this.status = 0;
-            this.currAlarm = 0;
-            this.realTime = realTime;
+            this.repeat = (int[])db.get(3);
         }
     }
 
