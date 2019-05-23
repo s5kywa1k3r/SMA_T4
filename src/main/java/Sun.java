@@ -20,12 +20,10 @@ public class Sun implements Mode {
     private int currNation;
     private int maxNation = 27;
     private int currMode; // 0: Sun Rise, 1: Sun Set
-    private boolean flag;
-
-
 
     public Sun(RealTime realTime) {
         this.realTime = realTime;
+        this.currTime = this.realTime.requestRealTime();
         this.sun = new Calendar[2];
         for (int i = 0; i < 2; i++) {
             this.sun[i] = Calendar.getInstance();
@@ -62,22 +60,32 @@ public class Sun implements Mode {
 
         this.currNation = 19;
         this.currMode = 0;
+
+        this.initSun();
     }
 
     public void realTimeTaskSun(){
-        if(this.flag == true){
-            if(this.currTime.getTimeInMillis() > this.sun[1].getTimeInMillis()){
-                this.flag = false;
-                this.calculateSun(); // Tomorrow's sunrise and sunset
-            }
+        this.currTime = this.realTime.requestRealTime();
+        // Apply World Time Zone
+        this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
+
+        if(this.currTime.getTimeInMillis() >= this.sun[1].getTimeInMillis()){
+            // Tomorrow's Sun Set
+            this.currTime.add(Calendar.DATE, 1);
+            this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
+            this.currTime.add(Calendar.DATE, -1);
+
         }
 
-        else{
-            if(this.currTime.getTimeInMillis() > this.sun[0].getTimeInMillis()){
-                this.flag = true;
-                this.calculateSun(); // Today's sunset and tomorrow's sunrise
-            }
+        else if(this.currTime.getTimeInMillis() >= this.sun[0].getTimeInMillis()){
+            // Tomorrow's Sun Rise
+            this.currTime.add(Calendar.DATE, 1);
+            this.sun[0] = this.calculatorSun.getOfficialSunriseCalendarForDate(this.currTime);
+            this.currTime.add(Calendar.DATE, -1);
         }
+
+        // Clear World Time Zone
+        this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[19]));
     }
 
     public void requestSetRise(){ this.currMode = this.currMode == 0 ? 1 : 0; }
@@ -85,41 +93,34 @@ public class Sun implements Mode {
     public void requestNextNation(){
         if(++this.currNation == this.maxNation)
             this.currNation = 0;
+        this.initSun();
     }
 
     public void requestPrevNation(){
         if(--this.currNation == -1)
             this.currNation = this.maxNation - 1;
+        this.initSun();
     }
 
     public void showSun(){
 
     }
 
-    private void calculateSun(){
+    private void initSun(){
         this.location.setLocation(this.nationLatitude[this.currNation], this.nationLongitude[this.currNation]);
         this.calculatorSun = new SunriseSunsetCalculator(this.location, this.nationTimeZone[this.currNation]);
-        // 0: Sun Rise, 1: Sun set
-        // 0: if currTime is more than today's sunrise
-        // print Today's sunset and Tomorrow's sunrise
-        this.currTime.add(Calendar.DATE, 1);
-        if(this.flag == true){
-            // Tomorrow's sunrise
-            this.sun[0] = this.calculatorSun.getOfficialSunriseCalendarForDate(this.currTime);
-            // Today's sunset
-            this.currTime.add(Calendar.DATE, -1);
+
+        // Today's Sun Rise
+        this.sun[0] = this.calculatorSun.getOfficialSunriseCalendarForDate(this.currTime);
+        if(this.currTime.getTimeInMillis() > this.sun[0].getTimeInMillis()){
+            // Tomorrow's Sun Set
+            this.currTime.add(Calendar.DATE, 1);
             this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
+            this.currTime.add(Calendar.DATE, -1);
         }
 
-        // 1: if currTime is more than today's sunset
-        // print Tomorrow's sun rise and sunset
-        else{
-            // Tomorrow's sunrise
-            this.sun[0] = this.calculatorSun.getOfficialSunriseCalendarForDate(this.currTime);
-            // Tomorrow's sunset
+        else // Today's SunSet
             this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
-            this.currTime.add(Calendar.DATE, -1);
-        }
     }
 
     // Getters and Setters
@@ -129,6 +130,8 @@ public class Sun implements Mode {
     public void setCurrTime(Calendar currTime) { this.currTime = currTime; }
     public Calendar[] getSun() { return sun; }
     public void setSun(Calendar[] sun) { this.sun = sun; }
+    public Calendar getSun(int i) { return sun[i]; }
+    public void setSun(int i, Calendar sun) { this.sun[i] = sun; }
     public String[] getNation() { return nation; }
     public void setNation(String[] nation) { this.nation = nation; }
     public double[] getNationLatitude() { return nationLatitude; }
@@ -145,6 +148,4 @@ public class Sun implements Mode {
     public void setMaxNation (int maxNation){ this.maxNation = maxNation; }
     public int getCurrMode () { return currMode; }
     public void setCurrMode ( int currMode){ this.currMode = currMode; }
-    public boolean isFlag () { return flag; }
-    public void setFlag ( boolean flag){ this.flag = flag; }
 }
