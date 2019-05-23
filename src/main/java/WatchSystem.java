@@ -1,9 +1,8 @@
-import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
-import com.luckycatlabs.sunrisesunset.dto.Location;
-import javafx.scene.paint.Stop;
-
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.TimeZone;
 
 public class WatchSystem {
@@ -11,8 +10,9 @@ public class WatchSystem {
     private ArrayList<Mode> menu;
     private int currMode;
     private int maxCnt;
+    private WatchGUI watchGUI;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         /*
       SeparateSection test = new SeparateSection();
       System.out.println(test.getClass().getTypeName());
@@ -27,27 +27,26 @@ public class WatchSystem {
         System.out.println("Sunrise = " + calculator.getOfficialSunriseForDate(cal));
         System.out.println("Sunset = " + calculator.getOfficialSunsetForDate(cal));
     */
-        String[] test = TimeZone.getAvailableIDs();
+        /*String[] test = TimeZone.getAvailableIDs();
         for(String str : test){
             System.out.println(str);
-        }
+        }*/
+        WatchSystem watchSystem = new WatchSystem();
     }
 
-    public WatchSystem() {
-        //TimeThread thread = new TimeThread(this);
-
-        //System_GUI system_gui = new System_GUI(this);
-        //Time timeLive = new Time(55, 59, 23);
-        this.menu = new ArrayList<Mode>();
-        this.menu.add(new RealTime());
-        this.menu.add(new TimeSetting((RealTime)this.menu.get(0)));
-        this.menu.add(new Stopwatch());
-        this.menu.add(new Timer());
-        //this.menu.add(new Alarm((RealTime)this.menu.get(0)));
-
+    public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        TimeThread timeThread = new TimeThread(this);
+        this.menu = new ArrayList<Mode>(){};
+        menu.add(new RealTime());
+        menu.add(new TimeSetting());
+        menu.add(new Stopwatch());
+        menu.add(new Timer());
+        menu.add(new Alarm((RealTime)menu.get(0)));
         this.currMode = 0; // [currMode] 0: Always RealTime
         this.maxCnt = 4;
-        //thread.run();
+        watchGUI = new WatchGUI(this);
+        watchGUI.designMode(true);
+        timeThread.run();
     }
 
     public void pressShowType() {
@@ -100,11 +99,15 @@ public class WatchSystem {
                     break;
             }
         }
+
     }
 
     public void pressChangeMode() {
+        watchGUI.designMode(false);
         if(++this.currMode == this.maxCnt)
             this.currMode = 0;
+        watchGUI.setMode(menu.get(this.currMode));
+        watchGUI.designMode(true);
     }
 
     /*
