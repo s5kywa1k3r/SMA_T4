@@ -24,7 +24,6 @@ public class Stopwatch {
         if(db != null){
             this.stpTime = (Calendar)db.get(0);
             this.splitTime = (Calendar)db.get(1);
-            this.status = (int)db.get(2);
         }
     }
 
@@ -69,7 +68,6 @@ public class Stopwatch {
 
         save.add(this.stpTime);
         save.add(this.splitTime);
-        save.add(this.status);
 
         return save;
     }

@@ -22,9 +22,10 @@ public class Sun {
     private int maxNation = 27;
     private int currMode; // 0: Sun Rise, 1: Sun Set
 
-    public Sun(RealTime realTime) {
-        this.realTime = realTime;
-        this.currTime = this.realTime.requestRealTime();
+    public Sun() {
+        this.realTime = null;
+        this.currTime = null;
+
         this.sun = new Calendar[2];
         for (int i = 0; i < 2; i++) {
             this.sun[i] = Calendar.getInstance();
@@ -59,6 +60,12 @@ public class Sun {
 
         this.currNation = 19;
         this.currMode = 0;
+    }
+
+    public Sun(RealTime realTime) {
+        this();
+        this.realTime = realTime;
+        this.currTime = this.realTime.requestRealTime();
 
         this.initSun();
     }

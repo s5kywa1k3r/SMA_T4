@@ -21,10 +21,12 @@ public class Timer {
     }
 
     public Timer(ArrayList db){
-        this.timerTime = (Calendar)db.get(0);
-        this.rsvTime = (Calendar)db.get(1);
-        this.status = 0;
-        this.currSection = 0;
+        if(db != null){
+            this.timerTime = (Calendar)db.get(0);
+            this.rsvTime = (Calendar)db.get(1);
+            this.status = 0;
+            this.currSection = 0;
+        }
     }
 
     // Getters and Setters

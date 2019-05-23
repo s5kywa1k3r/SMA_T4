@@ -120,17 +120,10 @@ public class TimerTest {
         testTime.set(1970, 1-1, 1, 22, 34, 30);
         testTime.set(Calendar.MILLISECOND, 0);
 
-        timer.setRsvTime(testTime);
+        timer.setRsvTime((Calendar)testTime.clone()); // avoid Call-By-Reference
         timer.requestResetTimer();
 
-        assertEquals(0, timer.getTimerTime().get(Calendar.MILLISECOND));
-        assertEquals(30, timer.getTimerTime().get(Calendar.SECOND));
-        assertEquals(34, timer.getTimerTime().get(Calendar.MINUTE));
-        assertEquals(22, timer.getTimerTime().get(Calendar.HOUR_OF_DAY));
-        assertEquals(1, timer.getTimerTime().get(Calendar.DATE));
-        assertEquals(1-1, timer.getTimerTime().get(Calendar.MONTH));
-        assertEquals(1970, timer.getTimerTime().get(Calendar.YEAR));
-
+        assertEquals(testTime, timer.getTimerTime());
     }
 
     @Test

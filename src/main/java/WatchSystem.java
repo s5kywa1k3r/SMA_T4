@@ -12,42 +12,20 @@ public class WatchSystem {
     private int maxCnt;
     private WatchGUI watchGUI;
 
-    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        /*
-      SeparateSection test = new SeparateSection();
-      System.out.println(test.getClass().getTypeName());
-      WatchSystem run = new WatchSystem();
-      run.realTimeTask();
 
-
-        Calendar cal = Calendar.getInstance();
-        Location location = new Location("37.571303", "127.018495");
-        SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(location, "Asia/Seoul");
-
-        System.out.println("Sunrise = " + calculator.getOfficialSunriseForDate(cal));
-        System.out.println("Sunset = " + calculator.getOfficialSunsetForDate(cal));
-    */
-        /*String[] test = TimeZone.getAvailableIDs();
-        for(String str : test){
-            System.out.println(str);
-        }*/
-        WatchSystem watchSystem = new WatchSystem();
-    }
 
     public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        TimeThread timeThread = new TimeThread(this);
         this.menu = new ArrayList(){};
         menu.add(new RealTime());
         menu.add(new TimeSetting());
         menu.add(new Stopwatch());
-        //menu.add(new Timer());
+        menu.add(new Timer());
         menu.add(new Alarm((RealTime)menu.get(0)));
         this.currMode = 0; // [currMode] 0: Always RealTime
         this.maxCnt = 4;
         watchGUI = new WatchGUI(this);
         watchGUI.setMode(menu.get(0));
         watchGUI.designMode(true);
-        timeThread.run();
     }
 
     public void pressShowType() {
