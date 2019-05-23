@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class WatchGUI implements ActionListener {
-    // 0 : RealTime, 1 : TimeSetting, 2 : Stopwatch, 3 : Timer, 4. Alarm
+    // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
     private int presentModeIndex;
     private Object presentMode;
     private JFrame jFrame;
@@ -51,7 +51,6 @@ public class WatchGUI implements ActionListener {
         try {
             // /build/classes/java/main/DS-DIGIB.TTF
             this.mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(WatchSystem.class.getResource("").getPath() + "DS-DIGI.TTF"));
-            System.out.println(this.mainFont.getFontName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,28 +160,30 @@ public class WatchGUI implements ActionListener {
     }
 
     public void setMode(Object mode) {
-        // 0 : RealTime, 1 : TimeSetting, 2 : Stopwatch, 3 : Timer, 4. Alarm
+        // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
         switch (mode.getClass().getTypeName()) {
-            case "RealTime" :
+            case "ModeSetting" :
                 presentModeIndex = 0;
-                break;
-            case "TimeSetting" :
+            case "RealTime" :
                 presentModeIndex = 1;
                 break;
-            case "Stopwatch" :
+            case "TimeSetting" :
                 presentModeIndex = 2;
                 break;
-            case "Timer" :
+            case "Stopwatch" :
                 presentModeIndex = 3;
                 break;
-            case "Alarm" :
+            case "Timer" :
                 presentModeIndex = 4;
                 break;
-            case "Worldtime":
+            case "Alarm" :
                 presentModeIndex = 5;
                 break;
-            case "Sun" :
+            case "Worldtime":
                 presentModeIndex = 6;
+                break;
+            case "Sun" :
+                presentModeIndex = 7;
                 break;
             default: break;
         }
@@ -191,8 +192,10 @@ public class WatchGUI implements ActionListener {
 
     public void designMode(boolean isActive) {
         switch (presentModeIndex) {
-            case 0:             // RealTime
-            case 1:             // TimeSetting
+            case 0:             // Mode Setting
+                break;
+            case 1:             // RealTime
+            case 2:             // TimeSetting
                 year.setEnabled(isActive);
                 showDate[0].setEnabled(isActive);
                 showDate[1].setEnabled(isActive);
@@ -205,7 +208,7 @@ public class WatchGUI implements ActionListener {
                 subTime[1].setEnabled(isActive);
                 // If case 1 should Blink
                 break;
-            case 2:             // Stopwatch
+            case 3:             // Stopwatch
                 year.setEnabled(isActive);
                 showTime[0].setEnabled(isActive);
                 showTime[1].setEnabled(isActive);
@@ -218,13 +221,13 @@ public class WatchGUI implements ActionListener {
                 colonForSubTime[0].setEnabled(isActive);
                 colonForSubTime[1].setEnabled(isActive);
                 break;
-            case 3:             // Timer
+            case 4:             // Timer
                 year.setEnabled(isActive);
                 showTime[0].setEnabled(isActive);
                 showTime[1].setEnabled(isActive);
                 showTime[2].setEnabled(isActive);
                 break;
-            case 4:             // Alarm
+            case 5:             // Alarm
                 year.setEnabled(isActive);
                 showDate[0].setEnabled(isActive);
                 showDate[1].setEnabled(isActive);
@@ -237,7 +240,7 @@ public class WatchGUI implements ActionListener {
                 showTime[2].setEnabled(isActive);
                 cities.setEnabled(isActive);
                 break;
-            case 5:              // WorldTime
+            case 6:              // WorldTime
                 year.setEnabled(isActive);
                 showDate[0].setEnabled(isActive);
                 showDate[1].setEnabled(isActive);
@@ -250,7 +253,7 @@ public class WatchGUI implements ActionListener {
                 subTime[1].setEnabled(isActive);
                 cities.setEnabled(isActive);
                 break;
-            case 6:              // Sun
+            case 7:              // Sun
                 showDate[0].setEnabled(isActive);
                 showDate[1].setEnabled(isActive);
                 showDate[2].setEnabled(isActive);
@@ -268,21 +271,71 @@ public class WatchGUI implements ActionListener {
 
     public void realtimeGUI() {
         switch(presentModeIndex) {
-            case 0 :
+            case 0 :                                // Mode Setting
+                break;
+            case 1 :                                // RealTime
                 Calendar time = ((RealTime)presentMode).requestRealTime();
                 year.setText(time.get(Calendar.YEAR)+"");
                 // Maybe that part is going to be a problem
                 showDate[0].setText(time.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2));
-                showDate[1].setText(time.get(Calendar.MONTH)+1 < 10 ? "0"+time.get(Calendar.MONTH) : ""+time.get(Calendar.MONTH));
-                showDate[2].setText(time.get(Calendar.DAY_OF_MONTH)+"");
-                showTime[0].setText(time.get(Calendar.HOUR)+"");
-                showTime[1].setText(time.get(Calendar.MINUTE)+"");
-                showTime[2].setText(time.get(Calendar.SECOND)+"");
-                // How to figure it out that is 12H or 24H
-                subTime[1].setText("");
+                showDate[1].setText((time.get(Calendar.MONTH) < 9 ? "0" : "")+(time.get(Calendar.MONTH)+1));
+                showDate[2].setText((time.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + time.get(Calendar.DAY_OF_MONTH));
+                if(((RealTime) presentMode).isIs24H()) {
+                    showTime[0].setText((time.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + time.get(Calendar.HOUR_OF_DAY));
+                    subTime[1].setText("");
+                }
+                else {
+                    showTime[0].setText((time.get(Calendar.HOUR) < 10 ? "0" : "")+time.get(Calendar.HOUR));
+                    subTime[1].setText(time.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+                }
+                showTime[1].setText((time.get(Calendar.MINUTE) < 10 ? "0" : "")+time.get(Calendar.MINUTE));
+                showTime[2].setText((time.get(Calendar.SECOND) < 10 ? "0" : "")+time.get(Calendar.SECOND));
                 break;
-            case 1 :
 
+            case 2 :
+
+                break;
+            case 3 :
+
+                break;
+            case 4 :
+
+                break;
+            case 5 :
+
+                break;
+            case 6 :
+
+                break;
+            case 7:
+                break;
+            default: break;
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == button[0]) {            // A
+            reaction(0);
+        }
+        if(e.getSource() == button[1]) {            // B
+            reaction(1);
+        }
+        if(e.getSource() == button[2]) {            // C
+            reaction(2);
+        }
+        if(e.getSource() == button[3]) {            // D
+            reaction(3);
+        }
+    }
+
+    public void reaction(int buttonIndex) {
+        switch(presentModeIndex) {
+            case 0 :                                // Mode Setting
+                break;
+            case 1 :                                // RealTime
+                if(buttonIndex == 3)
+                    system.pressShowType();
                 break;
             case 2 :
 
@@ -299,12 +352,9 @@ public class WatchGUI implements ActionListener {
             case 6 :
 
                 break;
+            case 7:
+                break;
             default: break;
         }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

@@ -3,13 +3,14 @@ import java.util.Calendar;
 public class RealTime {
     private Calendar realTime; // day, month, year
     private int currSection;
-
+    private boolean is24H;
     // Constructor
     public RealTime(){
         this.realTime = Calendar.getInstance();
         // Calendar Month start 0 => 0: January, 1: February, 2: March, ... , 11: December
         this.realTime.clear(); // Initialized to 1970. 1. 1 00:00:00.000
         this.currSection = 0; // 0: Second, 1: Minute, 2: Hour, 3: Day, 4: Month, 5: Year
+        this.is24H = true;
     }
 
     // Operations
@@ -96,25 +97,9 @@ public class RealTime {
 
     public void setSecond(int i){ this.realTime.set(Calendar.MILLISECOND, i * 1000); }
     public void calculateTime(){ this.realTime.add(Calendar.MILLISECOND, 10); }
-    public void requestChangeType(){}
-    public void showRealTime(){
-       /*
-        System.out.printf("[RealTime] %d YEAR %d MONTH %d DAY %d H %d M %d S %d\n",
-=======
-        /*System.out.printf("[RealTime] %d YEAR %d MONTH %d DAY %d H %d M %d S %d\n",
->>>>>>> e13655e920aab77ca99cb9534e3de65763072088
-                this.realTime.get(Calendar.YEAR),
-                this.realTime.get(Calendar.MONTH),
-                this.realTime.get(Calendar.DATE),
-                this.realTime.get(Calendar.HOUR_OF_DAY),
-                this.realTime.get(Calendar.MINUTE),
-                this.realTime.get(Calendar.SECOND),
-                this.realTime.get(Calendar.MILLISECOND) / 10
-<<<<<<< HEAD
-        );
-
-        */
-    }
+    public void requestChangeType(){ this.is24H = !this.is24H;}
+    public void showRealTime(){ }
+    public boolean isIs24H(){return this.is24H;}
 
     // Getters and Setters
     public int getCurrSection() { return this.currSection; }

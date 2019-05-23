@@ -29,10 +29,6 @@ public class WatchSystem {
         watchGUI.designMode(true);
     }
 
-    public void pressShowType() {
-        if(this.menu.get(this.currMode) instanceof RealTime)
-            ((RealTime)this.menu.get(this.currMode)).requestChangeType();
-    }
 
     // Worked by thread
     public void realTimeTask() {
@@ -101,7 +97,8 @@ public class WatchSystem {
             this.currMode = 0; // 0: RealTime
     }
     */
-
+    // RealTime
+    public void pressShowType() { ((RealTime)this.menu.get(1)).requestChangeType();}
     // Mode Setting
     public void enterModeSetting(){ this.currMode = 0; }
     public void pressNextMode(){ ((ModeSetting)this.menu.get(0)).requestNextMode(); }
