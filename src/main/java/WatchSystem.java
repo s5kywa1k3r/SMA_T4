@@ -16,7 +16,7 @@ public class WatchSystem {
 
     public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.menu = new ArrayList(){};
-        menu.add(new ModeSetting());
+        menu.add(new ModeSetting(this));
         menu.add(new RealTime());
         menu.add(new TimeSetting());
         menu.add(new Stopwatch());

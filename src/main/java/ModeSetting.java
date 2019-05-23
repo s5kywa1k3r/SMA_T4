@@ -36,10 +36,10 @@ public class ModeSetting {
         this.currIndex = 0;
     }
 
-    public ModeSetting(WatchSystem sys, ArrayList currList) {
+    public ModeSetting(WatchSystem sys) {
         this();
         this.sys = sys;
-
+        ArrayList currList = this.sys.getMenu();
         for (Object menu : currList)
             if(this.menu_all.indexOf(menu.getClass().getTypeName()) != -1)
                 this.currMode.add(menu.getClass().getTypeName());
