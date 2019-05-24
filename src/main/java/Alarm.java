@@ -265,11 +265,18 @@ public class Alarm {
         data += this.repeat[this.currAlarm];
         data += "0"+this.frequency[this.currAlarm].get(Calendar.MINUTE);
         data += (this.frequency[this.currAlarm].get(Calendar.SECOND) < 10 ? "0" : "") + this.frequency[this.currAlarm].get(Calendar.SECOND);
-        data += (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY);
         data += (this.alarm[this.currAlarm].get(Calendar.MINUTE) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.MINUTE);
         data += this.bellIndex[this.currAlarm];
         if(alarmState[this.currAlarm]) data += "1";
         else data += "0";
+        if(this.realTime.isIs24H()) {
+            data += (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY);
+            data += "  ";
+        }
+        else {
+            data += (this.alarm[this.currAlarm].get(Calendar.HOUR) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR);
+            data += (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+        }
         return data;
     }
 

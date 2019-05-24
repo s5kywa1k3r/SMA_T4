@@ -34,7 +34,7 @@ public class WatchSystem {
         if(this.currMode == 0){
             watchGUI.realtimeGUI(((ModeSetting) menu.get(0)).showModeSetting());
         }
-        for (int i = 1; i <= this.maxCnt; i++) {
+        for (int i = 1; i <= this.maxCnt + 1; i++) {
             Object menu = this.menu.get(i);
             switch (menu.getClass().getTypeName()) {
                 case "RealTime":
@@ -137,6 +137,7 @@ public class WatchSystem {
     public void pressResetTimer(){ ((Timer)this.menu.get(this.currMode)).requestResetTimer(); }
     public void pressStopRingingTimer(){ ((Timer)this.menu.get(this.currMode)).ringOff(); }
     public int getTimerFlag(){ return ((Timer)this.menu.get(this.currMode)).requestTimerFlag(); }
+    public int getTimerSection() { return ((Timer)this.menu.get(this.currMode)).getCurrSection();}
 
     // Alarm
     public void enterSetAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).requestSettingAlarm(); }

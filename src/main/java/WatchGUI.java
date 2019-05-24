@@ -14,7 +14,6 @@ public class WatchGUI implements ActionListener {
     private int presentModeIndex;
     private int flag;
     private int section;
-    private Object presentMode;
     private JFrame jFrame;
     private JButton[] button = new JButton[4];
     private WatchSystem system;
@@ -197,7 +196,6 @@ public class WatchGUI implements ActionListener {
                 break;
             default: break;
         }
-        presentMode = mode;
     }
 
     public void designMode(boolean isActive) {
@@ -244,6 +242,8 @@ public class WatchGUI implements ActionListener {
                 showTime[0].setEnabled(isActive);
                 showTime[1].setEnabled(isActive);
                 showTime[2].setEnabled(isActive);
+                colonForTime[0].setEnabled(isActive);
+                colonForTime[1].setEnabled(isActive);
                 break;
             case 5:             // Alarm
                 year.setEnabled(isActive);
@@ -253,7 +253,7 @@ public class WatchGUI implements ActionListener {
                 colonForDate[1].setEnabled(isActive);
                 showTime[0].setEnabled(isActive);
                 showTime[1].setEnabled(isActive);
-                colonForTime[0].setEnabled(isActive);
+                showTime[2].setEnabled(isActive);
                 colonForTime[1].setEnabled(isActive);
                 subTime[0].setEnabled(isActive);
                 subTime[1].setEnabled(isActive);
@@ -317,7 +317,7 @@ public class WatchGUI implements ActionListener {
                 showTime[0].setText(data.substring(14, 16));
                 subTime[1].setText(data.substring(16,18));
                 if(presentModeIndex == 2 && blinkCount > 50) {
-                    switch (Integer.parseInt(data.substring(18))) {
+                    switch (system.getTimeSettingFlag()) {
                         case 0: showTime[2].setText("  ");break;
                         case 1: showTime[1].setText("  ");break;
                         case 2: showTime[0].setText("  ");break;
@@ -341,25 +341,36 @@ public class WatchGUI implements ActionListener {
                 showTime[0].setText(data.substring(0, 2));
                 showTime[1].setText(data.substring(2, 4));
                 showTime[2].setText(data.substring(4, 6));
+                // 0: Stopped, 1: Continued, 2: Setting, 3: ringing
+                this.flag = system.getTimerFlag();
+                this.section = system.getTimerSection();
+                if(flag == 2 && blinkCount > 50) {
+                    switch (section) {
+                        case 0: showTime[2].setText(""); break;
+                        case 1: showTime[1].setText(""); break;
+                        case 2: showTime[0].setText(""); break;
+                    }
+                }
                 break;
             case 5 :
                 year.setText("REP "+data.substring(0, 1));
                 showDate[0].setText("FQ");
                 showDate[1].setText(data.substring(1, 3));
                 showDate[2].setText(data.substring(3, 5));
-                showTime[0].setText(data.substring(5, 7));
-                showTime[1].setText(data.substring(7, 9));
+                showTime[2].setText(data.substring(5, 7));
                 subTime[0].setText("  R");
                 subTime[1].setText("IN");
-                subTime[2].setText("G"+data.substring(9, 10));
-                if(data.substring(10, 11).equals("1")) cities.setText("ON");
+                subTime[2].setText("G"+data.substring(7, 8));
+                if(data.substring(8, 9).equals("1")) cities.setText("ON");
                 else cities.setText("OFF");
+                showTime[1].setText(data.substring(9, 11));
+                showTime[0].setText(data.substring(11, 13));
                 this.flag = system.getAlarmFlag();
                 this.section = system.getAlarmSection();
                 if(flag != 0 && blinkCount > 50) {
                     switch (section) {
-                        case 0: showTime[1].setText("  "); break;
-                        case 1: showTime[0].setText("  "); break;
+                        case 0: showTime[2].setText("  "); break;
+                        case 1: showTime[1].setText("  "); break;
                         case 2: showDate[2].setText("  "); break;
                         case 3: showDate[1].setText("  "); break;
                         case 4: year.setText("  "); break;
