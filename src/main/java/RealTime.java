@@ -95,7 +95,10 @@ public class RealTime {
                 break;
         }
     }
-    public void setSecond(int i){ this.realTime.set(Calendar.MILLISECOND, i * 1000); }
+    public void setSecond(int i){
+        this.realTime.set(Calendar.SECOND, i);
+        this.realTime.set(Calendar.MILLISECOND, i * 1000);
+    }
     public void calculateTime(){ this.realTime.add(Calendar.MILLISECOND, 10); }
     public void requestChangeType(){ this.is24H = !this.is24H;}
     public String showRealTime(){
@@ -117,6 +120,7 @@ public class RealTime {
         return data;
     }
     public boolean isIs24H(){return this.is24H;}
+
 
     // Getters and Setters
     public int getCurrSection() { return this.currSection; }

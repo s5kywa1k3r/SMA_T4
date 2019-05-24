@@ -13,6 +13,7 @@ public class WatchGUI implements ActionListener {
     // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
     private int presentModeIndex;
     private int flag;
+    private int section;
     private Object presentMode;
     private JFrame jFrame;
     private JButton[] button = new JButton[4];
@@ -338,6 +339,18 @@ public class WatchGUI implements ActionListener {
                 subTime[2].setText("G "+data.substring(9, 10));
                 if(data.substring(10, 11).equals("1")) cities.setText("ON");
                 else cities.setText("OFF");
+                this.flag = system.getAlarmFlag();
+                this.section = system.getAlarmSection();
+                if(flag != 0 && blinkCount > 50) {
+                    switch (section) {
+                        case 0: showTime[1].setText("  "); break;
+                        case 1: showTime[0].setText("  "); break;
+                        case 2: showDate[2].setText("  "); break;
+                        case 3: showDate[1].setText("  "); break;
+                        case 4: year.setText("  "); break;
+                        case 5: cities.setText("  "); break;
+                    }
+                }
                 break;
             case 6 :
                 year.setText(data.substring(0, 4));
@@ -425,12 +438,14 @@ public class WatchGUI implements ActionListener {
                         system.exitTimeSetting();
                         system.pressChangeMode();
                         break;
-                    case 3 : if(this.flag != 0) system.decreaseTimeSection();break;
+                    case 3 :
+                        if(this.flag == 0) system.pressResetSecond();
+                        else system.decreaseTimeSection();break;
                     default: break;
                 }
                 break;
 
-            case 3 : // Stopwatch
+            case 3 : // Stopwatch  0 : Stopped 1: Continued
                 this.flag = system.getStopwatchFlag();
                 switch(buttonIndex){
                     case 0 : system.pressSplitStopwatch();break;
