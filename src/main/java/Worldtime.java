@@ -107,6 +107,14 @@ public class Worldtime {
         data += (this.worldTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.worldTime.get(Calendar.DAY_OF_MONTH);
         data += (this.worldTime.get(Calendar.MINUTE) < 10 ? "0" : "")+this.worldTime.get(Calendar.MINUTE);
         data += (this.worldTime.get(Calendar.SECOND) < 10 ? "0" : "")+this.worldTime.get(Calendar.SECOND);
+        if(this.realTime.isIs24H()) {
+            data += (this.worldTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR_OF_DAY);
+            data += "  ";
+        }
+        else {
+            data += (this.worldTime.get(Calendar.HOUR) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR);
+            data += (this.worldTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+        }
         data += (this.nation[this.currNation]);
         return data;
     }
