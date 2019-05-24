@@ -12,19 +12,21 @@ public class WatchSystem {
     private int flag;
     public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.menu = new ArrayList(){};
+
         menu.add(new ModeSetting(this));
         menu.add(new RealTime());
         menu.add(new TimeSetting((RealTime)menu.get(1)));
         menu.add(new Stopwatch());
         menu.add(new Timer());
         menu.add(new Alarm((RealTime)menu.get(1)));
-       // menu.add(new Worldtime((RealTime)menu.get(1)));
-       // menu.add(new Sun((RealTime)menu.get(1)));
-        this.currMode = 1; // [currMode] 0: Always RealTime
+
+        this.currMode = 1; // [currMode] 1: Always RealTime
         this.maxCnt = 4;
+
         watchGUI = new WatchGUI(this);
         watchGUI.setMode(menu.get(1));
         watchGUI.designMode(true);
+
         this.flag = -1;
     }
 
@@ -44,7 +46,7 @@ public class WatchSystem {
                     break;
 
                 case "TimeSetting":
-                    ((TimeSetting) menu).realTimeTaskTimeSetting();
+                    // ((TimeSetting) menu).realTimeTaskTimeSetting();
                     if (this.currMode == i) watchGUI.realtimeGUI(((TimeSetting) menu).showTimeSetting());
                     break;
 

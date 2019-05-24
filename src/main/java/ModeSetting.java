@@ -49,7 +49,8 @@ public class ModeSetting {
         this.oldMode.clear();
         this.newMode.clear();
         this.currMode.clear();
-        for(int i = 2; i < this.sys.getMaxCnt(); i++) {
+
+        for(int i = 2; i < this.sys.getMaxCnt() + 2; i++) {
             this.oldMode.add(this.sys.getMenu(i));
             if (this.menu_all.indexOf(this.sys.getMenu(i).getClass().getTypeName()) != -1)
                 this.currMode.add(this.sys.getMenu(i).getClass().getTypeName());
@@ -79,12 +80,15 @@ public class ModeSetting {
 
     public ArrayList confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList confirmMode = new ArrayList();
+        System.out.println("this.newMode: " + this.newMode);
         for (String newMode : this.newMode) {
             boolean flag = false; // True: Match, False: Not Match
             for (String oldMode : this.currMode)
                 if (newMode.equals(oldMode)) flag = true;
 
+            System.out.println("currMode = " + newMode);
             if (flag == true) {
+                System.out.println(newMode);
                 confirmMode.add(this.oldMode.get(this.currMode.indexOf(newMode)));
                 this.currMode.set(this.currMode.indexOf(newMode), null);
             }
@@ -122,6 +126,7 @@ public class ModeSetting {
             }
         }
 
+        System.out.println("this.currMode: " + this.currMode);
         for (String oldMode : this.currMode) {
             if(oldMode == null) continue;
             switch(oldMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun

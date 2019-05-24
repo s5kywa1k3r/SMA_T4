@@ -16,7 +16,7 @@ public class TimerTest {
     @Test
     public void requestNextTimerTimeSection() {
         Timer timer = new Timer();
-        timer.setCurrSection(2); // [currSection] Last Section
+        timer.setCurrSection(2); // [currSection] 0: Second -> 2: Hour / Last Section
         timer.requestNextTimerTimeSection(); // [currSection] 2: Hour -> 0: Second
         timer.requestNextTimerTimeSection(); // [currSection] 0: Second -> 1: Minute
         assertEquals(1, timer.getCurrSection()); // [currSection] 1: Minute

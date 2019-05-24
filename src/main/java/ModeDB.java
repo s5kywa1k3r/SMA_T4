@@ -12,7 +12,7 @@ public class ModeDB {
 
     public ArrayList loadData(int index){ return this.db.get(index); }
     public void saveData(int index, ArrayList data){
-     /*
+
         switch(index){
             case 0: // 0: Stopwatch
                 System.out.println("this.stpTime: " + ((Calendar)data.get(0)).getTimeInMillis());
@@ -31,7 +31,7 @@ public class ModeDB {
 
         }
 
-      */
+
         this.db.set(index, data);
     }
 }
