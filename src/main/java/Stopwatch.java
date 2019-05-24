@@ -1,12 +1,15 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Stopwatch implements Mode {
+public class Stopwatch {
 
     private Calendar stpTime;
     private Calendar splitTime;
 
-    private int status; // [Report] Boolean to Int 0: Stopped, 1: Continued
+    // boolean -> int
+    private int status; // [status] 0: Stopped, 1: Continued
 
+    // Constructor
     public Stopwatch(){
         this.stpTime = Calendar.getInstance();
         this.stpTime.clear();
@@ -14,34 +17,39 @@ public class Stopwatch implements Mode {
         this.splitTime = Calendar.getInstance();
         this.splitTime.clear();
 
-        this.status = 0; // 0: Stopped
+        this.status = 0; // [status] 0: Stopped
     }
 
-    // For load stored data
-    /*
-    public Stopwatch(int centiSec, int sec, int min, int hour){
-        this.stpTime = new int[]{centiSec, sec, min, hour};
+    // [ModeDB] Methods
+    // Load Data from ModeDB
+    public Stopwatch(ArrayList db){
+        this();
+        if(db != null){
+            this.stpTime = (Calendar)db.get(0);
+            this.splitTime = (Calendar)db.get(1);
+        }
     }
-    */
 
-    // Getters and Setters
-    public Calendar getStpTime() { return stpTime; }
-    public void setStpTime(Calendar stpTime) { this.stpTime = stpTime; }
-    public Calendar getSplitTime() { return splitTime; }
-    public void setSplitTime(Calendar splitTime) { this.splitTime = splitTime; }
-    public int getStatus() { return status; }
-    public void setStatus(int status) { this.status = status; }
+    // Save Data to ModeDB
+    public ArrayList getStopwatchData(){
+        ArrayList save = new ArrayList();
 
-    // Operations
+        save.add(this.stpTime);
+        save.add(this.splitTime);
+
+        return save;
+    }
+
+    // [Stopwatch] System Methods
     public void realTimeTaskStopwatch(){
         if(this.status == 1) // 1: Continued
             this.stpTime.add(Calendar.MILLISECOND, 10);
     }
 
-    public void requestStartStopwatch(){ this.status = 1; } // 0: Stopped -> 1: Continued
-    public void requestStopStopwatch(){ this.status = 0; } // 1: Continued -> 0: Stopped
+    public void requestStartStopwatch(){ this.status = 1; } // [status] 0: Stopped -> 1: Continued
+    public void requestStopStopwatch(){ this.status = 0; } // [status] 1: Continued -> 0: Stopped
     public void requestSplitStopwatch(){
-        if(this.status == 1){ // 1: Continued
+        if(this.status == 1){ // [status] 1: Continued
             this.splitTime.set(Calendar.MILLISECOND, this.stpTime.get(Calendar.MILLISECOND));
             this.splitTime.set(Calendar.SECOND, this.stpTime.get(Calendar.SECOND));
             this.splitTime.set(Calendar.MINUTE, this.stpTime.get(Calendar.MINUTE));
@@ -50,14 +58,43 @@ public class Stopwatch implements Mode {
     }
 
     public void requestResetStopwatch(){
-        if(this.status == 0){ // 0: Stopped
+        if(this.status == 0){ // [status] 0: Stopped
             this.stpTime.clear();
             this.splitTime.clear();
         }
     }
 
-    public void showStopwatch(){
 
+    // [WatchGUI]
+    // void -> String
+    public String showStopwatch() {
+        String data = "";
+        if (this.stpTime.get(Calendar.HOUR_OF_DAY) > 0)
+            data += (this.stpTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.stpTime.get(Calendar.HOUR_OF_DAY);
+        data += (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
+        data += (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
+        if (this.stpTime.get(Calendar.HOUR_OF_DAY) == 0)
+            data += (this.stpTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.stpTime.get(Calendar.MILLISECOND) / 10);
+        if (this.splitTime.get(Calendar.HOUR_OF_DAY) > 0)
+            data += (this.splitTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.splitTime.get(Calendar.HOUR_OF_DAY);
+        data += (this.splitTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.splitTime.get(Calendar.MINUTE);
+        data += (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
+        if (this.splitTime.get(Calendar.HOUR_OF_DAY) == 0)
+            data += (this.splitTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.splitTime.get(Calendar.MILLISECOND) / 10);
+        return data;
     }
+
+    public int requestStopwatchFlag(){ return this.status; }
+
+    // Getters and Setters for Unit Test
+    public Calendar getStpTime() { return stpTime; }
+    public void setStpTime(Calendar stpTime) { this.stpTime = stpTime; }
+    public Calendar getSplitTime() { return splitTime; }
+    public void setSplitTime(Calendar splitTime) { this.splitTime = splitTime; }
+    public int getStatus() { return status; }
+    public void setStatus(int status) { this.status = status; }
+   
+
+
 
 }

@@ -6,21 +6,20 @@ import static org.junit.Assert.*;
 
 public class TimerTest {
 
-
     @Test
     public void requestTimerTime() {
         Timer timer = new Timer();
-        timer.requestTimerTime();
+        timer.requestTimerTime(); // [status] 0: Stopped -> 2: Setting
         assertEquals(2, timer.getStatus());
     }
 
     @Test
     public void requestNextTimerTimeSection() {
         Timer timer = new Timer();
-        timer.setCurrSection(2); // Last Section
-        timer.requestNextTimerTimeSection();
-        timer.requestNextTimerTimeSection();
-        assertEquals(1, timer.getCurrSection());
+        timer.setCurrSection(2); // [currSection] 0: Second -> 2: Hour / Last Section
+        timer.requestNextTimerTimeSection(); // [currSection] 2: Hour -> 0: Second
+        timer.requestNextTimerTimeSection(); // [currSection] 0: Second -> 1: Minute
+        assertEquals(1, timer.getCurrSection()); // [currSection] 1: Minute
     }
 
     @Test
@@ -65,9 +64,9 @@ public class TimerTest {
     public void requestDecreaseTimerTimeSection() {
         Timer timer = new Timer();
         Calendar testTime = Calendar.getInstance();
-        testTime.set(1970, 1-1, 1, 22, 37, 0);
+        testTime.set(1970, Calendar.JANUARY, 1, 22, 37, 0);
         testTime.set(Calendar.MILLISECOND, 0);
-        timer.setRsvTime(testTime);
+        timer.setRsvTime((Calendar)testTime.clone()); // Avoid Call-by-Reference
 
         // 1: Min Second Decrease Test
         timer.requestDecreaseTimerTimeSection(); // 0 -> 59
@@ -105,36 +104,35 @@ public class TimerTest {
     @Test
     public void changeStatus() {
         Timer timer = new Timer();
-        timer.changeStatus(1);
-        assertEquals(1, timer.getStatus());
+        timer.changeStatus(1); // [status] 0: Stopped -> 1: Continued
+        assertEquals(1, timer.getStatus()); // [status] 1: Continued
 
-        timer.changeStatus(-1);
-        assertEquals(1, timer.getStatus());
-
+        timer.changeStatus(-1); // [status] 1: Continued -> -1: Not valid
+        assertEquals(1, timer.getStatus()); // [status] 1: Continued
     }
 
     @Test
     public void requestResetTimer() {
         Timer timer = new Timer();
         Calendar testTime = Calendar.getInstance();
-        testTime.set(1970, 1-1, 1, 22, 34, 30);
+        testTime.set(1970, Calendar.JANUARY, 1, 22, 34, 30);
         testTime.set(Calendar.MILLISECOND, 0);
 
-        timer.setRsvTime(testTime);
+        // [rstTime] 1970. Calendar.JANUARY. 1. 00. 00. 000 -> 1970. Calendar.JANUARY. 1. 22. 34. 30. 000
+        timer.setRsvTime((Calendar)testTime.clone()); // Avoid Call-By-Reference
+
+        // [timerTime] 1970. Calendar.JANUARY. 1. 00. 00. 000 -> 1970. Calendar.JANUARY. 1. 22. 34. 30. 000
         timer.requestResetTimer();
 
-        assertEquals(0, timer.getTimerTime().get(Calendar.MILLISECOND));
-        assertEquals(30, timer.getTimerTime().get(Calendar.SECOND));
-        assertEquals(34, timer.getTimerTime().get(Calendar.MINUTE));
-        assertEquals(22, timer.getTimerTime().get(Calendar.HOUR_OF_DAY));
-        assertEquals(1, timer.getTimerTime().get(Calendar.DATE));
-        assertEquals(1-1, timer.getTimerTime().get(Calendar.MONTH));
-        assertEquals(1970, timer.getTimerTime().get(Calendar.YEAR));
-
+        assertEquals(timer.getRsvTime(), timer.getTimerTime()); // [rsvTime] == [timerTime]
     }
 
     @Test
     public void ringOff() {
+        Timer timer = new Timer();
+        timer.setStatus(3); // [status] 0: Stopped -> 3: Ringing
+        timer.ringOff(); // [status] 3: Ringing -> 0: Stopped
+        assertEquals(0, timer.getStatus()); // [status] 0: Stopped
     }
 
     @Test
@@ -150,25 +148,30 @@ public class TimerTest {
         timer.realTimeTimerTask();
         assertEquals(timer.getRsvTime().getTimeInMillis() - 10, timer.getTimerTime().getTimeInMillis());
 
+        // Decrease timerTime to 00:00:00.000
         while(timer.getTimerTime().getTimeInMillis() > -32400000)
             timer.realTimeTimerTask();
 
-        assertEquals(0, timer.getStatus()); // Timer Expired
+        // [status] 1: Continued -> 3: Ringing
+        assertEquals(3, timer.getStatus()); // [status] 3: Ringing
     }
 
+    /*
     @Test
-    public void showTimer() {
-    }
+    public void showTimer() {}
+    */
 
     @Test
     public void requestExitSetTimerTime() {
         Timer timer = new Timer();
 
-        timer.changeStatus(2); // [Status] 0: Stopped -> 2: Setting
-        timer.requestNextTimerTimeSection(); // [CurrSection] 0: Second -> 1: Minute
+        timer.changeStatus(2); // [status] 0: Stopped -> 2: Setting
+        timer.requestNextTimerTimeSection(); // [currSection] 0: Second -> 1: Minute
+
+        // [status] 2: Setting -> 0: Stopped / [currSection] 1: Minute -> 0: Second
         timer.requestExitSetTimerTime();
 
-        assertEquals(0, timer.getStatus());
-        assertEquals(0, timer.getCurrSection());
+        assertEquals(0, timer.getStatus()); // [status] 0: Stopped
+        assertEquals(0, timer.getCurrSection()); // [currSection] 0: Second
     }
 }
