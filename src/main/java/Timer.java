@@ -21,6 +21,7 @@ public class Timer {
     }
 
     public Timer(ArrayList db){
+        this();
         if(db != null){
             this.timerTime = (Calendar)db.get(0);
             this.rsvTime = (Calendar)db.get(1);
@@ -119,8 +120,8 @@ public class Timer {
                     this.startRingingTimer(); // Ring
                     this.changeStatus(3);
                 }
+                else this.timerTime.add(Calendar.MILLISECOND, -10);
             }
-            else this.timerTime.add(Calendar.MILLISECOND, -10);
         }
     }
 

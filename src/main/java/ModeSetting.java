@@ -36,19 +36,24 @@ public class ModeSetting {
         this.menu_all.add("Sun");
         this.menu_all.add("TimeSetting");
 
-
         this.currIndex = 0;
     }
 
     public ModeSetting(WatchSystem sys) {
         this();
         this.sys = sys;
-        ArrayList currList = this.sys.getMenu();
-        for (Object menu : currList)
-            if(this.menu_all.indexOf(menu.getClass().getTypeName()) != -1)
-                this.currMode.add(menu.getClass().getTypeName());
+    }
 
-        this.oldMode.addAll(currList);
+    public void requestModeEnterSetting(){
+        this.oldMode = (ArrayList)(this.sys.getMenu().clone());
+        this.oldMode.clear();
+        this.newMode.clear();
+        this.currMode.clear();
+        for(int i = 2; i < this.sys.getMaxCnt(); i++) {
+            this.oldMode.add(this.sys.getMenu(i));
+            if (this.menu_all.indexOf(this.sys.getMenu(i).getClass().getTypeName()) != -1)
+                this.currMode.add(this.sys.getMenu(i).getClass().getTypeName());
+        }
     }
 
     public void requestNextMode() {
@@ -77,10 +82,10 @@ public class ModeSetting {
         for (String newMode : this.newMode) {
             boolean flag = false; // True: Match, False: Not Match
             for (String oldMode : this.currMode)
-                if (oldMode.equals(newMode)) flag = true;
+                if (newMode.equals(oldMode)) flag = true;
 
             if (flag == true) {
-                confirmMode.add(this.oldMode.get(this.oldMode.indexOf(this.currMode.get(this.currMode.indexOf(newMode)))));
+                confirmMode.add(this.oldMode.get(this.currMode.indexOf(newMode)));
                 this.currMode.set(this.currMode.indexOf(newMode), null);
             }
 
@@ -107,7 +112,7 @@ public class ModeSetting {
                         break;
 
                     case "TimeSetting":
-                        confirmMode.add(new TimeSetting());
+                        confirmMode.add(new TimeSetting((RealTime)this.sys.getMenu(1)));
                         break;
 
                     default:
@@ -117,8 +122,8 @@ public class ModeSetting {
             }
         }
 
-
         for (String oldMode : this.currMode) {
+            if(oldMode == null) continue;
             switch(oldMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun
                 case "Stopwatch":
                     this.db.saveData(0, ((Stopwatch)this.oldMode.get(this.currMode.indexOf(oldMode))).getStopwatchData());

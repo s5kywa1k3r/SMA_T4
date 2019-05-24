@@ -31,12 +31,13 @@ public class WatchSystem {
 
     // Worked by thread
     public void realTimeTask() {
-        if(this.currMode == 0){
+        if(this.currMode == 0)
             watchGUI.realtimeGUI(((ModeSetting) menu.get(0)).showModeSetting());
-        }
 
-        for (int i = 1; i < this.maxCnt + 1; i++) {
-            Object menu = this.menu.get(i);
+
+        for (int i = 1; i <= this.maxCnt + 1; i++) {
+            Object menu;
+            if((menu = this.menu.get(i)) == null) continue;
             switch (menu.getClass().getTypeName()) {
                 case "RealTime":
                     ((RealTime) this.menu.get(1)).calculateTime();
@@ -84,13 +85,13 @@ public class WatchSystem {
         watchGUI.designMode(false);
         if(++this.currMode == this.maxCnt + 2)
             this.currMode = 1; // 1: RealTime
-        System.out.println("this.currMode= " + this.currMode + ", " + this.menu.get(this.currMode).getClass().getTypeName());
         watchGUI.setMode(menu.get(this.currMode));
         watchGUI.designMode(true);
     }
     public void enterModeSetting(){
         watchGUI.designMode(false);
         this.currMode = 0;
+        ((ModeSetting)this.menu.get(0)).requestModeEnterSetting();
         watchGUI.setMode(menu.get(this.currMode));
         watchGUI.designMode(true);
     }
@@ -107,8 +108,16 @@ public class WatchSystem {
     public void pressSelectMode(){ ((ModeSetting)this.menu.get(0)).requestSelectMode(); }
     public void confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList newList = ((ModeSetting)this.menu.get(0)).confirmSelectMode();
-        for(int i = 2; i < newList.size(); i++)
-            this.menu.set(i, newList.get(i));
+        this.maxCnt = 0;
+        for(int i = 0; i < 4; i++) {
+            try{
+                this.maxCnt++;
+                this.menu.set(i+2, newList.get(i));
+            }catch(Exception e){
+                this.maxCnt--;
+                this.menu.set(i+2, null);
+            }
+        }
         this.pressChangeMode();
     }
     //public void exitSelectMode(){ }
@@ -165,4 +174,5 @@ public class WatchSystem {
     // Getters and Setters
     public ArrayList getMenu(){ return this.menu; }
     public Object getMenu(int i){ return this.menu.get(i); }
+    public int getMaxCnt(){ return this.maxCnt; }
 }
