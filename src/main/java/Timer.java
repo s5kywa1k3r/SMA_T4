@@ -111,15 +111,19 @@ public class Timer {
     private void startRingingTimer(){ this.status = 3; }
     public void realTimeTimerTask(){
         //System.out.println("[Timer]");
-        if(this.status == 1){ // 1: Continued
-            if(this.timerTime.getTimeInMillis() == -32400000){
-                this.startRingingTimer(); // Ring
-                this.changeStatus(3);
+
+        if(this.timerTime.getTimeInMillis() > -32400000) {
+            if (this.status == 1) { // 1: Continued
+                this.timerTime.add(Calendar.MILLISECOND, -10);
+                if (this.timerTime.getTimeInMillis() == -32400000) {
+                    this.startRingingTimer(); // Ring
+                    this.changeStatus(3);
+                }
             }
             else this.timerTime.add(Calendar.MILLISECOND, -10);
         }
-
     }
+
     public String showTimer(){
         String data = "";
         data += (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);

@@ -151,6 +151,7 @@ public class WatchGUI implements ActionListener {
                 year.setFont(subsubFont);
                 background.add(generalization(year));
                 cities.setFont(subsubFont);
+                cities.setHorizontalAlignment(JTextField.CENTER);
                 background.add(generalization(cities));
             }
         }
@@ -243,9 +244,11 @@ public class WatchGUI implements ActionListener {
                 colonForDate[1].setEnabled(isActive);
                 showTime[0].setEnabled(isActive);
                 showTime[1].setEnabled(isActive);
+                colonForTime[0].setEnabled(isActive);
+                colonForTime[1].setEnabled(isActive);
                 subTime[0].setEnabled(isActive);
-                showTime[1].setEnabled(isActive);
-                showTime[2].setEnabled(isActive);
+                subTime[1].setEnabled(isActive);
+                subTime[2].setEnabled(isActive);
                 cities.setEnabled(isActive);
                 break;
             case 6:              // WorldTime
@@ -262,14 +265,17 @@ public class WatchGUI implements ActionListener {
                 cities.setEnabled(isActive);
                 break;
             case 7:              // Sun
+                year.setEnabled(isActive);
                 showDate[0].setEnabled(isActive);
                 showDate[1].setEnabled(isActive);
                 showDate[2].setEnabled(isActive);
                 showTime[0].setEnabled(isActive);
                 showTime[1].setEnabled(isActive);
                 showTime[2].setEnabled(isActive);
-                colonForTime[0].setEnabled(isActive);
                 colonForTime[1].setEnabled(isActive);
+                subTime[0].setEnabled(isActive);
+                subTime[1].setEnabled(isActive);
+                subTime[2].setEnabled(isActive);
                 subTime[1].setEnabled(isActive);
                 cities.setEnabled(isActive);
                 break;
@@ -334,9 +340,9 @@ public class WatchGUI implements ActionListener {
                 showDate[2].setText(data.substring(3, 5));
                 showTime[0].setText(data.substring(5, 7));
                 showTime[1].setText(data.substring(7, 9));
-                subTime[0].setText("R");
+                subTime[0].setText("  R");
                 subTime[1].setText("IN");
-                subTime[2].setText("G "+data.substring(9, 10));
+                subTime[2].setText("G"+data.substring(9, 10));
                 if(data.substring(10, 11).equals("1")) cities.setText("ON");
                 else cities.setText("OFF");
                 this.flag = system.getAlarmFlag();
@@ -348,7 +354,11 @@ public class WatchGUI implements ActionListener {
                         case 2: showDate[2].setText("  "); break;
                         case 3: showDate[1].setText("  "); break;
                         case 4: year.setText("  "); break;
-                        case 5: cities.setText("  "); break;
+                        case 5:
+                            subTime[0].setText("");
+                            subTime[1].setText("");
+                            subTime[2].setText("");
+                        break;
                     }
                 }
                 break;
@@ -359,28 +369,36 @@ public class WatchGUI implements ActionListener {
                 showDate[2].setText(data.substring(8, 10));
                 showTime[1].setText(data.substring(10, 12));
                 showTime[2].setText(data.substring(12, 14));
-                showTime[0].setText(data.substring(14, 16));
-                if(data.substring(16,18).equals("  "))
+                if(data.substring(16,18).equals("  ")) {
+                    showTime[0].setText(data.substring(14, 16));
                     subTime[1].setText("");
-                else
-                    subTime[1].setText(data.substring(16,18));
+                }
+                else {
+                    showTime[0].setText(data.substring(14, 16));
+                    subTime[1].setText(data.substring(16, 18));
+                }
                 cities.setText(data.substring(18));
                 break;
             case 7:
-                if(data.substring(0, 1).equals("1")) {
-                    showDate[0].setText("");
-                    showDate[1].setText("SE");
-                    showDate[2].setText("T");
+                year.setText(data.substring(0, 4));
+                showDate[0].setText(data.substring(4, 6));
+                showDate[1].setText(data.substring(6, 8));
+                showDate[2].setText(data.substring(8, 10));
+                if(data.substring(10, 11).equals("1")) {
+                    subTime[0].setText("");
+                    subTime[1].setText("S E");
+                    subTime[2].setText("T");
                 }
                 else  {
-                    showDate[0].setText("R");
-                    showDate[1].setText("IS");
-                    showDate[2].setText("E");
+                    subTime[0].setText("  R");
+                    subTime[1].setText("I S");
+                    subTime[2].setText("E");
                 }
-                showTime[0].setText(data.substring(1,3));
-                showTime[1].setText(data.substring(3,5));
-                showTime[2].setText(data.substring(5,7));
-                cities.setText(data.substring(7));
+                if(data.substring(11, 13).equals("  ")) showTime[0].setText("");
+                else showTime[0].setText(data.substring(11, 13));
+                showTime[1].setText(data.substring(13,15));
+                showTime[2].setText(data.substring(15,17));
+                cities.setText(data.substring(17));
                 break;
             default: break;
         }

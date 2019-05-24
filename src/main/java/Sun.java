@@ -4,6 +4,7 @@ import com.luckycatlabs.sunrisesunset.dto.Location;
 import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class Sun {
@@ -123,11 +124,21 @@ public class Sun {
     public String showSun(){
         // Problem is comes from AM/PM
         String data = "";
+        data += this.sun[currMode].get(Calendar.YEAR);
+        data += this.sun[currMode].getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
+        data += (this.sun[currMode].get(Calendar.MONTH) < 9 ? "0" : "") + (this.sun[currMode].get(Calendar.MONTH)+1);
+        data += (this.sun[currMode].get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.DAY_OF_MONTH);
         // 0 Rise, 1 Set
         data += currMode;
-        data += (this.sun[currMode].get(Calendar.HOUR) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.HOUR);
+        if(realTime.isIs24H()) {
+            data += "  ";
+            data += (this.sun[currMode].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.HOUR_OF_DAY);
+        }
+        else {
+            data += (sun[currMode].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            data += (sun[currMode].get(Calendar.HOUR) < 10 ? "0" : "")+sun[currMode].get(Calendar.HOUR);
+        }
         data += (this.sun[currMode].get(Calendar.MINUTE) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.MINUTE);
-        data += (this.sun[currMode].get(Calendar.SECOND) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.SECOND);
         data += (this.nation[currNation]);
         return data;
     }

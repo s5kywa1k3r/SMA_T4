@@ -78,7 +78,6 @@ public class Alarm {
         return data;
     }
 
-
     // Operations
     public void realTimeTaskAlarm(){
         //System.out.println("[Alarm]");
