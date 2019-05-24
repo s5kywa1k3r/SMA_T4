@@ -15,6 +15,8 @@ public class ModeSetting {
     private ArrayList<String> newMode;
     private ArrayList oldMode;
 
+    private String[] shortNameMode;
+
     private int currIndex;
 
     public ModeSetting(){
@@ -25,6 +27,7 @@ public class ModeSetting {
         this.currMode = new ArrayList<String>();
         this.newMode = new ArrayList<String>();
         this.oldMode = new ArrayList();
+        this.shortNameMode = new String[] {"SW", "TM", "AL", "WT", "SU", "TS"};
 
         this.menu_all.add("Stopwatch");
         this.menu_all.add("Timer");
@@ -32,6 +35,7 @@ public class ModeSetting {
         this.menu_all.add("Worldtime");
         this.menu_all.add("Sun");
         this.menu_all.add("TimeSetting");
+
 
         this.currIndex = 0;
     }
@@ -91,15 +95,15 @@ public class ModeSetting {
                         break;
 
                     case "Alarm":
-                        confirmMode.add(new Alarm((RealTime)this.sys.getMenu(0),db.loadData(this.menu_all.indexOf(newMode))));
+                        confirmMode.add(new Alarm((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));
                         break;
 
                     case "Worldtime":
-                        confirmMode.add(new Worldtime((RealTime)this.sys.getMenu(0), db.loadData(this.menu_all.indexOf(newMode))));
+                        confirmMode.add(new Worldtime((RealTime)this.sys.getMenu(1), db.loadData(this.menu_all.indexOf(newMode))));
                         break;
 
                     case "Sun":
-                        confirmMode.add(new Sun((RealTime)this.sys.getMenu(0),db.loadData(this.menu_all.indexOf(newMode))));
+                        confirmMode.add(new Sun((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));
                         break;
 
                     case "TimeSetting":
@@ -147,7 +151,22 @@ public class ModeSetting {
 
     public String showModeSetting() {
         String data = "";
-
+        for(int i = 0; i< newMode.size(); i++) {
+            data += shortNameMode[menu_all.indexOf(newMode.get(i))];
+        }
+        for(int i = newMode.size(); i < 4; i++) {
+            data += "__";
+        }
+        if(menu_all.get(currIndex).length() > 6) {
+            data += menu_all.get(currIndex).substring(0, 6);
+        }
+        else if(menu_all.get(currIndex).length() < 4) {
+            data += menu_all.get(currIndex);
+            for(int i =0 ;  i <(6 - menu_all.get(currIndex).length()); i++) {
+                data += " ";
+            }
+        }
+        else data += menu_all.get(currIndex);
         return data;
     }
 

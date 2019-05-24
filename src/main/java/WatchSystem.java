@@ -88,7 +88,12 @@ public class WatchSystem {
         watchGUI.setMode(menu.get(this.currMode));
         watchGUI.designMode(true);
     }
-
+    public void enterModeSetting(){
+        watchGUI.designMode(false);
+        this.currMode = 0;
+        watchGUI.setMode(menu.get(this.currMode));
+        watchGUI.designMode(true);
+    }
     /*
     public void callNextMode(){
         if(++this.currMode == this.maxCnt)
@@ -98,16 +103,15 @@ public class WatchSystem {
     // RealTime
     public void pressShowType() { ((RealTime)this.menu.get(1)).requestChangeType();}
     // Mode Setting
-    public void enterModeSetting(){ this.currMode = 0; }
     public void pressNextMode(){ ((ModeSetting)this.menu.get(0)).requestNextMode(); }
     public void pressSelectMode(){ ((ModeSetting)this.menu.get(0)).requestSelectMode(); }
     public void confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList newList = ((ModeSetting)this.menu.get(0)).confirmSelectMode();
-        for(int i = 0; i < newList.size(); i++)
+        for(int i = 2; i < newList.size(); i++)
             this.menu.set(i, newList.get(i));
-        this.exitSelectMode();
+        this.pressChangeMode();
     }
-    public void exitSelectMode(){ this.currMode = 1; }
+    //public void exitSelectMode(){ }
 
     // Time Setting
     public void nextTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
