@@ -113,11 +113,11 @@ public class Timer {
 
         //System.out.println("[Timer]");
         if(this.status == 1){ // 1: Continued
-            this.timerTime.add(Calendar.MILLISECOND, -10);
             if(this.timerTime.getTimeInMillis() == -32400000){
                 this.startRingingTimer(); // Ring
                 this.changeStatus(3);
             }
+            else this.timerTime.add(Calendar.MILLISECOND, -10);
         }
 
     }
