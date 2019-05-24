@@ -34,11 +34,12 @@ public class WatchSystem {
         if(this.currMode == 0){
             watchGUI.realtimeGUI(((ModeSetting) menu.get(0)).showModeSetting());
         }
-        for (int i = 1; i <= this.maxCnt; i++) {
+
+        for (int i = 1; i < this.maxCnt + 1; i++) {
             Object menu = this.menu.get(i);
             switch (menu.getClass().getTypeName()) {
                 case "RealTime":
-                    ((RealTime) menu).calculateTime();
+                    ((RealTime) this.menu.get(1)).calculateTime();
                     if (this.currMode == i) watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
                     break;
 
@@ -81,8 +82,9 @@ public class WatchSystem {
 
     public void pressChangeMode() {
         watchGUI.designMode(false);
-        if(++this.currMode == this.maxCnt + 1)
+        if(++this.currMode == this.maxCnt + 2)
             this.currMode = 1; // 1: RealTime
+        System.out.println("this.currMode= " + this.currMode + ", " + this.menu.get(this.currMode).getClass().getTypeName());
         watchGUI.setMode(menu.get(this.currMode));
         watchGUI.designMode(true);
     }
