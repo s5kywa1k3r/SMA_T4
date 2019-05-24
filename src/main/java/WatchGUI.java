@@ -447,7 +447,7 @@ public class WatchGUI implements ActionListener {
         switch(presentModeIndex) {
             case 0 : // Mode Setting
                 switch(buttonIndex){
-                    case 0: system.confirmSelectMode();break;
+                    case 0: system.pressConfirmSelectMode();break;
                     case 1: system.pressSelectMode();break;
                     case 2: system.pressChangeMode();break;
                     case 3: system.pressNextMode();break;
@@ -457,7 +457,7 @@ public class WatchGUI implements ActionListener {
             case 1 : // RealTime
                 switch(buttonIndex){
                     case 0 : system.enterModeSetting(); break;
-                    case 1 : break;
+                    //case 1 : break;
                     case 2 : system.pressChangeMode();break;
                     case 3 : system.pressShowType();break;
                     default: break;
@@ -545,7 +545,7 @@ public class WatchGUI implements ActionListener {
                 break;
             case 6 : // Worldtime
                 switch(buttonIndex){
-                    case 0 : break;
+                    //case 0 : break;
                     case 1 : system.prevWorldtimeCity();break;
                     case 2 : system.pressChangeMode();break;
                     case 3 : system.nextWorldtimeCity();break;

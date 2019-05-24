@@ -1,5 +1,3 @@
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -8,12 +6,11 @@ import java.util.ArrayList;
 public class ModeSetting {
     private WatchSystem sys;
     private ModeDB db;
-    private RealTime realTime;
 
     private ArrayList<String> menu_all;
-    private ArrayList<String> currMode;
+    private ArrayList<String> prevMode;
     private ArrayList<String> newMode;
-    private ArrayList oldMode;
+    private ArrayList<Object> prevModeObject;
 
     private String[] shortNameMode;
 
@@ -24,9 +21,9 @@ public class ModeSetting {
         this.db = new ModeDB();
 
         this.menu_all = new ArrayList<String>();
-        this.currMode = new ArrayList<String>();
+        this.prevMode = new ArrayList<String>();
         this.newMode = new ArrayList<String>();
-        this.oldMode = new ArrayList();
+        this.prevModeObject = new ArrayList();
         this.shortNameMode = new String[] {"SW", "TM", "AL", "WT", "SU", "TS"};
 
         this.menu_all.add("Stopwatch");
@@ -44,121 +41,96 @@ public class ModeSetting {
         this.sys = sys;
     }
 
-    public void requestModeEnterSetting(){
-        this.oldMode = (ArrayList)(this.sys.getMenu().clone());
-        this.oldMode.clear();
+    // [ModeSetting] System Methods
+    public void requestModeSetting(){
         this.newMode.clear();
-        this.currMode.clear();
-
+        this.prevMode.clear();
+        this.prevModeObject.clear();
         for(int i = 2; i < this.sys.getMaxCnt() + 2; i++) {
-            this.oldMode.add(this.sys.getMenu(i));
+            this.prevModeObject.add(this.sys.getMenu(i));
             if (this.menu_all.indexOf(this.sys.getMenu(i).getClass().getTypeName()) != -1)
-                this.currMode.add(this.sys.getMenu(i).getClass().getTypeName());
+                this.prevMode.add(this.sys.getMenu(i).getClass().getTypeName());
         }
     }
 
     public void requestNextMode() {
         if (++this.currIndex == 6)
             this.currIndex = 0;
-        for (String temp : this.newMode)
+        for (String temp : this.newMode) {
             if (this.menu_all.get(this.currIndex).equals(temp)) {
                 this.requestNextMode();
                 return;
             }
+        }
     }
 
+    /* [Remove] private void getUnselectedMode(){} */
     public void requestSelectMode() {
         if (this.newMode.size() == 4)
             this.newMode.remove(0);
         this.newMode.add(this.menu_all.get(this.currIndex));
-        for (String temp : this.newMode)
+        for (String temp : this.newMode) {
             if (this.menu_all.get(this.currIndex).equals(temp)) {
                 this.requestNextMode();
                 return;
             }
+        }
     }
+
+    /* [Remove] private boolean hasNewMode(){} */
+    /* [Remove] public Mode createNewMode(){} */
+    /* [Remove] private void getUnselectedMode(){} */
+    /* [Remove] private void sendOldMode(){} */
+    /* [Remove] private void requestDeleteMode(){} */
 
     public ArrayList confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList confirmMode = new ArrayList();
-        System.out.println("this.newMode: " + this.newMode);
         for (String newMode : this.newMode) {
             boolean flag = false; // True: Match, False: Not Match
-            for (String oldMode : this.currMode)
+
+            // Find newMode from prevMode
+            for (String oldMode : this.prevMode)
                 if (newMode.equals(oldMode)) flag = true;
 
-            System.out.println("currMode = " + newMode);
             if (flag == true) {
                 System.out.println(newMode);
-                confirmMode.add(this.oldMode.get(this.currMode.indexOf(newMode)));
-                this.currMode.set(this.currMode.indexOf(newMode), null);
+                confirmMode.add(this.prevModeObject.get(this.prevMode.indexOf(newMode)));
+                this.prevMode.set(this.prevMode.indexOf(newMode), null);
             }
 
+            // Load Data from DB
             else {
                 switch(newMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun, 5: TimeSetting
-                    case "Stopwatch":
-                        confirmMode.add(new Stopwatch(db.loadData(this.menu_all.indexOf(newMode))));
-                        break;
-
-                    case "Timer":
-                        confirmMode.add(new Timer(db.loadData(this.menu_all.indexOf(newMode))));
-                        break;
-
-                    case "Alarm":
-                        confirmMode.add(new Alarm((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));
-                        break;
-
-                    case "Worldtime":
-                        confirmMode.add(new Worldtime((RealTime)this.sys.getMenu(1), db.loadData(this.menu_all.indexOf(newMode))));
-                        break;
-
-                    case "Sun":
-                        confirmMode.add(new Sun((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));
-                        break;
-
-                    case "TimeSetting":
-                        confirmMode.add(new TimeSetting((RealTime)this.sys.getMenu(1)));
-                        break;
-
-                    default:
-                        //System.out.println("{Exception}[WatchSystem][realTimeTask] NotValidModeException");
-                        break;
+                    case "Stopwatch":   confirmMode.add(new Stopwatch(db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "Timer":       confirmMode.add(new Timer(db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "Alarm":       confirmMode.add(new Alarm((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "Worldtime":   confirmMode.add(new Worldtime((RealTime)this.sys.getMenu(1), db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "Sun":         confirmMode.add(new Sun((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "TimeSetting": confirmMode.add(new TimeSetting((RealTime)this.sys.getMenu(1)));break;
+                    default: break;
                 }
             }
         }
 
-        System.out.println("this.currMode: " + this.currMode);
-        for (String oldMode : this.currMode) {
+        // Save Data from not existed mode
+        for (String oldMode : this.prevMode) {
             if(oldMode == null) continue;
             switch(oldMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun
-                case "Stopwatch":
-                    this.db.saveData(0, ((Stopwatch)this.oldMode.get(this.currMode.indexOf(oldMode))).getStopwatchData());
-                    break;
-
-                case "Timer":
-                    this.db.saveData(1, ((Timer)this.oldMode.get(this.currMode.indexOf(oldMode))).getTimerData());
-                    break;
-
-                case "Alarm":
-                    this.db.saveData(2, ((Alarm)this.oldMode.get(this.currMode.indexOf(oldMode))).getAlarmData());
-                    break;
-
-                case "Worldtime":
-                    this.db.saveData(3, ((Worldtime)this.oldMode.get(this.currMode.indexOf(oldMode))).getWorldtimeData());
-                    break;
-
-                case "Sun":
-                    this.db.saveData(4, ((Sun)this.oldMode.get(this.currMode.indexOf(oldMode))).getSunData());
-                    break;
-
-                default:
-                    //System.out.println("{Exception}[WatchSystem][realTimeTask] NotValidModeException");
-                    break;
+                case "Stopwatch": this.db.saveData(0, ((Stopwatch)this.prevModeObject.get(this.prevMode.indexOf(oldMode))).getStopwatchData());break;
+                case "Timer":     this.db.saveData(1, ((Timer)this.prevModeObject.get(this.prevMode.indexOf(oldMode))).getTimerData());break;
+                case "Alarm":     this.db.saveData(2, ((Alarm)this.prevModeObject.get(this.prevMode.indexOf(oldMode))).getAlarmData());break;
+                case "Worldtime": this.db.saveData(3, ((Worldtime)this.prevModeObject.get(this.prevMode.indexOf(oldMode))).getWorldtimeData());break;
+                case "Sun":       this.db.saveData(4, ((Sun)this.prevModeObject.get(this.prevMode.indexOf(oldMode))).getSunData());break;
+                default: break;
             }
         }
 
         return confirmMode;
     }
 
+
+    // [WatchGUI]
+    // void -> String
     public String showModeSetting() {
         String data = "";
         for(int i = 0; i< newMode.size(); i++) {
@@ -180,23 +152,15 @@ public class ModeSetting {
         return data;
     }
 
-    public ArrayList exitSetMode(){ return oldMode; }
-
-    // Getters and Setters
-    public ArrayList<String> getMenu_all() { return menu_all; }
-    public void setMenu_all(ArrayList<String> menu_all) { this.menu_all = menu_all; }
-    public ArrayList<String> getCurrMode() { return currMode; }
-    public void setCurrMode(ArrayList<String> currMode) { this.currMode = currMode; }
+    // Getters and Setters for Unit Test
     public ArrayList<String> getNewMode() { return newMode; }
     public void setNewMode(ArrayList<String> newMode) { this.newMode = newMode; }
-    public ArrayList getOldMode() { return oldMode; }
-    public void setOldMode(ArrayList oldMode) { this.oldMode = oldMode; }
+    public void setOldMode(ArrayList oldMode) { this.prevModeObject = oldMode; }
     public ModeDB getDb() { return db; }
     public void setDb(ModeDB db) { this.db = db; }
     public WatchSystem getSys() { return sys; }
     public void setSys(WatchSystem sys) { this.sys = sys; }
     public int getCurrIndex() { return currIndex; }
     public void setCurrIndex(int currIndex) { this.currIndex = currIndex; }
-
 }
 
