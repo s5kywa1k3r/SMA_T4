@@ -93,19 +93,17 @@ public class Timer {
             this.status = i;
     }
     public void requestResetTimer(){
-        if(this.status == 0) // 0: Stopped
-            this.setTimerReservatedTime();
-    }
-    private void setTimerReservatedTime(){
-        this.timerTime.set(Calendar.MILLISECOND, 0);
-        this.timerTime.set(
-                this.rsvTime.get(Calendar.YEAR),
-                this.rsvTime.get(Calendar.MONTH),
-                this.rsvTime.get(Calendar.DATE),
-                this.rsvTime.get(Calendar.HOUR_OF_DAY),
-                this.rsvTime.get(Calendar.MINUTE),
-                this.rsvTime.get(Calendar.SECOND)
-        );
+        if(this.status == 0) { // 0: Stopped
+            this.timerTime.set(Calendar.MILLISECOND, 0);
+            this.timerTime.set(
+                    this.rsvTime.get(Calendar.YEAR),
+                    this.rsvTime.get(Calendar.MONTH),
+                    this.rsvTime.get(Calendar.DATE),
+                    this.rsvTime.get(Calendar.HOUR_OF_DAY),
+                    this.rsvTime.get(Calendar.MINUTE),
+                    this.rsvTime.get(Calendar.SECOND)
+            );
+        }
     }
     //private void setTimerTime(){}
     public void ringOff(){}
@@ -127,14 +125,22 @@ public class Timer {
 
     public String showTimer(){
         String data = "";
-        data += (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);
-        data += (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
-        data += (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
+        if(this.status == 2) {
+            data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
+            data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
+            data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
+        }
+        else {
+            data += (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);
+            data += (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
+            data += (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
+        }
         return data;
     }
     public void requestExitSetTimerTime(){
         if(this.status == 2){ // [Status] 2: Setting
             this.changeStatus(0); // [Status] 2: Setting -> 0: Stopped
+            requestResetTimer();
             this.currSection = 0; // [CurrSection] 0: Second -> Setting Section initialization
         }
     }
