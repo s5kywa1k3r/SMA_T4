@@ -10,18 +10,19 @@ public class Worldtime {
     private Calendar worldTime;
     private Calendar currTime;
 
+    // All City -> Nation
     private String[] nation;
     private String[] nationTimeZone;
 
     private int currNation;
     private int maxNation = 27;
 
-    public Worldtime(RealTime realTime) {
-        this.worldTime = Calendar.getInstance();
-        this.worldTime.clear();
+    // Constructors
+    public Worldtime(){
+        this.worldTime = null;
+        this.realTime = null;
+        this.currTime = null;
 
-        this.realTime = realTime;
-        this.currTime = realTime.requestRealTime();
         this.nation = new String[]{
                 "MAR", "GHA", "ESP", "UK", "FRA", "NGR", "GER", "ITA", "GRE",
                 "RSA", "UKR", "EGY", "KEN", "AF", "PAK", "IND", "THA", "CHN",
@@ -35,7 +36,17 @@ public class Worldtime {
                 "Asia/Tokyo", "Canada/Central", "Etc/GMT-5", "Mexico/General", "America/Santiago", "Etc/GMT-3"
         };
 
-        this.currNation = 19; // 19: Asia/Seoul
+        this.currNation = 19; // Initial City => 19: Asia/Seoul
+    }
+
+    public Worldtime(RealTime realTime) {
+        this();
+
+        this.worldTime = Calendar.getInstance();
+        this.worldTime.clear();
+
+        this.realTime = realTime;
+        this.currTime = realTime.requestRealTime();
 
         this.worldTime.set(Calendar.MILLISECOND, this.currTime.get(Calendar.MILLISECOND));
         this.worldTime.set(
@@ -47,6 +58,8 @@ public class Worldtime {
         );
     }
 
+    // [ModeDB] Methods
+    // Load Data from ModeDB
     public Worldtime(RealTime realTime, ArrayList db){
         this(realTime);
         if(db != null){
@@ -63,6 +76,7 @@ public class Worldtime {
         }
     }
 
+    // Save Data to ModeDB
     public ArrayList getWorldtimeData(){
         ArrayList data = new ArrayList();
 
@@ -71,6 +85,7 @@ public class Worldtime {
         return data;
     }
 
+    // [Worldtime] System Methods
     public void nextNation() {
         if (++this.currNation == this.maxNation)
             this.currNation = 0;
@@ -81,8 +96,7 @@ public class Worldtime {
             this.currNation = this.maxNation - 1;
     }
 
-    // Remove Function
-    //public void changeSummerTime(){ }
+    /* [Remove] public void changeSummerTime(){ } */
 
     public void realTimeTaskWorldtime() {
         this.currTime = this.realTime.requestRealTime();
@@ -99,6 +113,8 @@ public class Worldtime {
         this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[19]));
     }
 
+    // [WatchGUI]
+    // void -> String
     public String showWorldTime() {
         String data = "";
         data += this.worldTime.get(Calendar.YEAR);
@@ -119,7 +135,7 @@ public class Worldtime {
         return data;
     }
 
-    // Getters and Setters
+    // Getters and Setters for Unit Test
     public RealTime getRealTime() { return realTime; }
     public void setRealTime(RealTime realTime) { this.realTime = realTime; }
     public Calendar getWorldTime() { return worldTime; }
