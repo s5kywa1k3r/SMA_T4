@@ -44,7 +44,7 @@ public class Timer {
         return data;
     }
 
-    // [Timer] System Operations
+    // [Timer] System Methods
     public void requestTimerTime(){
         if(this.status == 0) // [status] 0: Stopped -> 2: Setting
             this.changeStatus(2);
