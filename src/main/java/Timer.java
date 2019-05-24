@@ -110,7 +110,6 @@ public class Timer {
     public void ringOff(){}
     private void startRingingTimer(){ this.status = 3; }
     public void realTimeTimerTask(){
-
         //System.out.println("[Timer]");
         if(this.status == 1){ // 1: Continued
             this.timerTime.add(Calendar.MILLISECOND, -10);
