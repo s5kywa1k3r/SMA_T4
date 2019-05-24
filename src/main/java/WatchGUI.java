@@ -169,10 +169,11 @@ public class WatchGUI implements ActionListener {
     }
 
     public void setMode(Object mode) {
-        // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
+        // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun\
         switch (mode.getClass().getTypeName()) {
             case "ModeSetting" :
                 presentModeIndex = 0;
+                break;
             case "RealTime" :
                 presentModeIndex = 1;
                 break;
@@ -202,6 +203,14 @@ public class WatchGUI implements ActionListener {
     public void designMode(boolean isActive) {
         switch (presentModeIndex) {
             case 0:             // Mode Setting
+                year.setEnabled(isActive);
+                showDate[0].setEnabled(isActive);
+                showDate[2].setEnabled(isActive);
+                subTime[0].setEnabled(isActive);
+                subTime[2].setEnabled(isActive);
+                showTime[0].setEnabled(isActive);
+                showTime[1].setEnabled(isActive);
+                showTime[2].setEnabled(isActive);
                 break;
             case 1:             // RealTime
             case 2:             // TimeSetting
@@ -429,7 +438,7 @@ public class WatchGUI implements ActionListener {
                 switch(buttonIndex){
                     case 0: system.confirmSelectMode();break;
                     case 1: system.pressSelectMode();break;
-                    case 2: system.exitSelectMode();break;
+                    case 2: system.pressChangeMode();break;
                     case 3: system.pressNextMode();break;
                     default:break;
                 }
