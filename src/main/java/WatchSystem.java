@@ -74,7 +74,6 @@ public class WatchSystem {
                     break;
 
                 default:
-                    System.out.println("{Exception}[WatchSystem][realTimeTask] NotValidModeException");
                     break;
             }
         }
