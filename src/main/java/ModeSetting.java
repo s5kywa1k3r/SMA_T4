@@ -69,12 +69,7 @@ public class ModeSetting {
         if (this.newMode.size() == 4)
             this.newMode.remove(0);
         this.newMode.add(this.menu_all.get(this.currIndex));
-        for (String temp : this.newMode) {
-            if (this.menu_all.get(this.currIndex).equals(temp)) {
-                this.requestNextMode();
-                return;
-            }
-        }
+        this.requestNextMode();
     }
 
     /* [Remove] private boolean hasNewMode(){} */
