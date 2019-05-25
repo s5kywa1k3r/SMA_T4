@@ -1,8 +1,4 @@
 
-<<<<<<< HEAD
-*.xml
-.idea/.name
-=======
 # Created by https://www.gitignore.io/api/gradle,intellij
 # Edit at https://www.gitignore.io/?templates=gradle,intellij
 
@@ -110,4 +106,3 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/gradle,intellij
 *.xml
 *.xml
->>>>>>> 4438be0b9f34d8ba11db7f514eef8ef45ce44b52
