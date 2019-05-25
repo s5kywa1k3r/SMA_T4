@@ -197,8 +197,6 @@ public class Alarm {
             default:
                 break;
         }
-
-
     }
 
     public void decreaseSection() {

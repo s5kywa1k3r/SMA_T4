@@ -14,10 +14,10 @@ public class WatchSystem {
 
         menu.add(new ModeSetting(this));
         menu.add(new RealTime());
-        menu.add(new Sun((RealTime)menu.get(1)));
-        menu.add(new Worldtime((RealTime)menu.get(1)));
+        menu.add(new SettingTime((RealTime)menu.get(1)));
         menu.add(new Stopwatch());
         menu.add(new Timer());
+        menu.add(new Alarm((RealTime)menu.get(1)));
 
         this.currMode = 1; // [currMode] 1: Always RealTime
         this.maxCnt = 4;

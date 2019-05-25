@@ -490,7 +490,7 @@ public class WatchGUI implements ActionListener {
                 switch(buttonIndex){
                     case 0 :
                         if(flag == 0) system.enterSetAlarmTime();
-                        else system.nextAlarmTimeSection();
+                        else if(flag != 4) system.nextAlarmTimeSection();
                         break;
                     case 1 :
                         if(flag == 0) system.pressAlarmOnOff();
