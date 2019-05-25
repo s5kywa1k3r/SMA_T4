@@ -191,7 +191,7 @@ public class Alarm {
                     bellIndex[this.currAlarm] = 1;
                 }
                 bell[bellIndex[this.currAlarm]-1].play();
-                try{Thread.sleep( 3000);} catch (InterruptedException e) {}
+                try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
                 bell[bellIndex[this.currAlarm]-1].pause();
                 break;
             default:
@@ -245,7 +245,7 @@ public class Alarm {
                     bellIndex[this.currAlarm] = 4;
                 }
                 bell[bellIndex[this.currAlarm]-1].play();
-                try{Thread.sleep( 3000);} catch (InterruptedException e) {}
+                try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
                 bell[bellIndex[this.currAlarm]-1].pause();
                 break;
             default:

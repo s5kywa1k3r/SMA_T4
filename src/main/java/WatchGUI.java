@@ -468,7 +468,10 @@ public class WatchGUI implements ActionListener {
                     case 1 :
                         if(this.flag == 0) system.pressStartTimer();
                         else if(this.flag == 1) system.pressStopTimer();
-                        else if(this.flag == 3) system.pressStopRingingTimer();
+                        else if(this.flag == 3) {
+                            System.out.println("Yes flag is 3");
+                            system.pressStopRingingTimer();
+                        }
                         else system.increaseTimerTimeSection();
                         break;
                     case 2 :
