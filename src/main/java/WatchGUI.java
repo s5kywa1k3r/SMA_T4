@@ -316,8 +316,8 @@ public class WatchGUI implements ActionListener {
                 showTime[2].setText(data.substring(12, 14));
                 showTime[0].setText(data.substring(14, 16));
                 subTime[1].setText(data.substring(16,18));
-                if(presentModeIndex == 2 && blinkCount > 50) {
-                    switch (system.getTimeSettingFlag()) {
+                if(presentModeIndex == 2 && !data.substring(18).equals(" ")) {
+                    switch (Integer.parseInt(data.substring(18))) {
                         case 0: showTime[2].setText("  ");break;
                         case 1: showTime[1].setText("  ");break;
                         case 2: showTime[0].setText("  ");break;
@@ -342,15 +342,6 @@ public class WatchGUI implements ActionListener {
                 showTime[1].setText(data.substring(2, 4));
                 showTime[2].setText(data.substring(4, 6));
                 // 0: Stopped, 1: Continued, 2: Setting, 3: ringing
-                this.flag = system.getTimerFlag();
-                this.section = system.getTimerSection();
-                if(flag == 2 && blinkCount > 50) {
-                    switch (section) {
-                        case 0: showTime[2].setText(""); break;
-                        case 1: showTime[1].setText(""); break;
-                        case 2: showTime[0].setText(""); break;
-                    }
-                }
                 break;
             case 5 :
                 year.setText("REP "+data.substring(0, 1));
@@ -367,8 +358,8 @@ public class WatchGUI implements ActionListener {
                 showTime[0].setText(data.substring(11, 13));
                 this.flag = system.getAlarmFlag();
                 this.section = system.getAlarmSection();
-                if(flag != 0 && blinkCount > 50) {
-                    switch (section) {
+                if(flag != 0 && !data.substring(13).equals(" ")) {
+                    switch (Integer.parseInt(data.substring(13))) {
                         case 0: showTime[2].setText("  "); break;
                         case 1: showTime[1].setText("  "); break;
                         case 2: showDate[2].setText("  "); break;
@@ -447,7 +438,7 @@ public class WatchGUI implements ActionListener {
         switch(presentModeIndex) {
             case 0 : // Mode Setting
                 switch(buttonIndex){
-                    case 0: system.confirmSelectMode();break;
+                    case 0: system.pressConfirmSelectMode();break;
                     case 1: system.pressSelectMode();break;
                     case 2: system.pressChangeMode();break;
                     case 3: system.pressNextMode();break;
@@ -457,7 +448,7 @@ public class WatchGUI implements ActionListener {
             case 1 : // RealTime
                 switch(buttonIndex){
                     case 0 : system.enterModeSetting(); break;
-                    case 1 : break;
+                    //case 1 : break;
                     case 2 : system.pressChangeMode();break;
                     case 3 : system.pressShowType();break;
                     default: break;
@@ -545,19 +536,19 @@ public class WatchGUI implements ActionListener {
                 break;
             case 6 : // Worldtime
                 switch(buttonIndex){
-                    case 0 : break;
-                    case 1 : system.prevWorldtimeCity();break;
+                    //case 0 : break;
+                    case 1 : system.prevWorldtimeNation();break;
                     case 2 : system.pressChangeMode();break;
-                    case 3 : system.nextWorldtimeCity();break;
+                    case 3 : system.nextWorldtimeNation();break;
                     default: break;
                 }
                 break;
             case 7 : // Sun
                 switch(buttonIndex){
                     case 0 : system.pressSetRise();break;
-                    case 1 : system.prevSunCity();break;
+                    case 1 : system.prevSunNation();break;
                     case 2 : system.pressChangeMode();break;
-                    case 3 : system.nextSunCity();break;
+                    case 3 : system.nextSunNation();break;
                     default: break;
                 }
                 break;

@@ -5,6 +5,7 @@ public class RealTime {
     private Calendar realTime; // day, month, year
     private int currSection;
     private boolean is24H;
+
     // Constructor
     public RealTime(){
         this.realTime = Calendar.getInstance();
@@ -14,8 +15,13 @@ public class RealTime {
         this.is24H = true;
     }
 
-    // Operations
+    // [RealTime] System Methods
     public Calendar requestRealTime(){ return this.realTime; }
+
+    public void setSecond(int i){
+        this.realTime.set(Calendar.MILLISECOND, 0);
+        this.realTime.set(Calendar.SECOND, i);
+    }
 
     public void nextSection(){
         if(++this.currSection == 6) // Over value
@@ -95,12 +101,12 @@ public class RealTime {
                 break;
         }
     }
-    public void setSecond(int i){
-        this.realTime.set(Calendar.SECOND, i);
-        this.realTime.set(Calendar.MILLISECOND, i * 1000);
-    }
+
     public void calculateTime(){ this.realTime.add(Calendar.MILLISECOND, 10); }
     public void requestChangeType(){ this.is24H = !this.is24H;}
+
+    // [WatchGUI]
+    // void -> String
     public String showRealTime(){
         String data = "";
         data += realTime.get(Calendar.YEAR);
@@ -122,7 +128,7 @@ public class RealTime {
     public boolean isIs24H(){return this.is24H;}
 
 
-    // Getters and Setters
+    // Getters and Setters for Unit Test
     public int getCurrSection() { return this.currSection; }
     public void setCurrSection(int currSection){ this.currSection = currSection; }
     public void setRealTime(int section, int value){ this.realTime.set(section, value); }
