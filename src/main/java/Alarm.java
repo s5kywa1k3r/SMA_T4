@@ -1,4 +1,3 @@
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -88,9 +87,9 @@ public class Alarm {
         for(int i = 0; i < 4; i++){
             if(this.alarmState[i]){
                 if(
-                    (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
-                    (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
-                    (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
+                        (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
+                                (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
+                                (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
                 )
                 {
                     this.status = 4;
@@ -333,8 +332,7 @@ public class Alarm {
     public void setFrequency(int i, Calendar frequency) { this.frequency[i] = frequency; }
     public int[] getRepeat() { return repeat; }
     public int getRepeat(int i){ return repeat[i]; }
-    public void setRepeat(int[] repeat) { this.repeat = repeat; }
-    public void setRepeat(int i, int repeat) { this.repeat[i] = repeat; }
+    public void setRepeat(int i, int repeat) { this.repeat[i] = repeat; this.tmpRepeat[i]=repeat; }
     public int getStatus() { return this.status; }
     public void setStatus(int status ) { this.status = status; }
     public RealTime getRealTime() { return realTime; }
@@ -343,12 +341,19 @@ public class Alarm {
     public int getCurrAlarm(){ return this.currAlarm; }
     public void setCurrAlarm(int i) { this.currAlarm = i; }
     public int getCurrSection() { return this.currSection; }
+    public void setCurrSection(int i) { this.currSection = i; }
     public Bell getBell(int index) {
-        this.RingingIndex = 2;
+        this.RingingIndex = index;
         return bell[index];
     }
+    public int getBellIndex() {return bellIndex[currAlarm];}
     public boolean isRinging() {
         if(RingingIndex == -1) return false;
         else return true;
     }
+    public void setAlarm(Calendar tmp) {
+        alarm[currAlarm] = tmp;
+        reservedAlarm[currAlarm] = (Calendar)tmp.clone();
+    }
+    public Calendar getAlarm() {return alarm[currAlarm];}
 }

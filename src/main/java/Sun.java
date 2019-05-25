@@ -4,7 +4,6 @@ import com.luckycatlabs.sunrisesunset.dto.Location;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class Sun {
 
@@ -100,7 +99,6 @@ public class Sun {
     // [Sun] System Methods
     public void realTimeTaskSun(){
         this.currTime = this.realTime.requestRealTime();
-
         if(this.currTime.getTimeInMillis() >= this.sun[1].getTimeInMillis()){
             // Tomorrow's Sun Set
             this.currTime.add(Calendar.DATE, 1);
@@ -134,7 +132,6 @@ public class Sun {
     // Calculate sun at constructor, requestNextNation, requestPrevNation
     public void initSun(){
         // Apply World Time Zone
-        //this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[this.currNation]));
         this.location.setLocation(this.nationLatitude[this.currNation], this.nationLongitude[this.currNation]);
         this.calculatorSun = new SunriseSunsetCalculator(this.location, this.nationTimeZone[this.currNation]);
 
@@ -155,14 +152,7 @@ public class Sun {
             this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
             this.currTime.add(Calendar.DATE, -1);
         }
-
-        System.out.println(this.nation[this.currNation]);
-        System.out.printf("%dY %dM %dD %dH %dM\n", this.sun[0].get(Calendar.YEAR), this.sun[0].get(Calendar.MONTH), this.sun[0].get(Calendar.DATE), this.sun[0].get(Calendar.HOUR_OF_DAY), this.sun[0].get(Calendar.MINUTE));
-        System.out.printf("%dY %dM %dD %dH %dM\n", this.sun[1].get(Calendar.YEAR), this.sun[1].get(Calendar.MONTH), this.sun[1].get(Calendar.DATE), this.sun[1].get(Calendar.HOUR_OF_DAY), this.sun[1].get(Calendar.MINUTE));
-        System.out.println();
-        // Clear World Time Zone
-        //this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[19]));
-    }
+     }
 
     // [WatchGUI]
     // String -> String[]

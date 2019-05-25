@@ -53,6 +53,20 @@ public class AlarmTest {
     }
 
     @Test
+    public void requestExitAlarmSetting()throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        RealTime realTime = new RealTime();
+        Alarm alarm = new Alarm(realTime);
+        alarm.setStatus(1);
+        alarm.setCurrSection(2);
+        assertEquals(1, alarm.getStatus());
+        assertEquals(2, alarm.getCurrSection());
+
+        alarm.requestExitAlarmSetting();
+        assertEquals(0, alarm.getStatus());
+        assertEquals(0, alarm.getCurrSection());
+    }
+
+    @Test
     public void increaseSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
@@ -103,10 +117,39 @@ public class AlarmTest {
         // 6: Max Bell Increase Test
         alarm.requestAlarmNextSection();
         alarm.increaseSection();    // Alarm1.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
         alarm.increaseSection();    // Alarm2.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
         alarm.increaseSection();    // Alarm3.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
         alarm.increaseSection();    // Alarm4.wav
-        alarm.increaseSection();    // Alarm5.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
+        alarm.increaseSection();    // Alarm1.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
     }
 
     @Test
@@ -147,10 +190,39 @@ public class AlarmTest {
         // 6: Max Bell Increase Test
         alarm.requestAlarmNextSection();
         alarm.decreaseSection();    // Alarm4.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
         alarm.decreaseSection();    // Alarm3.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
         alarm.decreaseSection();    // Alarm2.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
         alarm.decreaseSection();    // Alarm1.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
+
         alarm.decreaseSection();    // Alarm4.wav
+        alarm.getBell(alarm.getBellIndex()-1).play();
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {e.printStackTrace();}
+        alarm.getBell(alarm.getBellIndex()-1).pause();
     }
 
     @Test
@@ -184,5 +256,44 @@ public class AlarmTest {
 
         alarm.requestAlarmOnOff();
         assertFalse(alarm.getAlarmCurrAlarmStatus());
+    }
+
+    @Test
+    public void ringProperly() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        RealTime realTime = new RealTime();
+        realTime.requestRealTime().set(2000, Calendar.JANUARY, 1, 1, 1, 30);
+        Alarm alarm = new Alarm(realTime);
+        Calendar tmp = Calendar.getInstance();
+        Calendar tmpFre = Calendar.getInstance();
+        tmp.clear();
+        tmp.set(2000, Calendar.JANUARY, 1, 1, 1, 30);
+        Calendar compare = (Calendar)tmp.clone();
+        // Frequency is set by 1 min 30 sec
+        tmpFre.set(1970, Calendar.JANUARY, 0, 0, 1, 30);
+        // Reputation is 2
+        alarm.setRepeat(0, 2);
+        alarm.setFrequency(0, tmpFre);
+        alarm.requestAlarmOnOff();
+        alarm.setAlarm(tmp);
+
+        assertEquals(realTime.requestRealTime().getTime(), alarm.getAlarm().getTime());
+
+        // First Reputation
+        for(int i = 0; i < 90; i++) {
+            alarm.realTimeTaskAlarm();
+            realTime.requestRealTime().add(Calendar.SECOND, 1);
+        }
+        assertEquals(realTime.requestRealTime().getTime(), alarm.getAlarm().getTime());
+
+        // Second Reputation
+        for(int i = 0 ; i<90; i++) {
+            alarm.realTimeTaskAlarm();
+            realTime.requestRealTime().add(Calendar.SECOND, 1);
+        }
+        assertEquals(realTime.requestRealTime().getTime(), alarm.getAlarm().getTime());
+
+        // Reset To Init Alarm
+        alarm.realTimeTaskAlarm();
+        assertEquals(compare.getTime(), alarm.getAlarm().getTime());
     }
 }

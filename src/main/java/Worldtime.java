@@ -60,18 +60,7 @@ public class Worldtime {
                 this.currTime.get(Calendar.SECOND)
         );
 
-        for(int i = 0; i < 27; i++){
-            this.currNation = i;
-            this.realTimeTaskWorldtime();
-            System.out.printf("[%s, %s]: %dY %dM %dD %dH %dM\n",
-                    this.nation[i], this.nationTimeZone[i],
-                    this.worldTime.get(Calendar.YEAR),
-                    this.worldTime.get(Calendar.MONTH),
-                    this.worldTime.get(Calendar.DATE),
-                    this.worldTime.get(Calendar.HOUR_OF_DAY),
-                    this.worldTime.get(Calendar.MINUTE)
-            );
-        }
+        this.currNation = 19;
     }
 
     // [ModeDB] Methods
@@ -105,29 +94,11 @@ public class Worldtime {
     public void nextNation() {
         if (++this.currNation == this.maxNation)
             this.currNation = 0;
-
-        System.out.println("[nextNation]: " +  this.nation[this.currNation] +", " + this.nationTimeZone[this.currNation]);
-        System.out.printf("%dY %dM %dD %dH %dM\n", this.worldTime.get(Calendar.YEAR),
-                this.worldTime.get(Calendar.MONTH),
-                this.worldTime.get(Calendar.DATE),
-                this.worldTime.get(Calendar.HOUR_OF_DAY),
-                this.worldTime.get(Calendar.MINUTE)
-        );
-        System.out.println();
     }
 
     public void prevNation() {
         if (--this.currNation == -1)
             this.currNation = this.maxNation - 1;
-        System.out.println("[prevNation]: " +  this.nation[this.currNation] +", " + this.nationTimeZone[this.currNation]);
-        System.out.printf("%dY %dM %dD %dH %dM\n",
-                this.worldTime.get(Calendar.YEAR),
-                this.worldTime.get(Calendar.MONTH),
-                this.worldTime.get(Calendar.DATE),
-                this.worldTime.get(Calendar.HOUR_OF_DAY),
-                this.worldTime.get(Calendar.MINUTE)
-        );
-        System.out.println();
     }
 
     /* [Remove] public void changeSummerTime(){ } */
