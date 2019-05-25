@@ -19,3 +19,12 @@ dependencies {
 task wholeTest(type: Test, group: 'verification') {
     useJUnit { }
 }
+
+jar{
+    manifest{
+        attributes 'Main-Class': 'Main'
+    }
+    from {
+        configurations.compile.collect {it.isDirectory()? it: zipTree(it)}
+    }
+}

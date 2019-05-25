@@ -1,11 +1,14 @@
+import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -57,13 +60,25 @@ public class WatchGUI implements ActionListener {
         // Setting Font
         try {
             // /build/classes/java/main/DS-DIGIB.TTF
-            this.mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(WatchSystem.class.getResource("").getPath() + "DS-DIGI.TTF"));
+            // Make Jar File
+            String fileName = "DS-DIGI.TTF";
+            InputStream fontSrc = getClass().getResourceAsStream(fileName);
+            InputStream bufferedIn = new BufferedInputStream(fontSrc);
+            this.mainFont = Font.createFont(Font.TRUETYPE_FONT, bufferedIn);
         } catch (Exception e) {
+            // IDE Test
+            try {
+                this.mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(WatchSystem.class.getResource("").getPath() + "DS-DIGI.TTF"));
+            } catch (FontFormatException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
         }
-        mainFont = mainFont.deriveFont(Font.BOLD, 60f);
-        subFont = mainFont.deriveFont(Font.BOLD, 45f);
-        subsubFont = mainFont.deriveFont(Font.BOLD, 40f);
+        mainFont = mainFont.deriveFont(Font.PLAIN, 60f);
+        subFont = mainFont.deriveFont(Font.PLAIN, 45f);
+        subsubFont = mainFont.deriveFont(Font.PLAIN, 40f);
 
         for (int i = 0; i < 4; i++) button[i] = new JButton(String.valueOf((char) ('A' + i)));
 
@@ -71,7 +86,20 @@ public class WatchGUI implements ActionListener {
         JPanel background = new JPanel() {
             public void paintComponent(Graphics g) {
                 // Display image at full size
-                g.drawImage(new ImageIcon("background.jpg").getImage(), 0, 0, null);
+
+                String fileName = "background.jpg";
+                InputStream imgSrc = getClass().getResourceAsStream(fileName);
+                InputStream bufferedIn = new BufferedInputStream(imgSrc);
+                Image image = null;
+                try {
+                    // Make Jar File
+                    image = ImageIO.read(bufferedIn);
+                    g.drawImage(image, 0, 0, null);
+                } catch (IOException e) {
+                    // IDE Test
+                    g.drawImage(new ImageIcon("background.jpg").getImage(), 0, 0, null);
+                    e.printStackTrace();
+                }
                 setOpaque(false);
                 super.paintComponent(g);
             }
