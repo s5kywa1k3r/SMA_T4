@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class WatchGUI implements ActionListener {
-    // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
+    // 0 : Mode Setting, 1 : RealTime, 2 : SettingTime, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
     private int presentModeIndex;
     private int flag;
     private int section;
@@ -168,7 +168,7 @@ public class WatchGUI implements ActionListener {
     }
 
     public void setMode(Object mode) {
-        // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun\
+        // 0 : Mode Setting, 1 : RealTime, 2 : SettingTime, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun\
         switch (mode.getClass().getTypeName()) {
             case "ModeSetting" :
                 presentModeIndex = 0;
@@ -176,7 +176,7 @@ public class WatchGUI implements ActionListener {
             case "RealTime" :
                 presentModeIndex = 1;
                 break;
-            case "TimeSetting" :
+            case "SettingTime" :
                 presentModeIndex = 2;
                 break;
             case "Stopwatch" :
@@ -211,7 +211,7 @@ public class WatchGUI implements ActionListener {
                 showTime[2].setEnabled(isActive);
                 break;
             case 1:             // RealTime
-            case 2:             // TimeSetting
+            case 2:             // SettingTime
                 year.setEnabled(isActive);
                 showDate[0].setEnabled(isActive);
                 showDate[1].setEnabled(isActive);
@@ -295,7 +295,7 @@ public class WatchGUI implements ActionListener {
     public void realtimeGUI(String data) {
         if(++blinkCount > 100) blinkCount = 0;
         switch(presentModeIndex) {
-            // 0 : Mode Setting, 1 : RealTime, 2 : TimeSetting, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
+            // 0 : Mode Setting, 1 : RealTime, 2 : SettingTime, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
             case 0 :
                 year.setText(" MODE ");
                 showDate[0].setText(data.substring(0, 2));
@@ -317,7 +317,7 @@ public class WatchGUI implements ActionListener {
                 showTime[0].setText(data.substring(14, 16));
                 subTime[1].setText(data.substring(16,18));
                 if(presentModeIndex == 2 && blinkCount > 50) {
-                    switch (system.getTimeSettingFlag()) {
+                    switch (system.getSettingTimeFlag()) {
                         case 0: showTime[2].setText("  ");break;
                         case 1: showTime[1].setText("  ");break;
                         case 2: showTime[0].setText("  ");break;
@@ -464,8 +464,8 @@ public class WatchGUI implements ActionListener {
                 }
                 break;
 
-            case 2 : // TimeSetting
-                this.flag = system.getTimeSettingFlag();
+            case 2 : // SettingTime
+                this.flag = system.getSettingTimeFlag();
                 switch(buttonIndex){
                     case 0 : system.nextTimeSection();break;
                     case 1 :
@@ -473,7 +473,7 @@ public class WatchGUI implements ActionListener {
                         else system.increaseTimeSection();
                         break;
                     case 2 :
-                        system.exitTimeSetting();
+                        system.exitSettingTime();
                         system.pressChangeMode();
                         break;
                     case 3 :

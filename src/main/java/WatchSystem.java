@@ -14,7 +14,7 @@ public class WatchSystem {
 
         menu.add(new ModeSetting(this));
         menu.add(new RealTime());
-        menu.add(new TimeSetting((RealTime)menu.get(1)));
+        menu.add(new SettingTime((RealTime)menu.get(1)));
         menu.add(new Stopwatch());
         menu.add(new Timer());
         menu.add(new Alarm((RealTime)menu.get(1)));
@@ -43,9 +43,9 @@ public class WatchSystem {
                     if (this.currMode == i) watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
                     break;
 
-                case "TimeSetting":
-                    // ((TimeSetting) menu).realTimeTaskTimeSetting();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((TimeSetting) menu).showTimeSetting());
+                case "SettingTime":
+                    // ((SettingTime) menu).realTimeTaskSettingTime();
+                    if (this.currMode == i) watchGUI.realtimeGUI(((SettingTime) menu).showSettingTime());
                     break;
 
                 case "Stopwatch":
@@ -118,13 +118,13 @@ public class WatchSystem {
         this.pressChangeMode();
     }
 
-    // Time Setting
-    public void nextTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
-    public void increaseTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestIncreaseTimeSection(); }
-    public void decreaseTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestDecreaseTimeSection(); }
-    public void pressResetSecond(){ ((TimeSetting)this.menu.get(this.currMode)).requestResetSecond(); }
-    public void exitTimeSetting(){ ((TimeSetting)this.menu.get(this.currMode)).requestExitTimeSetting(); }
-    public int getTimeSettingFlag(){ return ((TimeSetting)this.menu.get(this.currMode)).getCurrSection(); }
+    // Setting Time
+    public void nextTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
+    public void increaseTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestIncreaseTimeSection(); }
+    public void decreaseTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestDecreaseTimeSection(); }
+    public void pressResetSecond(){ ((SettingTime)this.menu.get(this.currMode)).requestResetSecond(); }
+    public void exitSettingTime(){ ((SettingTime)this.menu.get(this.currMode)).requestExitSettingTime(); }
+    public int getSettingTimeFlag(){ return ((SettingTime)this.menu.get(this.currMode)).getCurrSection(); }
 
     // Stopwatch
     public void pressStartStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestStartStopwatch(); }
