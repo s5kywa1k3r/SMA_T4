@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ModeSettingTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2019-05-23T14:37:12" hostname="LAPTOP-9B23GGR0" time="0.282">
+  <properties/>
+  <testcase name="requestSelectMode" classname="ModeSettingTest" time="0.003"/>
+  <testcase name="requestNextMode" classname="ModeSettingTest" time="0.0"/>
+  <testcase name="confirmSelectMode" classname="ModeSettingTest" time="0.279"/>
+  <system-out><![CDATA[DS-Digital
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

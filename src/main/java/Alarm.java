@@ -87,9 +87,9 @@ public class Alarm {
         for(int i = 0; i < 4; i++){
             if(this.alarmState[i]){
                 if(
-                    (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
-                    (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
-                    (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
+                        (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
+                                (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
+                                (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
                 )
                 {
                     this.status = 4;
