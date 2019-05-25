@@ -14,7 +14,7 @@ public class RealTime {
         this.realTime = Calendar.getInstance();
         // Calendar Month start 0 => 0: January, 1: February, 2: March, ... , 11: December
         displayRealTimeData = new String[8];
-        this.realTime.clear(); // Initialized to 1970. 1. 1 00:00:00.000
+        //this.realTime.clear(); // Initialized to 1970. 1. 1 00:00:00.000
         this.currSection = 0; // 0: Second, 1: Minute, 2: Hour, 3: Day, 4: Month, 5: Year
         this.is24H = true;
     }

@@ -32,10 +32,10 @@ public class Worldtime {
         };
 
         this.nationTimeZone = new String[]{
-                "Etc/GMT", "Africa/Accra", "Europe/Madrid", "Europe/London", "Europe/Paris", "Etc/GMT+1", "Europe/Berlin",
-                "Europe/Rome", "Europe/Athens", "Etc/GMT+2", "Etc/GMT+2", "Africa/Cairo", "Etc/GMT+3", "Asia/Kabul",
-                "Etc/GMT+5", "Etc/GMT+5", "Asia/Bangkok", "Etc/GMT+8", "Asia/Kuala_Lumpur", "Asia/Seoul", "Australia/Canberra",
-                "Asia/Tokyo", "Canada/Central", "Etc/GMT-5", "Mexico/General", "America/Santiago", "Etc/GMT-3"
+                "Etc/GMT", "Africa/Accra", "Europe/Madrid", "Europe/London", "Europe/Paris", "Etc/GMT-1", "Europe/Berlin",
+                "Europe/Rome", "Europe/Athens", "Etc/GMT-2", "Etc/GMT-3", "Africa/Cairo", "Etc/GMT-3", "Asia/Kabul",
+                "Etc/GMT-5", "IST", "Asia/Bangkok", "Etc/GMT-8", "Asia/Kuala_Lumpur", "Asia/Seoul", "Australia/Canberra",
+                "Asia/Tokyo", "Etc/GMT+4", "Etc/GMT+4", "Mexico/General", "America/Santiago", "Etc/GMT+3"
         };
 
         this.displayWTData = new String[9];
@@ -59,6 +59,19 @@ public class Worldtime {
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
         );
+
+        for(int i = 0; i < 27; i++){
+            this.currNation = i;
+            this.realTimeTaskWorldtime();
+            System.out.printf("[%s, %s]: %dY %dM %dD %dH %dM\n",
+                    this.nation[i], this.nationTimeZone[i],
+                    this.worldTime.get(Calendar.YEAR),
+                    this.worldTime.get(Calendar.MONTH),
+                    this.worldTime.get(Calendar.DATE),
+                    this.worldTime.get(Calendar.HOUR_OF_DAY),
+                    this.worldTime.get(Calendar.MINUTE)
+            );
+        }
     }
 
     // [ModeDB] Methods
@@ -92,11 +105,29 @@ public class Worldtime {
     public void nextNation() {
         if (++this.currNation == this.maxNation)
             this.currNation = 0;
+
+        System.out.println("[nextNation]: " +  this.nation[this.currNation] +", " + this.nationTimeZone[this.currNation]);
+        System.out.printf("%dY %dM %dD %dH %dM\n", this.worldTime.get(Calendar.YEAR),
+                this.worldTime.get(Calendar.MONTH),
+                this.worldTime.get(Calendar.DATE),
+                this.worldTime.get(Calendar.HOUR_OF_DAY),
+                this.worldTime.get(Calendar.MINUTE)
+        );
+        System.out.println();
     }
 
     public void prevNation() {
         if (--this.currNation == -1)
             this.currNation = this.maxNation - 1;
+        System.out.println("[prevNation]: " +  this.nation[this.currNation] +", " + this.nationTimeZone[this.currNation]);
+        System.out.printf("%dY %dM %dD %dH %dM\n",
+                this.worldTime.get(Calendar.YEAR),
+                this.worldTime.get(Calendar.MONTH),
+                this.worldTime.get(Calendar.DATE),
+                this.worldTime.get(Calendar.HOUR_OF_DAY),
+                this.worldTime.get(Calendar.MINUTE)
+        );
+        System.out.println();
     }
 
     /* [Remove] public void changeSummerTime(){ } */
@@ -113,12 +144,14 @@ public class Worldtime {
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
         );
+
         this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[19]));
     }
 
     // [WatchGUI]
     // void -> String
     public String[] showWorldTime() {
+
         if(blink++ > 100) blink = 0;
 
         displayWTData[0] = this.worldTime.get(Calendar.YEAR) + "";
