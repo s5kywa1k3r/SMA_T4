@@ -19,6 +19,7 @@ public class Bell extends Thread{
     }
 
     public void play() {
+        clip.loop(1);
         this.run();
     }
 
@@ -26,7 +27,6 @@ public class Bell extends Thread{
         clip.stop();
     }
     public void run() {
-        clip.loop(-1);
         clip.start();
     }
 

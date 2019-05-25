@@ -468,10 +468,7 @@ public class WatchGUI implements ActionListener {
                     case 1 :
                         if(this.flag == 0) system.pressStartTimer();
                         else if(this.flag == 1) system.pressStopTimer();
-                        else if(this.flag == 3) {
-                            System.out.println("Yes flag is 3");
-                            system.pressStopRingingTimer();
-                        }
+                        else if(this.flag == 3) system.pressStopRingingTimer();
                         else system.increaseTimerTimeSection();
                         break;
                     case 2 :
@@ -498,12 +495,12 @@ public class WatchGUI implements ActionListener {
                         else system.increaseAlarmTime();
                         break;
                     case 2 :
-                        if(flag != 0) system.exitSetAlarmSetting();
-                        else system.pressChangeMode();
+                        if(flag != 0 && flag != 4) system.exitSetAlarmSetting();
+                        else if(flag == 0) system.pressChangeMode();
                         break;
                     case 3 :
                         if(flag == 0) system.pressNextAlarm();
-                        else system.decreaseAlarmTime();
+                        else if(flag != 4) system.decreaseAlarmTime();
                         break;
                     default: break;
                 }
