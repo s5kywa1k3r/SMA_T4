@@ -96,7 +96,6 @@ public class ModeSetting {
                 if (newMode.equals(oldMode)) flag = true;
 
             if (flag == true) {
-                System.out.println(newMode);
                 confirmMode.add(this.prevModeObject.get(this.prevMode.indexOf(newMode)));
                 this.prevMode.set(this.prevMode.indexOf(newMode), null);
             }

@@ -98,7 +98,7 @@ public class RealTime {
             case 5: // Year
                 this.realTime.add(Calendar.YEAR, -1);
                 if(this.realTime.get(Calendar.YEAR) < 1970)
-                    this.realTime.set(Calendar.YEAR, 1970);
+                   this.realTime.set(Calendar.YEAR, 1970);
                 break;
 
             default:

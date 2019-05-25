@@ -96,10 +96,10 @@ public class Alarm {
                     this.status = 4;
                     if(RingingIndex != -1) {
                         // If Alarm is already Ringing, should be change to other one
-                        bell[RingingIndex-1].pause();
+                        requestStopRinging();
                     }
                     RingingIndex = bellIndex[i];
-                    bell[RingingIndex-1].play(30);
+                    bell[RingingIndex-1].play();
                     if(tmpRepeat[i]-- > 0) {
                         alarm[i].add(Calendar.MINUTE, frequency[i].get(Calendar.MINUTE));
                         alarm[i].add(Calendar.SECOND, frequency[i].get(Calendar.SECOND));
@@ -190,7 +190,9 @@ public class Alarm {
                 if(++bellIndex[this.currAlarm] == 5) {
                     bellIndex[this.currAlarm] = 1;
                 }
-                bell[bellIndex[this.currAlarm]-1].play(3);
+                bell[bellIndex[this.currAlarm]-1].play();
+                try{Thread.sleep( 3000);} catch (InterruptedException e) {}
+                bell[bellIndex[this.currAlarm]-1].pause();
                 break;
             default:
                 break;
@@ -242,7 +244,9 @@ public class Alarm {
                 if(--bellIndex[this.currAlarm] == 0) {
                     bellIndex[this.currAlarm] = 4;
                 }
-                bell[bellIndex[this.currAlarm]-1].play(3);
+                bell[bellIndex[this.currAlarm]-1].play();
+                try{Thread.sleep( 3000);} catch (InterruptedException e) {}
+                bell[bellIndex[this.currAlarm]-1].pause();
                 break;
             default:
                 break;
