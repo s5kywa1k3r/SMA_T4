@@ -9,26 +9,26 @@ public class WatchSystem {
     private int currMode;
     private int maxCnt;
     private WatchGUI watchGUI;
-    private int flag;
     public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.menu = new ArrayList(){};
+
         menu.add(new ModeSetting(this));
         menu.add(new RealTime());
         menu.add(new TimeSetting((RealTime)menu.get(1)));
         menu.add(new Stopwatch());
         menu.add(new Timer());
         menu.add(new Alarm((RealTime)menu.get(1)));
-       // menu.add(new Worldtime((RealTime)menu.get(1)));
-       // menu.add(new Sun((RealTime)menu.get(1)));
-        this.currMode = 1; // [currMode] 0: Always RealTime
+
+        this.currMode = 1; // [currMode] 1: Always RealTime
         this.maxCnt = 4;
+
         watchGUI = new WatchGUI(this);
         watchGUI.setMode(menu.get(1));
         watchGUI.designMode(true);
-        this.flag = -1;
     }
 
 
+    // [WatchSystem] System Method
     // Worked by thread
     public void realTimeTask() {
         if(this.currMode == 0)
@@ -44,7 +44,7 @@ public class WatchSystem {
                     break;
 
                 case "TimeSetting":
-                    ((TimeSetting) menu).realTimeTaskTimeSetting();
+                    // ((TimeSetting) menu).realTimeTaskTimeSetting();
                     if (this.currMode == i) watchGUI.realtimeGUI(((TimeSetting) menu).showTimeSetting());
                     break;
 
@@ -87,25 +87,23 @@ public class WatchSystem {
         watchGUI.setMode(menu.get(this.currMode));
         watchGUI.designMode(true);
     }
+
+    /* [Remove] public void callNextMode(){} */
+    // RealTime
+    public void pressShowType() { ((RealTime)this.menu.get(1)).requestChangeType();}
+
+    // Mode Setting
     public void enterModeSetting(){
         watchGUI.designMode(false);
         this.currMode = 0;
-        ((ModeSetting)this.menu.get(0)).requestModeEnterSetting();
+        ((ModeSetting)this.menu.get(0)).requestModeSetting();
         watchGUI.setMode(menu.get(this.currMode));
         watchGUI.designMode(true);
     }
-    /*
-    public void callNextMode(){
-        if(++this.currMode == this.maxCnt)
-            this.currMode = 0; // 0: RealTime
-    }
-    */
-    // RealTime
-    public void pressShowType() { ((RealTime)this.menu.get(1)).requestChangeType();}
-    // Mode Setting
+
     public void pressNextMode(){ ((ModeSetting)this.menu.get(0)).requestNextMode(); }
     public void pressSelectMode(){ ((ModeSetting)this.menu.get(0)).requestSelectMode(); }
-    public void confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public void pressConfirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList newList = ((ModeSetting)this.menu.get(0)).confirmSelectMode();
         this.maxCnt = 0;
         for(int i = 0; i < 4; i++) {
@@ -119,7 +117,6 @@ public class WatchSystem {
         }
         this.pressChangeMode();
     }
-    //public void exitSelectMode(){ }
 
     // Time Setting
     public void nextTimeSection(){ ((TimeSetting)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
@@ -154,6 +151,15 @@ public class WatchSystem {
     public void nextAlarmTimeSection(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection();}
     public void increaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).increaseSection(); }
     public void decreaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).decreaseSection(); }
+    /* [Remove] public void enterSetAlarmFrequency(){} */
+    /* [Remove] public void nextFrequencySection(){} */
+    /* [Remove] public void increaseCount(){} */
+    /* [Remove] public void increaseFrequency(){}*/
+    /* [Remove] public void decreaseCount(){} */
+    /* [Remove] public void decreaseFrequency(){} */
+    /* [Remove] public void enterSetAlarmBell(){} */
+    /* [Remove] public void nextBell(){} */
+    /* [Remove] public void prevBell(){} */
     public void pressNextAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestNextAlarm(); }
     public void pressStopRingingAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestStopRinging(); }
     public void pressAlarmOnOff(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmOnOff(); }
@@ -162,14 +168,14 @@ public class WatchSystem {
     public int getAlarmSection(){ return ((Alarm)this.menu.get(this.currMode)).getCurrSection(); }
 
     // Worldtime
-    public void nextWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).nextNation(); }
-    public void prevWorldtimeCity(){ ((Worldtime)this.menu.get(this.currMode)).prevNation(); }
-    //public void pressSummerTime(){ ((Worldtime)this.menu.get(this.currMode)).changeSummerTime(); }
+    public void nextWorldtimeNation(){ ((Worldtime)this.menu.get(this.currMode)).nextNation(); }
+    public void prevWorldtimeNation(){ ((Worldtime)this.menu.get(this.currMode)).prevNation(); }
+    /* [Remove] public void pressSummerTime(){} */
 
     // Sun
     public void pressSetRise(){ ((Sun)this.menu.get(this.currMode)).requestSetRise(); }
-    public void nextSunCity(){ ((Sun)this.menu.get(this.currMode)).requestNextNation(); }
-    public void prevSunCity(){ ((Sun)this.menu.get(this.currMode)).requestPrevNation(); }
+    public void nextSunNation(){ ((Sun)this.menu.get(this.currMode)).requestNextNation(); }
+    public void prevSunNation(){ ((Sun)this.menu.get(this.currMode)).requestPrevNation(); }
 
     // Getters and Setters
     public ArrayList getMenu(){ return this.menu; }

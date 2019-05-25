@@ -11,27 +11,5 @@ public class ModeDB {
     }
 
     public ArrayList loadData(int index){ return this.db.get(index); }
-    public void saveData(int index, ArrayList data){
-     /*
-        switch(index){
-            case 0: // 0: Stopwatch
-                System.out.println("this.stpTime: " + ((Calendar)data.get(0)).getTimeInMillis());
-                System.out.println("this.splitTime: " + ((Calendar)data.get(1)).getTimeInMillis());
-                break;
-            case 1: // 1: Timer
-                break;
-            case 2: // 2: Alarm
-                break;
-            case 3: // 3: Worldtime
-                break;
-            case 4: // 4: sun
-                break;
-            default:
-                break;
-
-        }
-
-      */
-        this.db.set(index, data);
-    }
+    public void saveData(int index, ArrayList data){ this.db.set(index, data); }
 }

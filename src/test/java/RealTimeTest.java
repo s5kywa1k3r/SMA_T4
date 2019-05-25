@@ -7,18 +7,20 @@ import static org.junit.Assert.assertEquals;
 public class RealTimeTest {
 
     @Test
-    public void getCurrSection(){
+    public void setSecond() {
         RealTime realTime = new RealTime();
-        assertEquals(0, realTime.getCurrSection());
+        realTime.setSecond(31); // 0 -> 31
+        assertEquals(31,realTime.requestRealTime().get(Calendar.SECOND));
+        assertEquals(0, realTime.requestRealTime().get(Calendar.MILLISECOND));
     }
 
     @Test
     public void nextSection() {
         RealTime realTime = new RealTime();
-        realTime.setCurrSection(5);
-        realTime.nextSection(); // 5: Year -> 0: Second
-        realTime.nextSection(); // 0: Second -> 1: Minute
-        assertEquals(1, realTime.getCurrSection());
+        realTime.setCurrSection(5); // [currSection] 0: Second -> 5: Year / Last Section
+        realTime.nextSection(); // [currSection] 5: Year -> 0: Second
+        realTime.nextSection(); // [currSection] 0: Second -> 1: Minute
+        assertEquals(1, realTime.getCurrSection()); // [currSection] 1: Minute
     }
 
     @Test
@@ -122,13 +124,6 @@ public class RealTimeTest {
         assertEquals(1970, realTime.requestRealTime().get(Calendar.YEAR));
     }
 
-    @Test
-    public void setSecond() {
-        RealTime realTime = new RealTime();
-        realTime.setSecond(31);
-        assertEquals(31,realTime.requestRealTime().get(Calendar.SECOND));
-        assertEquals(0, realTime.requestRealTime().get(Calendar.MILLISECOND));
-    }
 
     @Test
     public void calculateTime() {
@@ -146,7 +141,9 @@ public class RealTimeTest {
         assertEquals(2019, realTime.requestRealTime().get(Calendar.YEAR));
     }
 
+    /*
     @Test
     public void showRealTime() {
     }
+    */
 }
