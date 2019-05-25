@@ -148,10 +148,8 @@ public class Timer {
 
     public ArrayList getTimerData(){
         ArrayList data = new ArrayList();
-
         data.add(this.timerTime);
         data.add(this.rsvTime);
-
         return data;
     }
 

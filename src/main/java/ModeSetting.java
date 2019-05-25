@@ -18,6 +18,7 @@ public class ModeSetting {
     private String[] shortNameMode;
 
     private int currIndex;
+    private int blink;
 
     public ModeSetting(){
         this.sys = null;
@@ -156,11 +157,18 @@ public class ModeSetting {
 
     public String showModeSetting() {
         String data = "";
-        for(int i = 0; i< newMode.size(); i++) {
-            data += shortNameMode[menu_all.indexOf(newMode.get(i))];
-        }
-        for(int i = newMode.size(); i < 4; i++) {
-            data += "__";
+        if(blink++ > 100)  blink = 0;
+
+        for(int i = 0; i< 4; i++) {
+            if(i < newMode.size()) {
+                data += shortNameMode[menu_all.indexOf(newMode.get(i))];
+            }
+            else if (blink > 50 && i == newMode.size()){
+                data += "  ";
+            }
+            else {
+                data += "__";
+            }
         }
         if(menu_all.get(currIndex).length() > 6) {
             data += menu_all.get(currIndex).substring(0, 6);

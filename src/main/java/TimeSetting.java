@@ -1,6 +1,7 @@
 public class TimeSetting {
 
     private RealTime realTime;
+    private int blink;
     public TimeSetting(){
         this.realTime = null;
     }
@@ -24,6 +25,13 @@ public class TimeSetting {
     public void setRealTime(RealTime realTime) { this.realTime = realTime; }
     public int getCurrSection() { return this.realTime.getCurrSection(); }
     public String showTimeSetting() {
-        return realTime.showRealTime() + getCurrSection();
+        String data = realTime.showRealTime();
+        if(blink++ > 100) blink = 0;
+        if (blink > 50) {
+            switch (getCurrSection()) {
+                case 0: data += 
+            }
+        }
+        return data;
     }
 }
