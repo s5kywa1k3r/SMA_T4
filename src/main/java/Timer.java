@@ -1,3 +1,6 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -5,32 +8,32 @@ public class Timer {
 
     private Calendar timerTime;
     private Calendar rsvTime;
-
+    private Bell bell;
+    private String [] displayTimerData;
     private int status; // 0: Stopped, 1: Continued, 2: Setting, 3: Ringing
-    private int currSection = 0; // 0: Second, 1: Minute, 2: Hour
+    private int currSection; // 0: Second, 1: Minute, 2: Hour
+    private int blink;
 
     // Constructors
-    public Timer(){
+    public Timer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.timerTime = Calendar.getInstance();
         this.timerTime.clear();
 
         this.rsvTime = Calendar.getInstance();
         this.rsvTime.clear();
-
+        this.bell = new Bell(0);
+        this.displayTimerData = new String[3];
         this.status = 0;
         this.currSection = 0;
     }
 
     // [ModeDB] Methods
     // Load Data from ModeDB
-    public Timer(ArrayList db){
+    public Timer(ArrayList db) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this();
         if(db != null){
             this.timerTime = (Calendar)db.get(0);
             this.rsvTime = (Calendar)db.get(1);
-
-            this.status = 0;
-            this.currSection = 0;
         }
     }
 
@@ -125,21 +128,32 @@ public class Timer {
 
     /* [Removed] public void setTimerReservatedTime() */
     /* [Removed] public void setTimerTime() */
-    public void ringOff(){ this.status = 0; } // [status] 3: Ringing -> 0: Stopped
+    public void ringOff(){
+        System.out.println("Ring off operation activated");
+        bell.pause();
+        this.status = 0;
+    } // [status] 3: Ringing -> 0: Stopped
     // public -> private
-    private void startRingingTimer(){ this.status = 3; } //  [status] 1: Continued -> 3: Ringing
+    private void startRingingTimer(){
+        System.out.println("String ringing");
+        this.status = 3;
+        bell.play();
+    } //  [status] 1: Continued -> 3: Ringing
 
     public void realTimeTimerTask(){
         if(this.timerTime.getTimeInMillis() > -32400000) { // If timer is not expired
             if (this.status == 1) { // [status] 1: Continued
                 this.timerTime.add(Calendar.MILLISECOND, -10);
-                if (this.timerTime.getTimeInMillis() == -32400000) // IF timer is expired
+                if (this.timerTime.getTimeInMillis() == -32400000)  // IF timer is expired
                     this.startRingingTimer(); // Ring
             }
         }
-
         // else if timer is already expired
         else if(this.status <= 1) this.status = 0; // [status] 1: Continued -> 0: Stopped
+
+        if(status == 3 && !bell.isRunning()){
+            status = 0;
+        }
     }
 
     public void requestExitSetTimerTime(){
@@ -152,19 +166,26 @@ public class Timer {
 
     // [WatchGUI]
     // void -> String
-    public String showTimer(){
-        String data = "";
+    public String[] showTimer(){
+        if(blink++ > 100) blink = 0;
         if(this.status == 2) {
-            data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
-            data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
-            data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
+            displayTimerData[0] = (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
+            displayTimerData[1] = (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
+            displayTimerData[2] = (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
+            if(blink > 50) {
+                switch (this.currSection) {
+                    case 0: displayTimerData[2] = "";break;
+                    case 1: displayTimerData[1] = "";break;
+                    case 2: displayTimerData[0] = "";break;
+                }
+            }
         }
         else {
-            data += (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);
-            data += (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
-            data += (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
+            displayTimerData[0] = (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);
+            displayTimerData[1] = (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
+            displayTimerData[2] = (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
         }
-        return data;
+        return displayTimerData;
     }
 
     public int requestTimerFlag(){ return this.status; }

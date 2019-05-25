@@ -9,8 +9,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Bell extends Thread{
     private Clip clip;
-    private int sec;
-    private boolean isContinue = false;
     private AudioInputStream audioInputStream;
 
     public Bell(int index) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
@@ -20,20 +18,17 @@ public class Bell extends Thread{
         clip.open(audioInputStream);
     }
 
-    public void play(int sec) {
-        this.sec = sec;
-        isContinue = true;
+    public void play() {
         this.run();
     }
+
     public void pause() {
-        System.out.println("is Paused?");
-        isContinue = false;
         clip.stop();
     }
     public void run() {
-        long time = System.currentTimeMillis();
+        clip.loop(-1);
         clip.start();
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-        while(System.currentTimeMillis() - time < (1000 * sec) && isContinue) { }
     }
+
+    public boolean isRunning() {return clip.isActive();}
 }

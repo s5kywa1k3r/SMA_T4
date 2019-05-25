@@ -13,6 +13,7 @@ public class Alarm {
     private Calendar[] alarm;
     private Calendar[] frequency;
     private Bell[] bell;
+    private String[] displayAlarmData;
     private int [] repeat;
     private int [] tmpRepeat;
     private int RingingIndex;          // -1: not Activated, 1~4 : index of Ringing Bell
@@ -22,6 +23,7 @@ public class Alarm {
     private int status; // 0: List, 1: Alarm Time Setting, 2: Alarm Frequency, 3: Alarm Bell Setting, 4: Ringing
     private int currSection; // 0: Minute, 1: Hour, 2: Frequency_Second, 3: Frequency_Minute, 4: Count, 5: Bell
     private int currAlarm;
+    private int blink;
 
     public Alarm(RealTime realTime) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.reservedAlarm = new Calendar[4];
@@ -47,6 +49,7 @@ public class Alarm {
             this.bell[i] = new Bell(i+1);
         }
 
+        this.displayAlarmData = new String[8];
         this.repeat = new int[]{1,1,1,1};
         this.tmpRepeat = new int[]{1,1,1,1};                // To protect repeat from ringing Again, -1: stop Call again
         this.bellIndex = new int[]{1,1,1,1};
@@ -93,10 +96,10 @@ public class Alarm {
                     this.status = 4;
                     if(RingingIndex != -1) {
                         // If Alarm is already Ringing, should be change to other one
-                        bell[RingingIndex-1].pause();
+                        requestStopRinging();
                     }
                     RingingIndex = bellIndex[i];
-                    bell[RingingIndex-1].play(30);
+                    bell[RingingIndex-1].play();
                     if(tmpRepeat[i]-- > 0) {
                         alarm[i].add(Calendar.MINUTE, frequency[i].get(Calendar.MINUTE));
                         alarm[i].add(Calendar.SECOND, frequency[i].get(Calendar.SECOND));
@@ -187,7 +190,9 @@ public class Alarm {
                 if(++bellIndex[this.currAlarm] == 5) {
                     bellIndex[this.currAlarm] = 1;
                 }
-                bell[bellIndex[this.currAlarm]-1].play(3);
+                bell[bellIndex[this.currAlarm]-1].play();
+                try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
+                bell[bellIndex[this.currAlarm]-1].pause();
                 break;
             default:
                 break;
@@ -239,7 +244,9 @@ public class Alarm {
                 if(--bellIndex[this.currAlarm] == 0) {
                     bellIndex[this.currAlarm] = 4;
                 }
-                bell[bellIndex[this.currAlarm]-1].play(3);
+                bell[bellIndex[this.currAlarm]-1].play();
+                try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
+                bell[bellIndex[this.currAlarm]-1].pause();
                 break;
             default:
                 break;
@@ -265,25 +272,36 @@ public class Alarm {
         }
     }
     public void requestAlarmOnOff(){ this.alarmState[this.currAlarm] = !this.alarmState[this.currAlarm]; }
-    
-    public String showAlarm(){
-        String data = "";
-        data += this.repeat[this.currAlarm];
-        data += "0"+this.frequency[this.currAlarm].get(Calendar.MINUTE);
-        data += (this.frequency[this.currAlarm].get(Calendar.SECOND) < 10 ? "0" : "") + this.frequency[this.currAlarm].get(Calendar.SECOND);
-        data += (this.alarm[this.currAlarm].get(Calendar.MINUTE) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.MINUTE);
-        data += this.bellIndex[this.currAlarm];
-        if(alarmState[this.currAlarm]) data += "1";
-        else data += "0";
+
+    // String -> String[]
+    public String[] showAlarm(){
+        if(blink++ > 100) blink = 0;
+        displayAlarmData[0] = this.repeat[this.currAlarm] + "";
+        displayAlarmData[1] = "0"+this.frequency[this.currAlarm].get(Calendar.MINUTE);
+        displayAlarmData[2] = (this.frequency[this.currAlarm].get(Calendar.SECOND) < 10 ? "0" : "") + this.frequency[this.currAlarm].get(Calendar.SECOND);
+        displayAlarmData[3] = (this.alarm[this.currAlarm].get(Calendar.MINUTE) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.MINUTE);
+        displayAlarmData[4] = this.bellIndex[this.currAlarm] + "";
+        if(alarmState[this.currAlarm]) displayAlarmData[5] = "ON";
+        else displayAlarmData[5] = "OFF";
         if(this.realTime.isIs24H()) {
-            data += (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY);
-            data += "  ";
+            displayAlarmData[6] = (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY);
+            displayAlarmData[7] = "";
         }
         else {
-            data += (this.alarm[this.currAlarm].get(Calendar.HOUR) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR);
-            data += (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            displayAlarmData[6] = (this.alarm[this.currAlarm].get(Calendar.HOUR) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR);
+            displayAlarmData[7] = (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
         }
-        return data;
+        if(this.status != 0 && this.status != 4 &&  blink > 50) {
+            switch (currSection) {
+                case 0: displayAlarmData[3] = ""; break;
+                case 1: displayAlarmData[6] = ""; break;
+                case 2: displayAlarmData[2] = ""; break;
+                case 3: displayAlarmData[1] = ""; break;
+                case 4: displayAlarmData[0] = " "; break;
+                case 5: displayAlarmData[4] = ""; break;
+            }
+        }
+        return displayAlarmData;
     }
 
     public int requestAlarmFlag(){ return this.status; }

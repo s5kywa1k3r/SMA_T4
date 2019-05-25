@@ -1,9 +1,13 @@
+// Make Simplify
 public class SettingTime {
 
     private RealTime realTime;
-
+    private int blink;
+    private String [] displaySettingTimeData;
     // Constructor
-    public SettingTime(RealTime realTime){ this.realTime = realTime; }
+    public SettingTime(RealTime realTime){
+        this.realTime = realTime;
+    }
 
     // [SettingTime] System Methods
     public void requestPointNextTimeSection(){ this.realTime.nextSection(); }
@@ -14,8 +18,23 @@ public class SettingTime {
     /* [Remove] public void realTimeTaskSettingTime(){ }*/
 
     // [WatchGUI]
-    // void -> String
-    public String showSettingTime() { return realTime.showRealTime() + this.getCurrSection(); }
+    // String -> String []
+    public String[] showSettingTime() {
+        if(blink ++ > 100) blink = 0;
+        if(blink > 50) {
+            displaySettingTimeData =  realTime.showRealTime();
+            switch (realTime.getCurrSection()) {
+                case 0: displaySettingTimeData[5] = ""; break;
+                case 1: displaySettingTimeData[4] = ""; break;
+                case 2: displaySettingTimeData[6] = ""; break;
+                case 3: displaySettingTimeData[3] = ""; break;
+                case 4: displaySettingTimeData[2] = ""; break;
+                case 5: displaySettingTimeData[0] = ""; break;
+            }
+            return displaySettingTimeData;
+        }
+        else return realTime.showRealTime();
+    }
 
     // Getters and Setters
     //public RealTime getRealTime() { return realTime; }

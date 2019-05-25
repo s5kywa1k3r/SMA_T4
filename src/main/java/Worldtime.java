@@ -13,7 +13,9 @@ public class Worldtime {
     // All City -> Nation
     private String[] nation;
     private String[] nationTimeZone;
+    private String [] displayWTData;
 
+    private int blink;
     private int currNation;
     private int maxNation = 27;
 
@@ -30,12 +32,13 @@ public class Worldtime {
         };
 
         this.nationTimeZone = new String[]{
-                "Etc/GMT", "Africa/Accra", "Europe/Madrid", "Europe/London", "Europe/Paris", "Etc/GMT+1", "Europe/Berlin",
-                "Europe/Rome", "Europe/Athens", "Etc/GMT+2", "Etc/GMT+2", "Africa/Cairo", "Etc/GMT+3", "Asia/Kabul",
-                "Etc/GMT+5", "Etc/GMT+5", "Asia/Bangkok", "Etc/GMT+8", "Asia/Kuala_Lumpur", "Asia/Seoul", "Australia/Canberra",
-                "Asia/Tokyo", "Canada/Central", "Etc/GMT-5", "Mexico/General", "America/Santiago", "Etc/GMT-3"
+                "Etc/GMT", "Africa/Accra", "Europe/Madrid", "Europe/London", "Europe/Paris", "Etc/GMT-1", "Europe/Berlin",
+                "Europe/Rome", "Europe/Athens", "Etc/GMT-2", "Etc/GMT-3", "Africa/Cairo", "Etc/GMT-3", "Asia/Kabul",
+                "Etc/GMT-5", "IST", "Asia/Bangkok", "Etc/GMT-8", "Asia/Kuala_Lumpur", "Asia/Seoul", "Australia/Canberra",
+                "Asia/Tokyo", "Etc/GMT+4", "Etc/GMT+4", "Mexico/General", "America/Santiago", "Etc/GMT+3"
         };
 
+        this.displayWTData = new String[9];
         this.currNation = 19; // Initial City => 19: Asia/Seoul
     }
 
@@ -56,6 +59,19 @@ public class Worldtime {
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
         );
+
+        for(int i = 0; i < 27; i++){
+            this.currNation = i;
+            this.realTimeTaskWorldtime();
+            System.out.printf("[%s, %s]: %dY %dM %dD %dH %dM\n",
+                    this.nation[i], this.nationTimeZone[i],
+                    this.worldTime.get(Calendar.YEAR),
+                    this.worldTime.get(Calendar.MONTH),
+                    this.worldTime.get(Calendar.DATE),
+                    this.worldTime.get(Calendar.HOUR_OF_DAY),
+                    this.worldTime.get(Calendar.MINUTE)
+            );
+        }
     }
 
     // [ModeDB] Methods
@@ -89,11 +105,29 @@ public class Worldtime {
     public void nextNation() {
         if (++this.currNation == this.maxNation)
             this.currNation = 0;
+
+        System.out.println("[nextNation]: " +  this.nation[this.currNation] +", " + this.nationTimeZone[this.currNation]);
+        System.out.printf("%dY %dM %dD %dH %dM\n", this.worldTime.get(Calendar.YEAR),
+                this.worldTime.get(Calendar.MONTH),
+                this.worldTime.get(Calendar.DATE),
+                this.worldTime.get(Calendar.HOUR_OF_DAY),
+                this.worldTime.get(Calendar.MINUTE)
+        );
+        System.out.println();
     }
 
     public void prevNation() {
         if (--this.currNation == -1)
             this.currNation = this.maxNation - 1;
+        System.out.println("[prevNation]: " +  this.nation[this.currNation] +", " + this.nationTimeZone[this.currNation]);
+        System.out.printf("%dY %dM %dD %dH %dM\n",
+                this.worldTime.get(Calendar.YEAR),
+                this.worldTime.get(Calendar.MONTH),
+                this.worldTime.get(Calendar.DATE),
+                this.worldTime.get(Calendar.HOUR_OF_DAY),
+                this.worldTime.get(Calendar.MINUTE)
+        );
+        System.out.println();
     }
 
     /* [Remove] public void changeSummerTime(){ } */
@@ -110,29 +144,32 @@ public class Worldtime {
                 this.currTime.get(Calendar.MINUTE),
                 this.currTime.get(Calendar.SECOND)
         );
+
         this.currTime.setTimeZone(TimeZone.getTimeZone(this.nationTimeZone[19]));
     }
 
     // [WatchGUI]
     // void -> String
-    public String showWorldTime() {
-        String data = "";
-        data += this.worldTime.get(Calendar.YEAR);
-        data += this.worldTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
-        data += (this.worldTime.get(Calendar.MONTH) < 9 ? "0" : "") + (this.worldTime.get(Calendar.MONTH)+1);
-        data += (this.worldTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.worldTime.get(Calendar.DAY_OF_MONTH);
-        data += (this.worldTime.get(Calendar.MINUTE) < 10 ? "0" : "")+this.worldTime.get(Calendar.MINUTE);
-        data += (this.worldTime.get(Calendar.SECOND) < 10 ? "0" : "")+this.worldTime.get(Calendar.SECOND);
+    public String[] showWorldTime() {
+
+        if(blink++ > 100) blink = 0;
+
+        displayWTData[0] = this.worldTime.get(Calendar.YEAR) + "";
+        displayWTData[1] = this.worldTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
+        displayWTData[2] = (this.worldTime.get(Calendar.MONTH) < 9 ? "0" : "") + (this.worldTime.get(Calendar.MONTH)+1);
+        displayWTData[3] = (this.worldTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.worldTime.get(Calendar.DAY_OF_MONTH);
+        displayWTData[4] = (this.worldTime.get(Calendar.MINUTE) < 10 ? "0" : "")+this.worldTime.get(Calendar.MINUTE);
+        displayWTData[5] = (this.worldTime.get(Calendar.SECOND) < 10 ? "0" : "")+this.worldTime.get(Calendar.SECOND);
         if(this.realTime.isIs24H()) {
-            data += (this.worldTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR_OF_DAY);
-            data += "  ";
+            displayWTData[6] = (this.worldTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR_OF_DAY);
+            displayWTData[7] = "";
         }
         else {
-            data += (this.worldTime.get(Calendar.HOUR) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR);
-            data += (this.worldTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            displayWTData[6] = (this.worldTime.get(Calendar.HOUR) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR);
+            displayWTData[7] = (this.worldTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
         }
-        data += (this.nation[this.currNation]);
-        return data;
+        displayWTData[8] = (this.nation[this.currNation]);
+        return displayWTData;
     }
 
     // Getters and Setters for Unit Test

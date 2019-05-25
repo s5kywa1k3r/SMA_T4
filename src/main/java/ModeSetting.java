@@ -13,8 +13,10 @@ public class ModeSetting {
     private ArrayList<Object> prevModeObject;
 
     private String[] shortNameMode;
+    private String[] displayModeData;
 
     private int currIndex;
+    private int blink;
 
     public ModeSetting(){
         this.sys = null;
@@ -25,6 +27,7 @@ public class ModeSetting {
         this.newMode = new ArrayList<String>();
         this.prevModeObject = new ArrayList();
         this.shortNameMode = new String[] {"SW", "TM", "AL", "WT", "SU", "TS"};
+        this.displayModeData = new String[5];
 
         this.menu_all.add("Stopwatch");
         this.menu_all.add("Timer");
@@ -88,7 +91,6 @@ public class ModeSetting {
                 if (newMode.equals(oldMode)) flag = true;
 
             if (flag == true) {
-                System.out.println(newMode);
                 confirmMode.add(this.prevModeObject.get(this.prevMode.indexOf(newMode)));
                 this.prevMode.set(this.prevMode.indexOf(newMode), null);
             }
@@ -125,26 +127,23 @@ public class ModeSetting {
 
 
     // [WatchGUI]
-    // void -> String
-    public String showModeSetting() {
-        String data = "";
-        for(int i = 0; i< newMode.size(); i++) {
-            data += shortNameMode[menu_all.indexOf(newMode.get(i))];
-        }
-        for(int i = newMode.size(); i < 4; i++) {
-            data += "__";
-        }
-        if(menu_all.get(currIndex).length() > 6) {
-            data += menu_all.get(currIndex).substring(0, 6);
-        }
-        else if(menu_all.get(currIndex).length() < 4) {
-            data += menu_all.get(currIndex);
-            for(int i =0 ;  i <(6 - menu_all.get(currIndex).length()); i++) {
-                data += " ";
+    // String -> String []
+    public String[] showModeSetting() {
+        if(blink++ > 100)  blink = 0;
+
+        for(int i = 0; i< 4; i++) {
+            if(i < newMode.size()) {
+                displayModeData[i] = shortNameMode[menu_all.indexOf(newMode.get(i))];
+            }
+            else if (blink > 50 && i == newMode.size()){
+                displayModeData[i] = "  ";
+            }
+            else {
+                displayModeData[i] = "__";
             }
         }
-        else data += menu_all.get(currIndex);
-        return data;
+        displayModeData[4] = menu_all.get(currIndex);
+        return displayModeData;
     }
 
     // Getters and Setters for Unit Test

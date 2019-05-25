@@ -6,6 +6,7 @@ public class Stopwatch {
     private Calendar stpTime;
     private Calendar splitTime;
 
+    private String[] displaySWData;
     // boolean -> int
     private int status; // [status] 0: Stopped, 1: Continued
 
@@ -16,7 +17,7 @@ public class Stopwatch {
 
         this.splitTime = Calendar.getInstance();
         this.splitTime.clear();
-
+        this.displaySWData = new String[6];
         this.status = 0; // [status] 0: Stopped
     }
 
@@ -65,22 +66,30 @@ public class Stopwatch {
     }
 
     // [WatchGUI]
-    // void -> String
-    public String showStopwatch() {
-        String data = "";
-        if (this.stpTime.get(Calendar.HOUR_OF_DAY) > 0)
-            data += (this.stpTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.stpTime.get(Calendar.HOUR_OF_DAY);
-        data += (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
-        data += (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
-        if (this.stpTime.get(Calendar.HOUR_OF_DAY) == 0)
-            data += (this.stpTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.stpTime.get(Calendar.MILLISECOND) / 10);
-        if (this.splitTime.get(Calendar.HOUR_OF_DAY) > 0)
-            data += (this.splitTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.splitTime.get(Calendar.HOUR_OF_DAY);
-        data += (this.splitTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.splitTime.get(Calendar.MINUTE);
-        data += (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
-        if (this.splitTime.get(Calendar.HOUR_OF_DAY) == 0)
-            data += (this.splitTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.splitTime.get(Calendar.MILLISECOND) / 10);
-        return data;
+    // String -> String[]
+    public String[] showStopwatch() {
+
+        if (this.stpTime.get(Calendar.HOUR_OF_DAY) > 0) {
+            displaySWData[0] = (this.stpTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.stpTime.get(Calendar.HOUR_OF_DAY);
+            displaySWData[1] = (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
+            displaySWData[2] = (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
+        }
+        if (this.stpTime.get(Calendar.HOUR_OF_DAY) == 0) {
+            displaySWData[0] = (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
+            displaySWData[1] = (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
+            displaySWData[2] = (this.stpTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.stpTime.get(Calendar.MILLISECOND) / 10);
+        }
+        if (this.splitTime.get(Calendar.HOUR_OF_DAY) > 0) {
+            displaySWData[3] = (this.splitTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.splitTime.get(Calendar.HOUR_OF_DAY);
+            displaySWData[4] = (this.splitTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.splitTime.get(Calendar.MINUTE);
+            displaySWData[5] = (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
+        }
+        if (this.splitTime.get(Calendar.HOUR_OF_DAY) == 0) {
+            displaySWData[3] = (this.splitTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.splitTime.get(Calendar.MINUTE);
+            displaySWData[4] = (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
+            displaySWData[5] = (this.splitTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.splitTime.get(Calendar.MILLISECOND) / 10);
+        }
+        return displaySWData;
     }
 
     public int requestStopwatchFlag(){ return this.status; }
