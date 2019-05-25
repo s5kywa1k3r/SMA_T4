@@ -153,14 +153,6 @@ public class AlarmTest {
         alarm.decreaseSection();    // Alarm4.wav
     }
 
-    /*@Test
-    public void requestSettingBellAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-    }
-
-    @Test
-    public void requestAlarmPrevSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-    }*/
-
     @Test
     public void requestNextAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
