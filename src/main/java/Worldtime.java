@@ -13,7 +13,9 @@ public class Worldtime {
     // All City -> Nation
     private String[] nation;
     private String[] nationTimeZone;
+    private String [] displayWTData;
 
+    private int blink;
     private int currNation;
     private int maxNation = 27;
 
@@ -36,6 +38,7 @@ public class Worldtime {
                 "Asia/Tokyo", "Canada/Central", "Etc/GMT-5", "Mexico/General", "America/Santiago", "Etc/GMT-3"
         };
 
+        this.displayWTData = new String[9];
         this.currNation = 19; // Initial City => 19: Asia/Seoul
     }
 
@@ -115,24 +118,25 @@ public class Worldtime {
 
     // [WatchGUI]
     // void -> String
-    public String showWorldTime() {
-        String data = "";
-        data += this.worldTime.get(Calendar.YEAR);
-        data += this.worldTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
-        data += (this.worldTime.get(Calendar.MONTH) < 9 ? "0" : "") + (this.worldTime.get(Calendar.MONTH)+1);
-        data += (this.worldTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.worldTime.get(Calendar.DAY_OF_MONTH);
-        data += (this.worldTime.get(Calendar.MINUTE) < 10 ? "0" : "")+this.worldTime.get(Calendar.MINUTE);
-        data += (this.worldTime.get(Calendar.SECOND) < 10 ? "0" : "")+this.worldTime.get(Calendar.SECOND);
+    public String[] showWorldTime() {
+        if(blink++ > 100) blink = 0;
+
+        displayWTData[0] = this.worldTime.get(Calendar.YEAR) + "";
+        displayWTData[1] = this.worldTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
+        displayWTData[2] = (this.worldTime.get(Calendar.MONTH) < 9 ? "0" : "") + (this.worldTime.get(Calendar.MONTH)+1);
+        displayWTData[3] = (this.worldTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.worldTime.get(Calendar.DAY_OF_MONTH);
+        displayWTData[4] = (this.worldTime.get(Calendar.MINUTE) < 10 ? "0" : "")+this.worldTime.get(Calendar.MINUTE);
+        displayWTData[5] = (this.worldTime.get(Calendar.SECOND) < 10 ? "0" : "")+this.worldTime.get(Calendar.SECOND);
         if(this.realTime.isIs24H()) {
-            data += (this.worldTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR_OF_DAY);
-            data += "  ";
+            displayWTData[6] = (this.worldTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR_OF_DAY);
+            displayWTData[7] = "";
         }
         else {
-            data += (this.worldTime.get(Calendar.HOUR) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR);
-            data += (this.worldTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            displayWTData[6] = (this.worldTime.get(Calendar.HOUR) < 10 ? "0" : "")+this.worldTime.get(Calendar.HOUR);
+            displayWTData[7] = (this.worldTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
         }
-        data += (this.nation[this.currNation]);
-        return data;
+        displayWTData[8] = (this.nation[this.currNation]);
+        return displayWTData;
     }
 
     // Getters and Setters for Unit Test

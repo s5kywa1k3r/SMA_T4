@@ -292,110 +292,82 @@ public class WatchGUI implements ActionListener {
         }
     }
 
-    public void realtimeGUI(String data) {
+    public void realtimeGUI(String [] data) {
         if(++blinkCount > 100) blinkCount = 0;
         switch(presentModeIndex) {
             // 0 : Mode Setting, 1 : RealTime, 2 : SettingTime, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
             case 0 :
                 year.setText(" MODE ");
-                showDate[0].setText(data.substring(0, 2));
-                showDate[2].setText(data.substring(2, 4));
-                subTime[0].setText(data.substring(4, 6));
-                subTime[2].setText(data.substring(6,8));
-                showTime[0].setText(data.substring(8, 10));
-                showTime[1].setText(data.substring(10, 12));
-                showTime[2].setText(data.substring(12));
+                showDate[0].setText(data[0]);
+                showDate[2].setText(data[1]);
+                subTime[0].setText(data[2]);
+                subTime[2].setText(data[3]);
+                showTime[0].setText(data[4].substring(0, 2));
+                if(data[4].length() == 3) {
+                    showTime[1].setText(data[4].substring(2));
+                    showTime[2].setText("");
+                }
+                else {
+                    showTime[1].setText(data[4].substring(2, 4));
+                    showTime[2].setText(data[4].substring(4));
+                }
                 break;
             case 1 :
             case 2 :
-                year.setText(data.substring(0, 4));
-                showDate[0].setText(data.substring(4, 6));
-                showDate[1].setText(data.substring(6, 8));
-                showDate[2].setText(data.substring(8, 10));
-                showTime[1].setText(data.substring(10, 12));
-                showTime[2].setText(data.substring(12, 14));
-                showTime[0].setText(data.substring(14, 16));
-                subTime[1].setText(data.substring(16,18));
-                if(presentModeIndex == 2 && !data.substring(18).equals(" ")) {
-                    switch (Integer.parseInt(data.substring(18))) {
-                        case 0: showTime[2].setText("  ");break;
-                        case 1: showTime[1].setText("  ");break;
-                        case 2: showTime[0].setText("  ");break;
-                        case 3: showDate[2].setText("  ");break;
-                        case 4: showDate[1].setText("  ");break;
-                        case 5: year.setText("    ");break;
-                    }
-                }
+                year.setText(data[0]);
+                showDate[0].setText(data[1]);
+                showDate[1].setText(data[2]);
+                showDate[2].setText(data[3]);
+                showTime[1].setText(data[4]);
+                showTime[2].setText(data[5]);
+                showTime[0].setText(data[6]);
+                subTime[1].setText(data[7]);
                 break;
             case 3 :
                 year.setText("STOPWC");
-                showTime[0].setText(data.substring(0, 2));
-                showTime[1].setText(data.substring(2, 4));
-                showTime[2].setText(data.substring(4, 6));
-                subTime[0].setText(data.substring(6, 8));
-                subTime[1].setText(data.substring(8, 10));
-                subTime[2].setText(data.substring(10, 12));
+                showTime[0].setText(data[0]);
+                showTime[1].setText(data[1]);
+                showTime[2].setText(data[2]);
+                subTime[0].setText(data[3]);
+                subTime[1].setText(data[4]);
+                subTime[2].setText(data[5]);
                 break;
             case 4 :
                 year.setText("TIMER");
-                showTime[0].setText(data.substring(0, 2));
-                showTime[1].setText(data.substring(2, 4));
-                showTime[2].setText(data.substring(4, 6));
-                // 0: Stopped, 1: Continued, 2: Setting, 3: ringing
+                showTime[0].setText(data[0]);
+                showTime[1].setText(data[1]);
+                showTime[2].setText(data[2]);
                 break;
             case 5 :
-                year.setText("REP "+data.substring(0, 1));
+                year.setText("REP "+data[0]);
                 showDate[0].setText("FQ");
-                showDate[1].setText(data.substring(1, 3));
-                showDate[2].setText(data.substring(3, 5));
-                showTime[2].setText(data.substring(5, 7));
+                showDate[1].setText(data[1]);
+                showDate[2].setText(data[2]);
+                showTime[2].setText(data[3]);
                 subTime[0].setText("  R");
                 subTime[1].setText("IN");
-                subTime[2].setText("G"+data.substring(7, 8));
-                if(data.substring(8, 9).equals("1")) cities.setText("ON");
-                else cities.setText("OFF");
-                showTime[1].setText(data.substring(9, 11));
-                showTime[0].setText(data.substring(11, 13));
-                this.flag = system.getAlarmFlag();
-                this.section = system.getAlarmSection();
-                if(flag != 0 && !data.substring(13).equals(" ")) {
-                    switch (Integer.parseInt(data.substring(13))) {
-                        case 0: showTime[2].setText("  "); break;
-                        case 1: showTime[1].setText("  "); break;
-                        case 2: showDate[2].setText("  "); break;
-                        case 3: showDate[1].setText("  "); break;
-                        case 4: year.setText("  "); break;
-                        case 5:
-                            subTime[0].setText("");
-                            subTime[1].setText("");
-                            subTime[2].setText("");
-                        break;
-                    }
-                }
+                subTime[2].setText("G"+data[4]);
+                cities.setText(data[5]);
+                showTime[1].setText(data[6]);
+                showTime[0].setText(data[7]);
                 break;
             case 6 :
-                year.setText(data.substring(0, 4));
-                showDate[0].setText(data.substring(4, 6));
-                showDate[1].setText(data.substring(6, 8));
-                showDate[2].setText(data.substring(8, 10));
-                showTime[1].setText(data.substring(10, 12));
-                showTime[2].setText(data.substring(12, 14));
-                if(data.substring(16,18).equals("  ")) {
-                    showTime[0].setText(data.substring(14, 16));
-                    subTime[1].setText("");
-                }
-                else {
-                    showTime[0].setText(data.substring(14, 16));
-                    subTime[1].setText(data.substring(16, 18));
-                }
-                cities.setText(data.substring(18));
+                year.setText(data[0]);
+                showDate[0].setText(data[1]);
+                showDate[1].setText(data[2]);
+                showDate[2].setText(data[3]);
+                showTime[1].setText(data[4]);
+                showTime[2].setText(data[5]);
+                showTime[0].setText(data[6]);
+                subTime[1].setText(data[7]);
+                cities.setText(data[8]);
                 break;
             case 7:
-                year.setText(data.substring(0, 4));
-                showDate[0].setText(data.substring(4, 6));
-                showDate[1].setText(data.substring(6, 8));
-                showDate[2].setText(data.substring(8, 10));
-                if(data.substring(10, 11).equals("1")) {
+                year.setText(data[0]);
+                showDate[0].setText(data[1]);
+                showDate[1].setText(data[2]);
+                showDate[2].setText(data[3]);
+                if(data[4].equals("1")) {
                     subTime[0].setText("");
                     subTime[1].setText("S E");
                     subTime[2].setText("T");
@@ -405,11 +377,10 @@ public class WatchGUI implements ActionListener {
                     subTime[1].setText("I S");
                     subTime[2].setText("E");
                 }
-                if(data.substring(11, 13).equals("  ")) showTime[0].setText("");
-                else showTime[0].setText(data.substring(11, 13));
-                showTime[1].setText(data.substring(13,15));
-                showTime[2].setText(data.substring(15,17));
-                cities.setText(data.substring(17));
+                showTime[0].setText(data[5]);
+                showTime[1].setText(data[6]);
+                showTime[2].setText(data[7]);
+                cities.setText(data[8]);
                 break;
             default: break;
         }

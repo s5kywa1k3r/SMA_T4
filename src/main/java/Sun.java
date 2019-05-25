@@ -15,6 +15,7 @@ public class Sun {
     // All City -> Nation
     private String[] nation;
     private String[] nationTimeZone;
+    private String[] displaySunDisplay;
     private double[] nationLatitude;
     private double[] nationLongitude;
 
@@ -62,7 +63,7 @@ public class Sun {
 
         this.location = new Location(this.nationLatitude[this.currNation], this.nationLongitude[this.currNation]);
         this.calculatorSun = new SunriseSunsetCalculator(this.location, this.nationTimeZone[this.currNation]);
-
+        this.displaySunDisplay = new String[9];
         this.currNation = 19;
         this.currMode = 0;
     }
@@ -159,27 +160,25 @@ public class Sun {
     }
 
     // [WatchGUI]
-    // void -> String
-    public String showSun(){
-        // Problem is comes from AM/PM
-        String data = "";
-        data += this.sun[currMode].get(Calendar.YEAR);
-        data += this.sun[currMode].getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
-        data += (this.sun[currMode].get(Calendar.MONTH) < 9 ? "0" : "") + (this.sun[currMode].get(Calendar.MONTH)+1);
-        data += (this.sun[currMode].get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.DAY_OF_MONTH);
+    // String -> String[]
+    public String[] showSun(){
+        displaySunDisplay[0] = this.sun[currMode].get(Calendar.YEAR) + "";
+        displaySunDisplay[1] = this.sun[currMode].getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
+        displaySunDisplay[2] = (this.sun[currMode].get(Calendar.MONTH) < 9 ? "0" : "") + (this.sun[currMode].get(Calendar.MONTH)+1);
+        displaySunDisplay[3] = (this.sun[currMode].get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.DAY_OF_MONTH);
         // 0 Rise, 1 Set
-        data += currMode;
+        displaySunDisplay[4] = currMode + "";
         if(realTime.isIs24H()) {
-            data += "  ";
-            data += (this.sun[currMode].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.HOUR_OF_DAY);
+            displaySunDisplay[5] = "";
+            displaySunDisplay[6] = (this.sun[currMode].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.HOUR_OF_DAY);
         }
         else {
-            data += (sun[currMode].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
-            data += (sun[currMode].get(Calendar.HOUR) < 10 ? "0" : "")+sun[currMode].get(Calendar.HOUR);
+            displaySunDisplay[5] = (sun[currMode].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            displaySunDisplay[6] = (sun[currMode].get(Calendar.HOUR) < 10 ? "0" : "")+sun[currMode].get(Calendar.HOUR);
         }
-        data += (this.sun[currMode].get(Calendar.MINUTE) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.MINUTE);
-        data += (this.nation[currNation]);
-        return data;
+        displaySunDisplay[7] = (this.sun[currMode].get(Calendar.MINUTE) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.MINUTE);
+        displaySunDisplay[8] = (this.nation[currNation])+ "";
+        return displaySunDisplay;
     }
 
     // Getters and Setters

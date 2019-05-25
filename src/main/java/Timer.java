@@ -6,6 +6,7 @@ public class Timer {
     private Calendar timerTime;
     private Calendar rsvTime;
 
+    private String [] displayTimerData;
     private int status; // 0: Stopped, 1: Continued, 2: Setting, 3: Ringing
     private int currSection; // 0: Second, 1: Minute, 2: Hour
     private int blink;
@@ -18,6 +19,7 @@ public class Timer {
         this.rsvTime = Calendar.getInstance();
         this.rsvTime.clear();
 
+        this.displayTimerData = new String[3];
         this.status = 0;
         this.currSection = 0;
     }
@@ -153,37 +155,26 @@ public class Timer {
 
     // [WatchGUI]
     // void -> String
-    public String showTimer(){
+    public String[] showTimer(){
         if(blink++ > 100) blink = 0;
-        String data = "";
         if(this.status == 2) {
+            displayTimerData[0] = (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
+            displayTimerData[1] = (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
+            displayTimerData[2] = (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
             if(blink > 50) {
-                if (this.currSection == 2) {
-                    data += "  ";
-                    data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
-                    data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
-                } else if (this.currSection == 1) {
-                    data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
-                    data += "  ";
-                    data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
-                } else if (this.currSection == 0) {
-                    data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
-                    data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
-                    data += "  ";
+                switch (this.currSection) {
+                    case 0: displayTimerData[2] = "";break;
+                    case 1: displayTimerData[1] = "";break;
+                    case 2: displayTimerData[0] = "";break;
                 }
-            }
-            else {
-                data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
-                data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
-                data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
             }
         }
         else {
-            data += (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);
-            data += (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
-            data += (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
+            displayTimerData[0] = (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);
+            displayTimerData[1] = (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
+            displayTimerData[2] = (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
         }
-        return data;
+        return displayTimerData;
     }
 
     public int requestTimerFlag(){ return this.status; }

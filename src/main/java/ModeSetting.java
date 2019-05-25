@@ -13,6 +13,7 @@ public class ModeSetting {
     private ArrayList<Object> prevModeObject;
 
     private String[] shortNameMode;
+    private String[] displayModeData;
 
     private int currIndex;
     private int blink;
@@ -26,6 +27,7 @@ public class ModeSetting {
         this.newMode = new ArrayList<String>();
         this.prevModeObject = new ArrayList();
         this.shortNameMode = new String[] {"SW", "TM", "AL", "WT", "SU", "TS"};
+        this.displayModeData = new String[5];
 
         this.menu_all.add("Stopwatch");
         this.menu_all.add("Timer");
@@ -131,33 +133,23 @@ public class ModeSetting {
 
 
     // [WatchGUI]
-    // void -> String
-    public String showModeSetting() {
-        String data = "";
+    // String -> String []
+    public String[] showModeSetting() {
         if(blink++ > 100)  blink = 0;
 
         for(int i = 0; i< 4; i++) {
             if(i < newMode.size()) {
-                data += shortNameMode[menu_all.indexOf(newMode.get(i))];
+                displayModeData[i] = shortNameMode[menu_all.indexOf(newMode.get(i))];
             }
             else if (blink > 50 && i == newMode.size()){
-                data += "  ";
+                displayModeData[i] = "  ";
             }
             else {
-                data += "__";
+                displayModeData[i] = "__";
             }
         }
-        if(menu_all.get(currIndex).length() > 6) {
-            data += menu_all.get(currIndex).substring(0, 6);
-        }
-        else if(menu_all.get(currIndex).length() < 4) {
-            data += menu_all.get(currIndex);
-            for(int i =0 ;  i <(6 - menu_all.get(currIndex).length()); i++) {
-                data += " ";
-            }
-        }
-        else data += menu_all.get(currIndex);
-        return data;
+        displayModeData[4] = menu_all.get(currIndex);
+        return displayModeData;
     }
 
     // Getters and Setters for Unit Test

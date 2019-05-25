@@ -3,6 +3,9 @@ import java.util.Locale;
 
 public class RealTime {
     private Calendar realTime; // day, month, year
+
+    private String[] displayRealTimeData;
+
     private int currSection;
     private boolean is24H;
 
@@ -10,6 +13,7 @@ public class RealTime {
     public RealTime(){
         this.realTime = Calendar.getInstance();
         // Calendar Month start 0 => 0: January, 1: February, 2: March, ... , 11: December
+        displayRealTimeData = new String[8];
         this.realTime.clear(); // Initialized to 1970. 1. 1 00:00:00.000
         this.currSection = 0; // 0: Second, 1: Minute, 2: Hour, 3: Day, 4: Month, 5: Year
         this.is24H = true;
@@ -106,24 +110,23 @@ public class RealTime {
     public void requestChangeType(){ this.is24H = !this.is24H;}
 
     // [WatchGUI]
-    // void -> String
-    public String showRealTime(){
-        String data = "";
-        data += realTime.get(Calendar.YEAR);
-        data += realTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
-        data += (realTime.get(Calendar.MONTH) < 9 ? "0" : "") + (realTime.get(Calendar.MONTH)+1);
-        data += (realTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + realTime.get(Calendar.DAY_OF_MONTH);
-        data += (realTime.get(Calendar.MINUTE) < 10 ? "0" : "")+realTime.get(Calendar.MINUTE);
-        data += (realTime.get(Calendar.SECOND) < 10 ? "0" : "")+realTime.get(Calendar.SECOND);
+    // String -> String []
+    public String[] showRealTime(){
+        displayRealTimeData[0] = realTime.get(Calendar.YEAR) + "";
+        displayRealTimeData[1] = realTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH).substring(0, 2);
+        displayRealTimeData[2] = (realTime.get(Calendar.MONTH) < 9 ? "0" : "") + (realTime.get(Calendar.MONTH)+1);
+        displayRealTimeData[3] = (realTime.get(Calendar.DAY_OF_MONTH) < 10 ? "0" : "") + realTime.get(Calendar.DAY_OF_MONTH);
+        displayRealTimeData[4] = (realTime.get(Calendar.MINUTE) < 10 ? "0" : "")+realTime.get(Calendar.MINUTE);
+        displayRealTimeData[5] = (realTime.get(Calendar.SECOND) < 10 ? "0" : "")+realTime.get(Calendar.SECOND);
         if(this.is24H) {
-            data += (realTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + realTime.get(Calendar.HOUR_OF_DAY);
-            data += "  ";
+            displayRealTimeData[6] = (realTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + realTime.get(Calendar.HOUR_OF_DAY);
+            displayRealTimeData[7] = "  ";
         }
         else {
-            data += (realTime.get(Calendar.HOUR) < 10 ? "0" : "")+realTime.get(Calendar.HOUR);
-            data += (realTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            displayRealTimeData[6] = (realTime.get(Calendar.HOUR) < 10 ? "0" : "")+realTime.get(Calendar.HOUR);
+            displayRealTimeData[7] = (realTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
         }
-        return data;
+        return displayRealTimeData;
     }
     public boolean isIs24H(){return this.is24H;}
 
