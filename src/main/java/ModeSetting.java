@@ -32,7 +32,7 @@ public class ModeSetting {
         this.menu_all.add("Alarm");
         this.menu_all.add("Worldtime");
         this.menu_all.add("Sun");
-        this.menu_all.add("TimeSetting");
+        this.menu_all.add("SettingTime");
 
         this.currIndex = 0;
     }
@@ -101,13 +101,13 @@ public class ModeSetting {
 
             // Load Data from DB
             else {
-                switch(newMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun, 5: TimeSetting
+                switch(newMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun, 5: SettingTime
                     case "Stopwatch":   confirmMode.add(new Stopwatch(db.loadData(this.menu_all.indexOf(newMode))));break;
                     case "Timer":       confirmMode.add(new Timer(db.loadData(this.menu_all.indexOf(newMode))));break;
                     case "Alarm":       confirmMode.add(new Alarm((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));break;
                     case "Worldtime":   confirmMode.add(new Worldtime((RealTime)this.sys.getMenu(1), db.loadData(this.menu_all.indexOf(newMode))));break;
                     case "Sun":         confirmMode.add(new Sun((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));break;
-                    case "TimeSetting": confirmMode.add(new TimeSetting((RealTime)this.sys.getMenu(1)));break;
+                    case "SettingTime": confirmMode.add(new SettingTime((RealTime)this.sys.getMenu(1)));break;
                     default: break;
                 }
             }

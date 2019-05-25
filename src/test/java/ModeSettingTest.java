@@ -24,7 +24,7 @@ public class ModeSettingTest {
         // 2: Ignore Selected Mode
         ArrayList<String> selectedMode = new ArrayList<String>();
         selectedMode.add("Timer");
-        selectedMode.add("TimeSetting");
+        selectedMode.add("SettingTime");
 
         ms.setNewMode(selectedMode);
         ms.setCurrIndex(0); // 0: Stopwatch
@@ -36,7 +36,7 @@ public class ModeSettingTest {
         assertEquals(3, ms.getCurrIndex());
         ms.requestNextMode(); // 3: Worldtime -> 4: Sun
         assertEquals(4, ms.getCurrIndex());
-        ms.requestNextMode(); // 4: Sun -> (5: TimeSetting) -> 0: Stopwatch
+        ms.requestNextMode(); // 4: Sun -> (5: SettingTime) -> 0: Stopwatch
         assertEquals(0, ms.getCurrIndex());
     }
 
@@ -46,7 +46,7 @@ public class ModeSettingTest {
 
         // Make newMode's size 4
         ArrayList<String> selectedMode = new ArrayList<String>();
-        selectedMode.add("TimeSetting");
+        selectedMode.add("SettingTime");
         selectedMode.add("Stopwatch");
         selectedMode.add("Timer");
         selectedMode.add("Alarm");
@@ -55,7 +55,7 @@ public class ModeSettingTest {
 
         ms.setCurrIndex(4); // 4: Sun
         ms.requestSelectMode();
-        // {"TimeSetting", "Stopwatch", "Timer, "Alarm"}
+        // {"SettingTime", "Stopwatch", "Timer, "Alarm"}
         //                  !=
         // {"Stopwatch", "Timer", "Alarm, "Sun"}
         assertNotEquals(selectedMode, ms.getNewMode());
@@ -71,14 +71,14 @@ public class ModeSettingTest {
         ArrayList<String> selectedMode = new ArrayList<String>();
         selectedMode.add("Timer");
         selectedMode.add("Stopwatch");
-        selectedMode.add("TimeSetting");
+        selectedMode.add("SettingTime");
 
         ms.setNewMode((ArrayList<String>)selectedMode.clone()); // Avoid Call-By-Reference
 
-        // {TimeSetting, Timer, Stopwatch} -> {Timer, Stopwatch, TimeSetting}
+        // {SettingTime, Timer, Stopwatch} -> {Timer, Stopwatch, SettingTime}
         ArrayList confirmMode = ms.confirmSelectMode();
         assertThat(confirmMode.get(0), instanceOf(Timer.class));
         assertThat(confirmMode.get(1), instanceOf(Stopwatch.class));
-        assertThat(confirmMode.get(2), instanceOf(TimeSetting.class));
+        assertThat(confirmMode.get(2), instanceOf(SettingTime.class));
     }
 }
