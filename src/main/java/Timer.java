@@ -50,7 +50,7 @@ public class Timer {
     // [Timer] System Methods
     public void requestTimerTime(){
         if(this.status == 0) // [status] 0: Stopped -> 2: Setting
-            this.changeStatus(2);
+            this.status = 2;
     }
 
     /* [Removed] public void getTimerTime() */
@@ -135,7 +135,6 @@ public class Timer {
     } // [status] 3: Ringing -> 0: Stopped
     // public -> private
     private void startRingingTimer(){
-        System.out.println("String ringing");
         this.status = 3;
         bell.play();
     } //  [status] 1: Continued -> 3: Ringing
@@ -150,15 +149,11 @@ public class Timer {
         }
         // else if timer is already expired
         else if(this.status <= 1) this.status = 0; // [status] 1: Continued -> 0: Stopped
-
-        if(status == 3 && !bell.isRunning()){
-            status = 0;
-        }
     }
 
     public void requestExitSetTimerTime(){
         if(this.status == 2){ // [Status] 2: Setting
-            this.changeStatus(0); // [Status] 2: Setting -> 0: Stopped
+            this.status = 0; // [Status] 2: Setting -> 0: Stopped
             this.requestResetTimer();
             this.currSection = 0; // [CurrSection] 0: Second -> Setting Section initialization
         }
