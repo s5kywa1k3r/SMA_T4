@@ -18,7 +18,7 @@ public class TimeSetting {
     public String showTimeSetting() { return realTime.showRealTime() + this.getCurrSection(); }
 
     // Getters and Setters
-    public RealTime getRealTime() { return realTime; }
-    public void setRealTime(RealTime realTime) { this.realTime = realTime; }
+    //public RealTime getRealTime() { return realTime; }
+    //public void setRealTime(RealTime realTime) { this.realTime = realTime; }
     public int getCurrSection() { return this.realTime.getCurrSection(); }
 }

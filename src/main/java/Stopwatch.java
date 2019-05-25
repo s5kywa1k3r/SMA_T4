@@ -64,7 +64,6 @@ public class Stopwatch {
         }
     }
 
-
     // [WatchGUI]
     // void -> String
     public String showStopwatch() {
@@ -88,11 +87,11 @@ public class Stopwatch {
 
     // Getters and Setters for Unit Test
     public Calendar getStpTime() { return stpTime; }
-    public void setStpTime(Calendar stpTime) { this.stpTime = stpTime; }
+    //public void setStpTime(Calendar stpTime) { this.stpTime = stpTime; }
     public Calendar getSplitTime() { return splitTime; }
-    public void setSplitTime(Calendar splitTime) { this.splitTime = splitTime; }
+    //public void setSplitTime(Calendar splitTime) { this.splitTime = splitTime; }
     public int getStatus() { return status; }
-    public void setStatus(int status) { this.status = status; }
+    //public void setStatus(int status) { this.status = status; }
    
 
 

@@ -183,28 +183,28 @@ public class Sun {
     }
 
     // Getters and Setters
-    public RealTime getRealTime() { return realTime; }
-    public void setRealTime(RealTime realTime) { this.realTime = realTime; }
-    public Calendar getCurrTime() { return currTime; }
-    public void setCurrTime(Calendar currTime) { this.currTime = currTime; }
-    public Calendar[] getSun() { return sun; }
-    public void setSun(Calendar[] sun) { this.sun = sun; }
+    //public RealTime getRealTime() { return realTime; }
+    //public void setRealTime(RealTime realTime) { this.realTime = realTime; }
+    //public Calendar getCurrTime() { return currTime; }
+    //public void setCurrTime(Calendar currTime) { this.currTime = currTime; }
+    //public Calendar[] getSun() { return sun; }
+    //public void setSun(Calendar[] sun) { this.sun = sun; }
     public Calendar getSun(int i) { return sun[i]; }
-    public void setSun(int i, Calendar sun) { this.sun[i] = sun; }
-    public String[] getNation() { return nation; }
-    public void setNation(String[] nation) { this.nation = nation; }
-    public double[] getNationLatitude() { return nationLatitude; }
-    public void setNationLatitude(double[] nationLatitude) { this.nationLatitude = nationLatitude; }
-    public double[] getNationLongitude() { return nationLongitude; }
-    public void setNationLongitude(double[] city_longitude) { this.nationLongitude = city_longitude; }
-    public Location getLocation() { return location; }
-    public void setLocation(Location location) { this.location = location; }
-    public SunriseSunsetCalculator getCalculatorSun() { return calculatorSun; }
-    public void setCalculatorSun(SunriseSunsetCalculator calculatorSun) { this.calculatorSun = calculatorSun; }
+    //public void setSun(int i, Calendar sun) { this.sun[i] = sun; }
+    //public String[] getNation() { return nation; }
+    //public void setNation(String[] nation) { this.nation = nation; }
+    //public double[] getNationLatitude() { return nationLatitude; }
+    //public void setNationLatitude(double[] nationLatitude) { this.nationLatitude = nationLatitude; }
+    //public double[] getNationLongitude() { return nationLongitude; }
+    //public void setNationLongitude(double[] city_longitude) { this.nationLongitude = city_longitude; }
+    //public Location getLocation() { return location; }
+    //public void setLocation(Location location) { this.location = location; }
+    //public SunriseSunsetCalculator getCalculatorSun() { return calculatorSun; }
+    //public void setCalculatorSun(SunriseSunsetCalculator calculatorSun) { this.calculatorSun = calculatorSun; }
     public int getCurrNation() { return currNation; }
     public void setCurrNation ( int currNation){ this.currNation = currNation; }
     public int getMaxNation () { return maxNation; }
-    public void setMaxNation (int maxNation){ this.maxNation = maxNation; }
+    //public void setMaxNation (int maxNation){ this.maxNation = maxNation; }
     public int getCurrMode () { return currMode; }
-    public void setCurrMode ( int currMode){ this.currMode = currMode; }
+    //public void setCurrMode ( int currMode){ this.currMode = currMode; }
 }

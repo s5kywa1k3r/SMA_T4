@@ -145,7 +145,7 @@ public class Timer {
     public void requestExitSetTimerTime(){
         if(this.status == 2){ // [Status] 2: Setting
             this.changeStatus(0); // [Status] 2: Setting -> 0: Stopped
-            requestResetTimer();
+            this.requestResetTimer();
             this.currSection = 0; // [CurrSection] 0: Second -> Setting Section initialization
         }
     }

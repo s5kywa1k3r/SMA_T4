@@ -79,9 +79,7 @@ public class Alarm {
         return data;
     }
 
-    // Operations
     public void realTimeTaskAlarm(){
-        //System.out.println("[Alarm]");
         this.currTime = this.realTime.requestRealTime();
         for(int i = 0; i < 4; i++){
             if(this.alarmState[i]){

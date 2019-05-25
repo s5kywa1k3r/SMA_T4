@@ -156,8 +156,8 @@ public class ModeSetting {
     public ArrayList<String> getNewMode() { return newMode; }
     public void setNewMode(ArrayList<String> newMode) { this.newMode = newMode; }
     public void setOldMode(ArrayList oldMode) { this.prevModeObject = oldMode; }
-    public ModeDB getDb() { return db; }
-    public void setDb(ModeDB db) { this.db = db; }
+    //public ModeDB getDb() { return db; }
+    //public void setDb(ModeDB db) { this.db = db; }
     public WatchSystem getSys() { return sys; }
     public void setSys(WatchSystem sys) { this.sys = sys; }
     public int getCurrIndex() { return currIndex; }
