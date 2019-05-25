@@ -7,7 +7,8 @@ public class Timer {
     private Calendar rsvTime;
 
     private int status; // 0: Stopped, 1: Continued, 2: Setting, 3: Ringing
-    private int currSection = 0; // 0: Second, 1: Minute, 2: Hour
+    private int currSection; // 0: Second, 1: Minute, 2: Hour
+    private int blink;
 
     // Constructors
     public Timer(){
@@ -153,11 +154,29 @@ public class Timer {
     // [WatchGUI]
     // void -> String
     public String showTimer(){
+        if(blink++ > 100) blink = 0;
         String data = "";
         if(this.status == 2) {
-            data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
-            data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
-            data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
+            if(blink > 50) {
+                if (this.currSection == 2) {
+                    data += "  ";
+                    data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
+                    data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
+                } else if (this.currSection == 1) {
+                    data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
+                    data += "  ";
+                    data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
+                } else if (this.currSection == 0) {
+                    data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
+                    data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
+                    data += "  ";
+                }
+            }
+            else {
+                data += (rsvTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + rsvTime.get(Calendar.HOUR_OF_DAY);
+                data += (rsvTime.get(Calendar.MINUTE) < 10 ? "0" : "") + rsvTime.get(Calendar.MINUTE);
+                data += (rsvTime.get(Calendar.SECOND) < 10 ? "0" : "") + rsvTime.get(Calendar.SECOND);
+            }
         }
         else {
             data += (timerTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + timerTime.get(Calendar.HOUR_OF_DAY);

@@ -22,6 +22,7 @@ public class Alarm {
     private int status; // 0: List, 1: Alarm Time Setting, 2: Alarm Frequency, 3: Alarm Bell Setting, 4: Ringing
     private int currSection; // 0: Minute, 1: Hour, 2: Frequency_Second, 3: Frequency_Minute, 4: Count, 5: Bell
     private int currAlarm;
+    private int blink;
 
     public Alarm(RealTime realTime) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.reservedAlarm = new Calendar[4];
@@ -267,6 +268,7 @@ public class Alarm {
     public void requestAlarmOnOff(){ this.alarmState[this.currAlarm] = !this.alarmState[this.currAlarm]; }
     
     public String showAlarm(){
+        if(blink++ > 100) blink = 0;
         String data = "";
         data += this.repeat[this.currAlarm];
         data += "0"+this.frequency[this.currAlarm].get(Calendar.MINUTE);
@@ -283,7 +285,8 @@ public class Alarm {
             data += (this.alarm[this.currAlarm].get(Calendar.HOUR) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR);
             data += (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
         }
-        return data;
+        if(blink > 50) return data + getCurrSection();
+        else return data + " ";
     }
 
     public int requestAlarmFlag(){ return this.status; }
