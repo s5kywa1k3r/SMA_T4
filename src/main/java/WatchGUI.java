@@ -473,10 +473,12 @@ public class WatchGUI implements ActionListener {
                         break;
                     case 2 :
                         if(flag == 2) system.exitSetTimerTime();
+                        else if(flag == 3) system.pressStopRingingTimer();
                         else system.pressChangeMode();
                         break;
                     case 3:
                         if(flag == 2) system.decreaseTimerTimeSection();
+                        else if(flag == 3) system.pressStopRingingTimer();
                         else system.pressResetTimer();
                         break;
                     default: break;
@@ -487,7 +489,8 @@ public class WatchGUI implements ActionListener {
                 switch(buttonIndex){
                     case 0 :
                         if(flag == 0) system.enterSetAlarmTime();
-                        else if(flag != 4) system.nextAlarmTimeSection();
+                        else if(flag == 4) system.pressStopRingingAlarm();
+                        else system.nextAlarmTimeSection();
                         break;
                     case 1 :
                         if(flag == 0) system.pressAlarmOnOff();
@@ -500,7 +503,8 @@ public class WatchGUI implements ActionListener {
                         break;
                     case 3 :
                         if(flag == 0) system.pressNextAlarm();
-                        else if(flag != 4) system.decreaseAlarmTime();
+                        else if(flag == 4) system.pressStopRingingAlarm();
+                        else system.decreaseAlarmTime();
                         break;
                     default: break;
                 }
