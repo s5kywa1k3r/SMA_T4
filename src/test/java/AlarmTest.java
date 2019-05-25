@@ -176,7 +176,7 @@ public class AlarmTest {
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
         // Alarm Ringing Index not -1
-        alarm.getBell(1).play(5);
+        alarm.getBell(1).play();
         assertTrue(alarm.isRinging());
         // Alarm Ringing Index -1
         alarm.requestStopRinging();

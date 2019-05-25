@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.Calendar;
 
 import static org.junit.Assert.*;
@@ -7,14 +10,14 @@ import static org.junit.Assert.*;
 public class TimerTest {
 
     @Test
-    public void requestTimerTime() {
+    public void requestTimerTime() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
         timer.requestTimerTime(); // [status] 0: Stopped -> 2: Setting
         assertEquals(2, timer.getStatus());
     }
 
     @Test
-    public void requestNextTimerTimeSection() {
+    public void requestNextTimerTimeSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         Timer timer = new Timer();
         timer.setCurrSection(2); // [currSection] 0: Second -> 2: Hour / Last Section
         timer.requestNextTimerTimeSection(); // [currSection] 2: Hour -> 0: Second
@@ -23,7 +26,7 @@ public class TimerTest {
     }
 
     @Test
-    public void requestIncreaseTimerTimeSection() {
+    public void requestIncreaseTimerTimeSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
 
         // 1: Max Second Increase Test
@@ -61,7 +64,7 @@ public class TimerTest {
     }
 
     @Test
-    public void requestDecreaseTimerTimeSection() {
+    public void requestDecreaseTimerTimeSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
         Calendar testTime = Calendar.getInstance();
         testTime.set(1970, Calendar.JANUARY, 1, 22, 37, 0);
@@ -102,7 +105,7 @@ public class TimerTest {
     }
 
     @Test
-    public void changeStatus() {
+    public void changeStatus() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
         timer.changeStatus(1); // [status] 0: Stopped -> 1: Continued
         assertEquals(1, timer.getStatus()); // [status] 1: Continued
@@ -112,7 +115,7 @@ public class TimerTest {
     }
 
     @Test
-    public void requestResetTimer() {
+    public void requestResetTimer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
         Calendar testTime = Calendar.getInstance();
         testTime.set(1970, Calendar.JANUARY, 1, 22, 34, 30);
@@ -128,7 +131,7 @@ public class TimerTest {
     }
 
     @Test
-    public void ringOff() {
+    public void ringOff() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
         timer.setStatus(3); // [status] 0: Stopped -> 3: Ringing
         timer.ringOff(); // [status] 3: Ringing -> 0: Stopped
@@ -136,7 +139,7 @@ public class TimerTest {
     }
 
     @Test
-    public void realTimeTimerTask() {
+    public void realTimeTimerTask() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
         timer.getRsvTime().set(1970, 1-1, 1, 10, 30, 12);
         timer.getRsvTime().set(Calendar.MILLISECOND, 0);
@@ -162,7 +165,7 @@ public class TimerTest {
     */
 
     @Test
-    public void requestExitSetTimerTime() {
+    public void requestExitSetTimerTime() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Timer timer = new Timer();
 
         timer.changeStatus(2); // [status] 0: Stopped -> 2: Setting
