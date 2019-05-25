@@ -1,3 +1,4 @@
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -89,8 +90,7 @@ public class Alarm {
                 if(
                     (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
                     (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
-                    (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND)) &&
-                    (this.currTime.get(Calendar.MILLISECOND) == this.alarm[i].get(Calendar.MILLISECOND))
+                    (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
                 )
                 {
                     this.status = 4;
@@ -106,7 +106,7 @@ public class Alarm {
                     }
                     else {
                         tmpRepeat[i] = repeat[i];
-                        alarm[i] = reservedAlarm[i];
+                        alarm[i] = (Calendar)reservedAlarm[i].clone();
                     }
                 }
             }
@@ -144,55 +144,24 @@ public class Alarm {
     public void requestExitAlarmSetting(){
         this.status = 0;
         this.currSection = 0;
+        this.alarm[currAlarm] = (Calendar) this.reservedAlarm[currAlarm].clone();
+        this.tmpRepeat[currAlarm] = repeat[currAlarm];
     }
 
     public void increaseSection(){
-        switch(this.status){
-            case 1: // 1. Alarm Setting
-                switch(this.currSection){
-                    case 0: // 0: Minute
-                        this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, 1);
-                        if(this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 0)
-                            this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
-                        break;
-                    case 1: // 1: Hour
-                        this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
-                        if(this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 0)
-                            this.reservedAlarm[this.currAlarm].add(Calendar.DATE, -1);
-                        break;
-                    default :
-                        break;
-                }
-                alarm[this.currAlarm] = reservedAlarm[this.currAlarm];
+        switch(this.currSection){
+            case 0: // 1. Alarm Setting
+            case 1:
+                incraseAlarmTime();
                 break;
             case 2: // 2. Alarm Frequency
-                switch(this.currSection){
-                    case 2: // 2: Frequency_Second
-                        this.frequency[this.currAlarm].add(Calendar.SECOND, 1);
-                        if(this.frequency[this.currAlarm].get(Calendar.SECOND) == 0)
-                            this.frequency[this.currAlarm].add(Calendar.MINUTE, -1);
-                        break;
-                    case 3: // 3: Frequency_Minute
-                        this.frequency[this.currAlarm].add(Calendar.MINUTE, 1);
-                        if(this.frequency[this.currAlarm].get(Calendar.MINUTE) == 11)
-                            this.frequency[this.currAlarm].add(Calendar.MINUTE, 0);
-                        break;
-
-                    case 4: // 4: Count
-                        if(++this.repeat[this.currAlarm] == 6)
-                            this.repeat[this.currAlarm] = 0;
-                        break;
-                    default :
-                        break;
-                }
+            case 3:
+            case 4:
+                increaseFrequencyTime();
                 break;
-            case 3: // 3. Alarm Bell
-                if(++bellIndex[this.currAlarm] == 5) {
-                    bellIndex[this.currAlarm] = 1;
-                }
-                bell[bellIndex[this.currAlarm]-1].play();
-                try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
-                bell[bellIndex[this.currAlarm]-1].pause();
+            case 5: // 3. Alarm Bell
+            case 6:
+                increaseBellIndex();
                 break;
             default:
                 break;
@@ -200,64 +169,101 @@ public class Alarm {
     }
 
     public void decreaseSection() {
-        switch (this.status) {
-            case 1: // 1. Alarm Setting
-                switch (this.currSection) {
-                    case 0: // 0: Minute
-                        this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, -1);
-                        if (this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 59)
-                            this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
-                        break;
-                    case 1: // 1: Hour
-                        this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
-                        if (this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 23)
-                            this.reservedAlarm[this.currAlarm].add(Calendar.DATE, 1);
-                        break;
-                    default:
-                        break;
-                }
+        switch (this.currSection) {
+            case 0: // 1. Alarm Setting
+            case 1:
+                decreaseAlarmTime();
                 break;
             case 2: // 2. Alarm Frequency
-                switch (this.currSection) {
-                    case 2: // 2: Frequency_Second
-                        this.frequency[this.currAlarm].add(Calendar.SECOND, -1);
-                        if (this.frequency[this.currAlarm].get(Calendar.SECOND) == 59)
-                            this.frequency[this.currAlarm].add(Calendar.MINUTE, 1);
-                        break;
-                    case 3: // 3: Frequency_Minute
-                        this.frequency[this.currAlarm].add(Calendar.MINUTE, -1);
-                        if (this.frequency[this.currAlarm].get(Calendar.MINUTE) == 59)
-                            this.frequency[this.currAlarm].add(Calendar.MINUTE, 10);
-                        break;
-
-                    case 4: // 4: Count
-                        if (--this.repeat[this.currAlarm] == -1)
-                            this.repeat[this.currAlarm] = 5;
-                        break;
-                    default:
-                        break;
-                }
+            case 3:
+            case 4:
+                decreaseFrequencyTime();
                 break;
-            case 3: // 3. Alarm Bell
-                if(--bellIndex[this.currAlarm] == 0) {
-                    bellIndex[this.currAlarm] = 4;
-                }
-                bell[bellIndex[this.currAlarm]-1].play();
-                try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
-                bell[bellIndex[this.currAlarm]-1].pause();
+            case 5: // 3. Alarm Bell
+            case 6:
+                decreaseBellIndex();
                 break;
             default:
                 break;
         }
     }
 
-    /*public void requestSettingBellAlarm(){
-        if(this.status == 0) // 0: List
-            this.status = 1; // 1: Alarm Setting
-    }*/
-    /*public void requestAlarmPrevSection(){
-        // This function is only for 'Setting Bell', I don't think it needs....
-    }*/
+    public void incraseAlarmTime() {
+        if(this.currSection == 0) {
+            this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, 1);
+            if(this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 0)
+                this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
+        }
+        else {
+            this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
+            if(this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 0)
+                this.reservedAlarm[this.currAlarm].add(Calendar.DATE, -1);
+        }
+    }
+
+    public void increaseFrequencyTime() {
+        if(this.currSection == 2) {
+            this.frequency[this.currAlarm].add(Calendar.SECOND, 1);
+            if(this.frequency[this.currAlarm].get(Calendar.SECOND) == 0)
+                this.frequency[this.currAlarm].add(Calendar.MINUTE, -1);
+        }
+        else if(this.currSection == 3) {
+            this.frequency[this.currAlarm].add(Calendar.MINUTE, 1);
+            if(this.frequency[this.currAlarm].get(Calendar.MINUTE) == 11)
+                this.frequency[this.currAlarm].add(Calendar.MINUTE, 0);
+        }
+        else {
+            if(++this.repeat[this.currAlarm] == 6)
+                this.repeat[this.currAlarm] = 0;
+        }
+    }
+
+    public void increaseBellIndex() {
+        if(++bellIndex[this.currAlarm] == 5)
+            bellIndex[this.currAlarm] = 1;
+        bell[bellIndex[this.currAlarm]-1].play();
+        try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
+        bell[bellIndex[this.currAlarm]-1].pause();
+    }
+
+    public void decreaseAlarmTime() {
+        if(this.currSection == 0) {
+            this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, -1);
+            if (this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 59)
+                this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, 1);
+        }
+        else {
+            this.reservedAlarm[this.currAlarm].add(Calendar.HOUR_OF_DAY, -1);
+            if (this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) == 23)
+                this.reservedAlarm[this.currAlarm].add(Calendar.DATE, 1);
+        }
+    }
+
+    public void decreaseFrequencyTime() {
+        if(this.currSection == 2) {
+            this.frequency[this.currAlarm].add(Calendar.SECOND, -1);
+            if (this.frequency[this.currAlarm].get(Calendar.SECOND) == 59)
+                this.frequency[this.currAlarm].add(Calendar.MINUTE, 1);
+        }
+        else if(this.currSection == 3) {
+            this.frequency[this.currAlarm].add(Calendar.MINUTE, -1);
+            if (this.frequency[this.currAlarm].get(Calendar.MINUTE) == 59)
+                this.frequency[this.currAlarm].add(Calendar.MINUTE, 10);
+        }
+        else {
+            if (--this.repeat[this.currAlarm] == -1)
+                this.repeat[this.currAlarm] = 5;
+        }
+    }
+
+    public void decreaseBellIndex() {
+        if(--bellIndex[this.currAlarm] == 0)
+            bellIndex[this.currAlarm] = 4;
+        bell[bellIndex[this.currAlarm]-1].play();
+        try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
+        bell[bellIndex[this.currAlarm]-1].pause();
+    }
+
     public void requestNextAlarm(){
         if(++this.currAlarm == 4)
             this.currAlarm = 0;
@@ -274,29 +280,41 @@ public class Alarm {
     // String -> String[]
     public String[] showAlarm(){
         if(blink++ > 100) blink = 0;
-        displayAlarmData[0] = this.repeat[this.currAlarm] + "";
         displayAlarmData[1] = "0"+this.frequency[this.currAlarm].get(Calendar.MINUTE);
         displayAlarmData[2] = (this.frequency[this.currAlarm].get(Calendar.SECOND) < 10 ? "0" : "") + this.frequency[this.currAlarm].get(Calendar.SECOND);
-        displayAlarmData[3] = (this.alarm[this.currAlarm].get(Calendar.MINUTE) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.MINUTE);
         displayAlarmData[4] = this.bellIndex[this.currAlarm] + "";
         if(alarmState[this.currAlarm]) displayAlarmData[5] = "ON";
         else displayAlarmData[5] = "OFF";
-        if(this.realTime.isIs24H()) {
-            displayAlarmData[6] = (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY);
-            displayAlarmData[7] = "";
+        if(this.status == 0 || this.status == 4) {
+            displayAlarmData[0] = this.tmpRepeat[this.currAlarm] + "";
+            displayAlarmData[3] = (this.alarm[this.currAlarm].get(Calendar.MINUTE) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.MINUTE);
+            if (this.realTime.isIs24H()) {
+                displayAlarmData[6] = (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY);
+                displayAlarmData[7] = "";
+            } else {
+                displayAlarmData[6] = (this.alarm[this.currAlarm].get(Calendar.HOUR) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.HOUR);
+                displayAlarmData[7] = (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            }
         }
         else {
-            displayAlarmData[6] = (this.alarm[this.currAlarm].get(Calendar.HOUR) < 10 ? "0" : "")+this.alarm[this.currAlarm].get(Calendar.HOUR);
-            displayAlarmData[7] = (this.alarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
-        }
-        if(this.status != 0 && this.status != 4 &&  blink > 50) {
-            switch (currSection) {
-                case 0: displayAlarmData[3] = ""; break;
-                case 1: displayAlarmData[6] = ""; break;
-                case 2: displayAlarmData[2] = ""; break;
-                case 3: displayAlarmData[1] = ""; break;
-                case 4: displayAlarmData[0] = " "; break;
-                case 5: displayAlarmData[4] = ""; break;
+            displayAlarmData[0] = this.repeat[this.currAlarm] + "";
+            displayAlarmData[3] = (this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) < 10 ? "0" : "") + this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE);
+            if (this.realTime.isIs24H()) {
+                displayAlarmData[6] = (this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY);
+                displayAlarmData[7] = "";
+            } else {
+                displayAlarmData[6] = (this.reservedAlarm[this.currAlarm].get(Calendar.HOUR) < 10 ? "0" : "") + this.reservedAlarm[this.currAlarm].get(Calendar.HOUR);
+                displayAlarmData[7] = (this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
+            }
+            if(blink > 50) {
+                switch (currSection) {
+                    case 0: displayAlarmData[3] = ""; break;
+                    case 1: displayAlarmData[6] = ""; break;
+                    case 2: displayAlarmData[2] = ""; break;
+                    case 3: displayAlarmData[1] = ""; break;
+                    case 4: displayAlarmData[0] = " "; break;
+                    case 5: displayAlarmData[4] = ""; break;
+                }
             }
         }
         return displayAlarmData;
