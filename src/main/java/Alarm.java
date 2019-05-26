@@ -344,7 +344,7 @@ public class Alarm {
     public void setCurrSection(int i) { this.currSection = i; }
     public Bell getBell(int index) {
         this.RingingIndex = index;
-        return bell[index];
+        return bell[index-1];
     }
     public int getBellIndex() {return bellIndex[currAlarm];}
     public boolean isRinging() {

@@ -132,40 +132,16 @@ public class AlarmTest {
 
         // 6: Max Bell Increase Test
         alarm.requestAlarmNextSection();
-        alarm.increaseSection();    // Alarm1.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
-
         alarm.increaseSection();    // Alarm2.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
 
         alarm.increaseSection();    // Alarm3.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
 
         alarm.increaseSection();    // Alarm4.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
 
         alarm.increaseSection();    // Alarm1.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
+
+        alarm.increaseSection();    // Alarm2.wav
+
     }
 
     @Test
@@ -206,39 +182,15 @@ public class AlarmTest {
         // 6: Max Bell Increase Test
         alarm.requestAlarmNextSection();
         alarm.decreaseSection();    // Alarm4.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
 
         alarm.decreaseSection();    // Alarm3.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
 
         alarm.decreaseSection();    // Alarm2.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
 
         alarm.decreaseSection();    // Alarm1.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
 
         alarm.decreaseSection();    // Alarm4.wav
-        alarm.getBell(alarm.getBellIndex()-1).play();
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {e.printStackTrace();}
-        alarm.getBell(alarm.getBellIndex()-1).pause();
+
     }
 
     @Test
@@ -256,8 +208,11 @@ public class AlarmTest {
         RealTime realTime = new RealTime();
         Alarm alarm = new Alarm(realTime);
         // Alarm Ringing Index not -1
-        alarm.getBell(1).play();
+        alarm.getBell(3).play();
         assertTrue(alarm.isRinging());
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException e) { e.printStackTrace();}
         // Alarm Ringing Index -1
         alarm.requestStopRinging();
         assertFalse(alarm.isRinging());
@@ -307,9 +262,9 @@ public class AlarmTest {
             realTime.requestRealTime().add(Calendar.SECOND, 1);
         }
         assertEquals(realTime.requestRealTime().getTime(), alarm.getAlarm().getTime());
-
         // Reset To Init Alarm
         alarm.realTimeTaskAlarm();
+        alarm.getBell(1).pause();
         assertEquals(compare.getTime(), alarm.getAlarm().getTime());
     }
 }
