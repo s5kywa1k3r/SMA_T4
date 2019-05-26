@@ -179,5 +179,7 @@ public class WatchSystem {
     // Getters and Setters
     public ArrayList getMenu(){ return this.menu; }
     public Object getMenu(int i){ return this.menu.get(i); }
+    public void setMenu(int i, Object o){ this.menu.set(i, o); }
     public int getMaxCnt(){ return this.maxCnt; }
+    public void setCurrMode(int i){ this.currMode = i; }
 }

@@ -108,6 +108,7 @@ public class RealTime {
 
     public void calculateTime(){ this.realTime.add(Calendar.MILLISECOND, 10); }
     public void requestChangeType(){ this.is24H = !this.is24H;}
+    public void setCurrSection(int currSection){ this.currSection = currSection; }
 
     // [WatchGUI]
     // String -> String []
@@ -133,6 +134,6 @@ public class RealTime {
 
     // Getters and Setters for Unit Test
     public int getCurrSection() { return this.currSection; }
-    public void setCurrSection(int currSection){ this.currSection = currSection; }
     public void setRealTime(int section, int value){ this.realTime.set(section, value); }
+
 }
