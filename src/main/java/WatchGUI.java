@@ -490,6 +490,7 @@ public class WatchGUI implements ActionListener {
                     case 0 :
                         if(this.flag == 0) system.enterSetTimerTime();
                         else if(this.flag == 2)system.nextTimerTimeSection();
+                        else if(this.flag == 3) system.pressStopRingingTimer();
                         break;
                     case 1 :
                         if(this.flag == 0) system.pressStartTimer();
@@ -499,7 +500,6 @@ public class WatchGUI implements ActionListener {
                         break;
                     case 2 :
                         if(flag == 2) system.exitSetTimerTime();
-                        else if(flag == 3) system.pressStopRingingTimer();
                         else system.pressChangeMode();
                         break;
                     case 3:
