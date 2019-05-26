@@ -12,7 +12,21 @@ public class AlarmTest {
     /*
     @Test
     public void realTimeTaskAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        RealTime realTime = new RealTime();
+        Alarm alarm = new Alarm(realTime);
+        Calendar tmp = Calendar.getInstance();
+        tmp.clear();
+        tmp.set(1970, Calendar.JANUARY, 1, 0, 0, 10);
+        // Set Alarm
+        alarm.setAlarm(tmp);
+        alarm.requestAlarmOnOff();
 
+        for(int i = 0 ; i <10; i++) {
+            alarm.getRealTime().requestRealTime().add(Calendar.SECOND, 1);
+            alarm.realTimeTaskAlarm();
+        }
+        assertEquals(alarm.getRealTime().requestRealTime().getTime(), tmp.getTime());
+        assertEquals(4, alarm.getStatus());
     }
     */
 
