@@ -540,18 +540,18 @@ public class WatchGUI implements ActionListener {
             case 6 : // Worldtime
                 switch(buttonIndex){
                     //case 0 : break;
-                    case 1 : system.prevWorldtimeNation();break;
+                    case 1 : system.nextWorldtimeNation();break;
                     case 2 : system.pressChangeMode();break;
-                    case 3 : system.nextWorldtimeNation();break;
+                    case 3 : system.prevWorldtimeNation();break;
                     default: break;
                 }
                 break;
             case 7 : // Sun
                 switch(buttonIndex){
                     case 0 : system.pressSetRise();break;
-                    case 1 : system.prevSunNation();break;
+                    case 1 : system.nextSunNation();break;
                     case 2 : system.pressChangeMode();break;
-                    case 3 : system.nextSunNation();break;
+                    case 3 : system.prevSunNation();break;
                     default: break;
                 }
                 break;
