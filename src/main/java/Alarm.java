@@ -151,7 +151,7 @@ public class Alarm {
         switch(this.currSection){
             case 0: // 1. Alarm Setting
             case 1:
-                incraseAlarmTime();
+                increaseAlarmTime();
                 break;
             case 2: // 2. Alarm Frequency
             case 3:
@@ -187,7 +187,7 @@ public class Alarm {
         }
     }
 
-    public void incraseAlarmTime() {
+    public void increaseAlarmTime() {
         if(this.currSection == 0) {
             this.reservedAlarm[this.currAlarm].add(Calendar.MINUTE, 1);
             if(this.reservedAlarm[this.currAlarm].get(Calendar.MINUTE) == 0)

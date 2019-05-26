@@ -9,10 +9,12 @@ import static org.junit.Assert.*;
 
 public class AlarmTest {
 
+    /*
     @Test
     public void realTimeTaskAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 
     }
+    */
 
     @Test
     public void requestSettingAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException {

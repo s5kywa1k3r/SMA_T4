@@ -141,6 +141,21 @@ public class RealTimeTest {
         assertEquals(2019, realTime.requestRealTime().get(Calendar.YEAR));
     }
 
+    @Test
+    public void requestChangeType(){
+        RealTime realTime = new RealTime();
+        assertEquals(true, realTime.isIs24H());
+        realTime.requestChangeType();
+        assertEquals(false, realTime.isIs24H());
+    }
+
+    @Test
+    public void setCurrSection(){
+        RealTime realTime = new RealTime();
+        assertEquals(0, realTime.getCurrSection());
+        realTime.setCurrSection(3);
+        assertEquals(3, realTime.getCurrSection());
+    }
     /*
     @Test
     public void showRealTime() {
