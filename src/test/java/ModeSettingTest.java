@@ -63,9 +63,15 @@ public class ModeSettingTest {
 
     @Test
     public void confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        ModeSetting ms = new ModeSetting();
-        ms.setSys(new WatchSystem());
-        ms.setOldMode(ms.getSys().getMenu());
+        WatchSystem sys = new WatchSystem();
+        ModeSetting ms = (ModeSetting)sys.getMenu(0);
+        sys.enterModeSetting();
+        //ms.requestModeSetting();
+
+        assertThat(ms.getPrevModeObject().get(0), instanceOf(SettingTime.class));
+        assertThat(ms.getPrevModeObject().get(1), instanceOf(Stopwatch.class));
+        assertThat(ms.getPrevModeObject().get(2), instanceOf(Timer.class));
+        assertThat(ms.getPrevModeObject().get(3), instanceOf(Alarm.class));
 
         // Make newMode's size 4
         ArrayList<String> selectedMode = new ArrayList<String>();
@@ -76,9 +82,42 @@ public class ModeSettingTest {
         ms.setNewMode((ArrayList<String>)selectedMode.clone()); // Avoid Call-By-Reference
 
         // {SettingTime, Timer, Stopwatch} -> {Timer, Stopwatch, SettingTime}
-        ArrayList confirmMode = ms.confirmSelectMode();
-        assertThat(confirmMode.get(0), instanceOf(Timer.class));
-        assertThat(confirmMode.get(1), instanceOf(Stopwatch.class));
-        assertThat(confirmMode.get(2), instanceOf(SettingTime.class));
+        sys.pressConfirmSelectMode();
+        ArrayList confirmMode = (ArrayList)ms.getSys().getMenu().clone();
+        assertThat(confirmMode.get(2), instanceOf(Timer.class));
+        assertThat(confirmMode.get(3), instanceOf(Stopwatch.class));
+        assertThat(confirmMode.get(4), instanceOf(SettingTime.class));
+
+        // Test Save Data
+        Timer timer = new Timer();
+        timer.getRsvTime().clear();
+
+        Calendar temp = Calendar.getInstance();
+        temp.clear();
+        temp.set(2010, Calendar.FEBRUARY, 3, 20,30,40);
+        timer.setRsvTime((Calendar)temp.clone());
+
+        sys.setMenu(2, timer);
+        assertEquals(timer.getRsvTime(), temp);
+
+        sys.enterModeSetting();
+        selectedMode.clear();
+        ms.setNewMode((ArrayList<String>)selectedMode.clone()); // Delete Timer
+        sys.pressConfirmSelectMode();
+        assertEquals(0, sys.getMaxCnt()); // Completely Deleted
+
+        // Timer data is saved
+        assertEquals(((Calendar)ms.getDb().loadData(1).get(1)), temp);
+
+        // Test Load data
+        sys.enterModeSetting();
+        selectedMode.clear();
+        selectedMode.add("Timer"); // Create Timer
+        ms.setNewMode((ArrayList<String>)selectedMode.clone());
+
+        sys.pressConfirmSelectMode();
+        confirmMode = (ArrayList)sys.getMenu().clone();
+
+        assertEquals(temp, ((Timer)confirmMode.get(2)).getRsvTime());
     }
 }

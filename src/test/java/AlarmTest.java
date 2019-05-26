@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 public class AlarmTest {
 
+    /*
     @Test
     public void realTimeTaskAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
@@ -27,6 +28,7 @@ public class AlarmTest {
         assertEquals(alarm.getRealTime().requestRealTime().getTime(), tmp.getTime());
         assertEquals(4, alarm.getStatus());
     }
+    */
 
     @Test
     public void requestSettingAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException {

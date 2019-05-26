@@ -84,6 +84,7 @@ public class ModeSetting {
     public ArrayList confirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList confirmMode = new ArrayList();
         for (String newMode : this.newMode) {
+
             boolean flag = false; // True: Match, False: Not Match
 
             // Find newMode from prevMode
@@ -150,8 +151,9 @@ public class ModeSetting {
     public ArrayList<String> getNewMode() { return newMode; }
     public void setNewMode(ArrayList<String> newMode) { this.newMode = newMode; }
     public void setOldMode(ArrayList oldMode) { this.prevModeObject = oldMode; }
-    //public ModeDB getDb() { return db; }
-    //public void setDb(ModeDB db) { this.db = db; }
+    public ArrayList getPrevModeObject(){ return this.prevModeObject; }
+    public ModeDB getDb() { return db; }
+    public void setDb(ModeDB db) { this.db = db; }
     public WatchSystem getSys() { return sys; }
     public void setSys(WatchSystem sys) { this.sys = sys; }
     public int getCurrIndex() { return currIndex; }
