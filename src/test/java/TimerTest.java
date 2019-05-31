@@ -50,7 +50,7 @@ public class TimerTest {
         assertEquals(1, timer.getRsvTime().get(Calendar.MINUTE));
         assertEquals(0, timer.getRsvTime().get(Calendar.HOUR_OF_DAY));
 
-        // 3: Max Minute Increase Test
+        // 3: Max HOUR Increase Test
         timer.setCurrSection(2);
         timer.getRsvTime().set(Calendar.HOUR_OF_DAY, 23);
 

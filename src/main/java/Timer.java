@@ -94,7 +94,7 @@ public class Timer {
             case 1: // [currSection] 1: Minute
                 this.rsvTime.add(Calendar.MINUTE, -1);
                 if(this.rsvTime.get(Calendar.MINUTE) == 59)
-                    this.rsvTime.add(Calendar.HOUR, 1);
+                    this.rsvTime.add(Calendar.HOUR_OF_DAY, 1);
                 break;
 
             case 2: // [currSection] 2: Hour
