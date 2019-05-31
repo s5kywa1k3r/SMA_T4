@@ -67,6 +67,15 @@ public class RealTimeTest {
 
         assertEquals(Calendar.FEBRUARY, realTime.requestRealTime().get(Calendar.MONTH));
         assertEquals(1970, realTime.requestRealTime().get(Calendar.YEAR));
+
+        // 5: Max Year Increase Test
+        realTime.nextSection(); // 4: MONTH -> 5: YEAR
+        realTime.setRealTime(Calendar.YEAR, 9999);
+
+        realTime.increaseTime(); // 9999 -> 1970
+        realTime.increaseTime(); // 1970 -> 1971
+
+        assertEquals(1971, realTime.requestRealTime().get(Calendar.YEAR));
     }
 
     @Test
