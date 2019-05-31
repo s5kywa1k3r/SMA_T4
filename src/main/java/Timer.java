@@ -149,6 +149,7 @@ public class Timer {
         }
         // else if timer is already expired
         else if(this.status <= 1) this.status = 0; // [status] 1: Continued -> 0: Stopped
+        else if(this.status == 3 && !this.bell.isAlive()) this.status = 0;
     }
 
     public void requestExitSetTimerTime(){
