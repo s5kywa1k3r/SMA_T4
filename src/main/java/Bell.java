@@ -25,8 +25,6 @@ public class Bell extends Thread{
             // IDE Test
             audioInputStream = AudioSystem.getAudioInputStream(new File(getClass().getResource("").getPath()+"sounds/Alarm"+index+".wav"));
         }
-
-
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
     }
@@ -41,7 +39,9 @@ public class Bell extends Thread{
     }
     public void run() {
         clip.start();
+        try{
+            Thread.sleep(3000);
+            pause();
+        }catch(InterruptedException e) {e.printStackTrace();}
     }
-
-    public boolean isRunning() {return clip.isActive();}
 }
