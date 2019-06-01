@@ -165,9 +165,4 @@ public class RealTimeTest {
         realTime.setCurrSection(3);
         assertEquals(3, realTime.getCurrSection());
     }
-    /*
-    @Test
-    public void showRealTime() {
-    }
-    */
 }

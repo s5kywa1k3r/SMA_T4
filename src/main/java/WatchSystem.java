@@ -87,7 +87,6 @@ public class WatchSystem {
         watchGUI.designMode(true);
     }
 
-    /* [Remove] public void callNextMode(){} */
     // RealTime
     public void pressShowType() { ((RealTime)this.menu.get(1)).requestChangeType();}
 
@@ -100,7 +99,7 @@ public class WatchSystem {
         watchGUI.designMode(true);
     }
 
-    public void pressNextMode(){ ((ModeSetting)this.menu.get(0)).requestNextMode(); }
+    public void pressNextMode()  { ((ModeSetting)this.menu.get(0)).requestNextMode(); }
     public void pressSelectMode(){ ((ModeSetting)this.menu.get(0)).requestSelectMode(); }
     public void pressConfirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         ArrayList newList = ((ModeSetting)this.menu.get(0)).confirmSelectMode();
@@ -118,53 +117,42 @@ public class WatchSystem {
     }
 
     // Setting Time
-    public void nextTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
+    public void nextTimeSection()    { ((SettingTime)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
     public void increaseTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestIncreaseTimeSection(); }
     public void decreaseTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestDecreaseTimeSection(); }
-    public void pressResetSecond(){ ((SettingTime)this.menu.get(this.currMode)).requestResetSecond(); }
-    public void exitSettingTime(){ ((SettingTime)this.menu.get(this.currMode)).requestExitSettingTime(); }
-    public int getSettingTimeFlag(){ return ((SettingTime)this.menu.get(this.currMode)).getCurrSection(); }
+    public void pressResetSecond()   { ((SettingTime)this.menu.get(this.currMode)).requestResetSecond(); }
+    public void exitSettingTime()    { ((SettingTime)this.menu.get(this.currMode)).requestExitSettingTime(); }
+    public int  getSettingTimeFlag() { return ((SettingTime)this.menu.get(this.currMode)).getCurrSection(); }
 
     // Stopwatch
     public void pressStartStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestStartStopwatch(); }
-    public void pressStopStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestStopStopwatch(); }
+    public void pressStopStopwatch() { ((Stopwatch)this.menu.get(this.currMode)).requestStopStopwatch(); }
     public void pressSplitStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestSplitStopwatch(); }
     public void pressResetStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestResetStopwatch(); }
-    public int getStopwatchFlag(){ return ((Stopwatch)this.menu.get(this.currMode)).requestStopwatchFlag(); }
+    public int  getStopwatchFlag()   { return ((Stopwatch)this.menu.get(this.currMode)).requestStopwatchFlag(); }
 
     // Timer
-    public void enterSetTimerTime(){ ((Timer)this.menu.get(this.currMode)).requestTimerTime(); }
-    public void nextTimerTimeSection(){ ((Timer)this.menu.get(this.currMode)).requestNextTimerTimeSection(); }
+    public void enterSetTimerTime()       { ((Timer)this.menu.get(this.currMode)).requestTimerTime(); }
+    public void nextTimerTimeSection()    { ((Timer)this.menu.get(this.currMode)).requestNextTimerTimeSection(); }
     public void increaseTimerTimeSection(){ ((Timer)this.menu.get(this.currMode)).requestIncreaseTimerTimeSection(); }
     public void decreaseTimerTimeSection(){ ((Timer)this.menu.get(this.currMode)).requestDecreaseTimerTimeSection(); }
-    public void exitSetTimerTime(){ ((Timer)this.menu.get(this.currMode)).requestExitSetTimerTime(); }
-    public void pressStartTimer(){ ((Timer)this.menu.get(this.currMode)).changeStatus(1); }
-    public void pressStopTimer(){ ((Timer)this.menu.get(this.currMode)).changeStatus(0); }
-    public void pressResetTimer(){ ((Timer)this.menu.get(this.currMode)).requestResetTimer(); }
-    public void pressStopRingingTimer(){ ((Timer)this.menu.get(this.currMode)).ringOff(); }
-    public int getTimerFlag(){ return ((Timer)this.menu.get(this.currMode)).requestTimerFlag(); }
-    public int getTimerSection() { return ((Timer)this.menu.get(this.currMode)).getCurrSection();}
+    public void exitSetTimerTime()        { ((Timer)this.menu.get(this.currMode)).requestExitSetTimerTime(); }
+    public void pressStartTimer()         { ((Timer)this.menu.get(this.currMode)).changeStatus(1); }
+    public void pressStopTimer()          { ((Timer)this.menu.get(this.currMode)).changeStatus(0); }
+    public void pressResetTimer()         { ((Timer)this.menu.get(this.currMode)).requestResetTimer(); }
+    public void pressStopRingingTimer()   { ((Timer)this.menu.get(this.currMode)).ringOff(); }
+    public int  getTimerFlag()            { return ((Timer)this.menu.get(this.currMode)).requestTimerFlag(); }
 
     // Alarm
-    public void enterSetAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).requestSettingAlarm(); }
-    public void nextAlarmTimeSection(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection();}
-    public void increaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).increaseSection(); }
-    public void decreaseAlarmTime(){ ((Alarm)this.menu.get(this.currMode)).decreaseSection(); }
-    /* [Remove] public void enterSetAlarmFrequency(){} */
-    /* [Remove] public void nextFrequencySection(){} */
-    /* [Remove] public void increaseCount(){} */
-    /* [Remove] public void increaseFrequency(){}*/
-    /* [Remove] public void decreaseCount(){} */
-    /* [Remove] public void decreaseFrequency(){} */
-    /* [Remove] public void enterSetAlarmBell(){} */
-    /* [Remove] public void nextBell(){} */
-    /* [Remove] public void prevBell(){} */
-    public void pressNextAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestNextAlarm(); }
+    public void enterSetAlarmTime()    { ((Alarm)this.menu.get(this.currMode)).requestSettingAlarm(); }
+    public void nextAlarmTimeSection() { ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection();}
+    public void increaseAlarmTime()    { ((Alarm)this.menu.get(this.currMode)).increaseSection(); }
+    public void decreaseAlarmTime()    { ((Alarm)this.menu.get(this.currMode)).decreaseSection(); }
+    public void pressNextAlarm()       { ((Alarm)this.menu.get(this.currMode)).requestNextAlarm(); }
     public void pressStopRingingAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestStopRinging(); }
-    public void pressAlarmOnOff(){ ((Alarm)this.menu.get(this.currMode)).requestAlarmOnOff(); }
-    public void exitSetAlarmSetting(){ ((Alarm)this.menu.get(this.currMode)).requestExitAlarmSetting(); }
-    public int getAlarmFlag(){ return ((Alarm)this.menu.get(this.currMode)).requestAlarmFlag(); }
-    public int getAlarmSection(){ return ((Alarm)this.menu.get(this.currMode)).getCurrSection(); }
+    public void pressAlarmOnOff()      { ((Alarm)this.menu.get(this.currMode)).requestAlarmOnOff(); }
+    public void exitSetAlarmSetting()  { ((Alarm)this.menu.get(this.currMode)).requestExitAlarmSetting(); }
+    public int  getAlarmFlag()         { return ((Alarm)this.menu.get(this.currMode)).requestAlarmFlag(); }
 
     // Worldtime
     public void nextWorldtimeNation(){ ((Worldtime)this.menu.get(this.currMode)).nextNation(); }
@@ -172,7 +160,7 @@ public class WatchSystem {
     /* [Remove] public void pressSummerTime(){} */
 
     // Sun
-    public void pressSetRise(){ ((Sun)this.menu.get(this.currMode)).requestSetRise(); }
+    public void pressSetRise() { ((Sun)this.menu.get(this.currMode)).requestSetRise(); }
     public void nextSunNation(){ ((Sun)this.menu.get(this.currMode)).requestNextNation(); }
     public void prevSunNation(){ ((Sun)this.menu.get(this.currMode)).requestPrevNation(); }
 
@@ -181,5 +169,4 @@ public class WatchSystem {
     public Object getMenu(int i){ return this.menu.get(i); }
     public void setMenu(int i, Object o){ this.menu.set(i, o); }
     public int getMaxCnt(){ return this.maxCnt; }
-    public void setCurrMode(int i){ this.currMode = i; }
 }
