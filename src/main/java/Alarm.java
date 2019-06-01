@@ -212,8 +212,8 @@ public class Alarm {
         }
         else if(this.currSection == 3) {
             this.frequency[this.currAlarm].add(Calendar.MINUTE, 1);
-            if(this.frequency[this.currAlarm].get(Calendar.MINUTE) == 11)
-                this.frequency[this.currAlarm].add(Calendar.MINUTE, 0);
+            if(this.frequency[this.currAlarm].get(Calendar.MINUTE) == 10)
+                this.frequency[this.currAlarm].set(Calendar.MINUTE, 0);
         }
         else {
             if(++this.repeat[this.currAlarm] == 6)
@@ -251,7 +251,7 @@ public class Alarm {
         else if(this.currSection == 3) {
             this.frequency[this.currAlarm].add(Calendar.MINUTE, -1);
             if (this.frequency[this.currAlarm].get(Calendar.MINUTE) == 59)
-                this.frequency[this.currAlarm].add(Calendar.MINUTE, 10);
+                this.frequency[this.currAlarm].set(Calendar.MINUTE, 9);
         }
         else {
             if (--this.repeat[this.currAlarm] == -1)
