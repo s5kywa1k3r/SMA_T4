@@ -131,6 +131,7 @@ public class Timer {
     /* [Removed] public void setTimerReservatedTime() */
     /* [Removed] public void setTimerTime() */
     public void ringOff(){
+        startBellTime = 0;
         bell.pause();
         this.status = 0;
     } // [status] 3: Ringing -> 0: Stopped
@@ -151,6 +152,7 @@ public class Timer {
         }
         // else if timer is already expired
         else if(this.status <= 1) this.status = 0; // [status] 1: Continued -> 0: Stopped
+        // If Timer is ringing, Count will be up to 3,000 (Count increase every 10 milli sec)
         else if(this.status == 3 && ++startBellTime == 3000) ringOff();
     }
 
