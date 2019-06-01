@@ -109,6 +109,10 @@ public class Alarm {
                     }
                 }
             }
+            if(this.status == 4 && (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND) + 30)) {
+                // If Alarm index is Ringing, but Actual bell is Stopped, status should be changed
+                requestStopRinging();
+            }
         }
     }
 
@@ -268,11 +272,9 @@ public class Alarm {
             this.currAlarm = 0;
     }
     public void requestStopRinging(){
-        if(RingingIndex != -1) {
-            bell[RingingIndex-1].pause();
-            RingingIndex = -1;
-            this.status = 0;
-        }
+        bell[RingingIndex-1].pause();
+        RingingIndex = -1;
+        this.status = 0;
     }
     public void requestAlarmOnOff(){ this.alarmState[this.currAlarm] = !this.alarmState[this.currAlarm]; }
 
