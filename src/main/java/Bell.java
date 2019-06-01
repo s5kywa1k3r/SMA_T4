@@ -15,7 +15,7 @@ public class Bell extends Thread{
 
     public Bell(int index) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         // index is order of alarm
-        String fileName = "/sounds/Alarm" + Integer.toString(index) + ".wav";
+        String fileName = "/sounds/Alarm" + index + ".wav";
         InputStream audioSrc = getClass().getResourceAsStream(fileName);
         InputStream bufferedIn = new BufferedInputStream(audioSrc);
         try{
@@ -25,8 +25,6 @@ public class Bell extends Thread{
             // IDE Test
             audioInputStream = AudioSystem.getAudioInputStream(new File(getClass().getResource("").getPath()+"sounds/Alarm"+index+".wav"));
         }
-
-
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
     }
@@ -39,9 +37,5 @@ public class Bell extends Thread{
     public void pause() {
         clip.stop();
     }
-    public void run() {
-        clip.start();
-    }
-
-    public boolean isRunning() {return clip.isActive();}
+    public void run() { clip.start(); }
 }

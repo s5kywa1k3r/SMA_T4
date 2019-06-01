@@ -13,6 +13,7 @@ public class Timer {
     private int status; // 0: Stopped, 1: Continued, 2: Setting, 3: Ringing
     private int currSection; // 0: Second, 1: Minute, 2: Hour
     private int blink;
+    private int startBellTime;
 
     // Constructors
     public Timer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -25,6 +26,7 @@ public class Timer {
         this.displayTimerData = new String[3];
         this.status = 0;
         this.currSection = 0;
+        this.startBellTime = 0;
     }
 
     // [ModeDB] Methods
@@ -129,7 +131,6 @@ public class Timer {
     /* [Removed] public void setTimerReservatedTime() */
     /* [Removed] public void setTimerTime() */
     public void ringOff(){
-        System.out.println("Ring off operation activated");
         bell.pause();
         this.status = 0;
     } // [status] 3: Ringing -> 0: Stopped
@@ -143,12 +144,14 @@ public class Timer {
         if(this.timerTime.getTimeInMillis() > -32400000) { // If timer is not expired
             if (this.status == 1) { // [status] 1: Continued
                 this.timerTime.add(Calendar.MILLISECOND, -10);
-                if (this.timerTime.getTimeInMillis() == -32400000)  // IF timer is expired
+                if (this.timerTime.getTimeInMillis() == -32400000) { // IF timer is expired
                     this.startRingingTimer(); // Ring
+                }
             }
         }
         // else if timer is already expired
         else if(this.status <= 1) this.status = 0; // [status] 1: Continued -> 0: Stopped
+        else if(this.status == 3 && ++startBellTime == 3000) ringOff();
     }
 
     public void requestExitSetTimerTime(){
