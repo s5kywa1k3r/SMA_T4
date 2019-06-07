@@ -25,17 +25,19 @@ public class Worldtime {
         this.realTime = null;
         this.currTime = null;
 
+        /* [sonarqube][Array should contain trailing comma.] */
         this.nation = new String[]{
                 "MAR", "GHA", "ESP", "UK", "FRA", "NGR", "GER", "ITA", "GRE",
                 "RSA", "UKR", "EGY", "KEN", "AF", "PAK", "IND", "THA", "CHN",
-                "MAS", "KOR", "AUS", "JPN", "CAN", "USA", "MEX", "CHI", "BRA"
+                "MAS", "KOR", "AUS", "JPN", "CAN", "USA", "MEX", "CHI", "BRA",
         };
 
+        /* [sonarqube][Array should contain trailing comma.] */
         this.nationTimeZone = new String[]{
                 "Etc/GMT", "Africa/Accra", "Europe/Madrid", "Europe/London", "Europe/Paris", "Etc/GMT-1", "Europe/Berlin",
                 "Europe/Rome", "Europe/Athens", "Etc/GMT-2", "Etc/GMT-3", "Africa/Cairo", "Etc/GMT-3", "Asia/Kabul",
                 "Etc/GMT-5", "IST", "Asia/Bangkok", "Etc/GMT-8", "Asia/Kuala_Lumpur", "Asia/Seoul", "Australia/Canberra",
-                "Asia/Tokyo", "Etc/GMT+4", "Etc/GMT+4", "Mexico/General", "America/Santiago", "Etc/GMT+3"
+                "Asia/Tokyo", "Etc/GMT+4", "Etc/GMT+4", "Mexico/General", "America/Santiago", "Etc/GMT+3",
         };
 
         this.displayWTData = new String[9];
@@ -140,7 +142,7 @@ public class Worldtime {
             displayWTData[7] = (this.worldTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
         }
         displayWTData[8] = (this.nation[this.currNation]);
-        return displayWTData;
+        return displayWTData.clone();
     }
 
     // Getters and Setters for Unit Test

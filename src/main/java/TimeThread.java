@@ -1,5 +1,7 @@
 public class TimeThread extends Thread {
-    WatchSystem system;
+
+    /* [sonarqube][Variable 'system' must be private and have accessor methods] */
+    private WatchSystem system;
 
     public TimeThread(WatchSystem system) {
         this.system = system;

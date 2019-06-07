@@ -9,6 +9,7 @@ public class WatchSystem {
     private int currMode;
     private int maxCnt;
     private WatchGUI watchGUI;
+
     public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.menu = new ArrayList(){};
 
@@ -26,7 +27,6 @@ public class WatchSystem {
         watchGUI.setMode(menu.get(1));
         watchGUI.designMode(true);
     }
-
 
     // [WatchSystem] System Method
     // Worked by thread
@@ -108,7 +108,9 @@ public class WatchSystem {
             try{
                 this.maxCnt++;
                 this.menu.set(i+2, newList.get(i));
-            }catch(Exception e){
+            }
+            /* [sonarqube][Catching 'Exception' is not allowed.] */
+            catch(IndexOutOfBoundsException e){
                 this.maxCnt--;
                 this.menu.set(i+2, null);
             }

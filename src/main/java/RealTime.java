@@ -33,6 +33,8 @@ public class RealTime {
     }
 
     public void increaseTime(){
+        int[] section = new int[]{-1, Calendar.MINUTE,
+                Calendar.HOUR_OF_DAY, Calendar.DATE, Calendar.YEAR,};
         switch(this.currSection){
             case 1 : // Minute
                 this.realTime.add(Calendar.MINUTE, 1);

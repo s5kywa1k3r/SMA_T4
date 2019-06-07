@@ -35,29 +35,33 @@ public class Sun {
             this.sun[i].clear();
         }
 
+        /* [sonarqube][Array should contain trailing comma.] */
         this.nation = new String[]{
                 "MAR", "GHA", "ESP", "UK", "FRA", "NGR", "GER", "ITA", "GRE",
                 "RSA", "UKR", "EGY", "KEN", "AF", "PAK", "IND", "THA", "CHN",
-                "MAS", "KOR", "AUS", "JPN", "CAN", "USA", "MEX", "CHI", "BRA"
+                "MAS", "KOR", "AUS", "JPN", "CAN", "USA", "MEX", "CHI", "BRA",
         };
 
+        /* [sonarqube][Array should contain trailing comma.] */
         this.nationTimeZone = new String[]{
                 "Etc/GMT", "Africa/Accra", "Europe/Madrid", "Europe/London", "Europe/Paris", "Etc/GMT-1", "Europe/Berlin",
                 "Europe/Rome", "Europe/Athens", "Etc/GMT-2", "Etc/GMT-3", "Africa/Cairo", "Etc/GMT-3", "Asia/Kabul",
                 "Etc/GMT-5", "IST", "Asia/Bangkok", "Etc/GMT-8", "Asia/Kuala_Lumpur", "Asia/Seoul", "Australia/Canberra",
-                "Asia/Tokyo", "Etc/GMT+4", "Etc/GMT+4", "Mexico/General", "America/Santiago", "Etc/GMT+3"
+                "Asia/Tokyo", "Etc/GMT+4", "Etc/GMT+4", "Mexico/General", "America/Santiago", "Etc/GMT+3",
         };
 
+        /* [sonarqube][Array should contain trailing comma.] */
         this.nationLatitude = new double[]{
                 33.977595, 5.61168, 40.421095, 51.480065, 48.855972, 9.073947, 52.517944, 41.9054, 37.98512,
                 -25.753113, 50.457425, 30.045495, -1.285904, 34.560963, 33.688766, 28.615838, 13.767087, 39.906642,
-                3.135744, 37.551079, -35.280708, 35.716626, 45.417095, 38.907882, 19.435852, -33.430989 ,-15.787272
+                3.135744, 37.551079, -35.280708, 35.716626, 45.417095, 38.907882, 19.435852, -33.430989 ,-15.787272,
         };
 
+        /* [sonarqube][Array should contain trailing comma.] */
         this.nationLongitude = new double[]{
                 -6.850382, -0.184533, -3.711156, -0.129337, 2.352544, 7.393677, 13.398693, 12.492016, 23.727004,
                 28.224044, 30.517889, 31.235796, 36.827738, 69.207369, 73.047844, 77.209795, 100.506751, 116.408181,
-                101.687675, 126.991333, 149.1298, 139.768531, -75.696552, -77.035156, -99.125796, -70.665665, -47.89328
+                101.687675, 126.991333, 149.1298, 139.768531, -75.696552, -77.035156, -99.125796, -70.665665, -47.89328,
         };
 
         this.currNation = 19;

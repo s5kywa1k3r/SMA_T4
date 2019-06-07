@@ -91,9 +91,13 @@ public class ModeSetting {
             for (String oldMode : this.prevMode)
                 if (newMode.equals(oldMode)) flag = true;
 
-            if (flag == true) {
+            /* [sonarqube][Expression can be simplified] */
+            if (flag) {
                 confirmMode.add(this.prevModeObject.get(this.prevMode.indexOf(newMode)));
-                this.prevMode.set(this.prevMode.indexOf(newMode), null);
+
+                /* [sonarqube][NPath Complexity is 325] */
+                this.prevMode.remove(this.prevMode.indexOf(newMode));
+                //this.prevMode.set(this.prevMode.indexOf(newMode), null);
             }
 
             // Load Data from DB
