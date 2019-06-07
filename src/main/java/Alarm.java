@@ -85,28 +85,27 @@ public class Alarm {
     public void realTimeTaskAlarm(){
         this.currTime = this.realTime.requestRealTime();
         for(int i = 0; i < 4; i++){
-            if(this.alarmState[i]){
-                if(
-                        (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
-                                (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
-                                (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
-                )
-                {
-                    this.status = 4;
-                    if(RingingIndex != -1) {
-                        // If Alarm is already Ringing, should be change to other one
-                        requestStopRinging();
-                    }
-                    RingingIndex = bellIndex[i];
-                    bell[RingingIndex-1].play();
-                    if(tmpRepeat[i]-- > 0) {
-                        alarm[i].add(Calendar.MINUTE, frequency[i].get(Calendar.MINUTE));
-                        alarm[i].add(Calendar.SECOND, frequency[i].get(Calendar.SECOND));
-                    }
-                    else {
-                        tmpRepeat[i] = repeat[i];
-                        alarm[i] = (Calendar)reservedAlarm[i].clone();
-                    }
+            /* [sonarqube][Nested if-else depth is 2] */
+            if(
+                (this.alarmState[i]) &&
+                (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
+                (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
+                (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
+            ){
+                this.status = 4;
+                if(RingingIndex != -1) {
+                    // If Alarm is already Ringing, should be change to other one
+                    requestStopRinging();
+                }
+                RingingIndex = bellIndex[i];
+                bell[RingingIndex-1].play();
+                if(tmpRepeat[i]-- > 0) {
+                    alarm[i].add(Calendar.MINUTE, frequency[i].get(Calendar.MINUTE));
+                    alarm[i].add(Calendar.SECOND, frequency[i].get(Calendar.SECOND));
+                }
+                else {
+                    tmpRepeat[i] = repeat[i];
+                    alarm[i] = (Calendar)reservedAlarm[i].clone();
                 }
             }
             if(this.status == 4 && (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND) + 30)) {
@@ -284,8 +283,10 @@ public class Alarm {
         displayAlarmData[1] = "0"+this.frequency[this.currAlarm].get(Calendar.MINUTE);
         displayAlarmData[2] = (this.frequency[this.currAlarm].get(Calendar.SECOND) < 10 ? "0" : "") + this.frequency[this.currAlarm].get(Calendar.SECOND);
         displayAlarmData[4] = this.bellIndex[this.currAlarm] + "";
+
         if(alarmState[this.currAlarm]) displayAlarmData[5] = "ON";
         else displayAlarmData[5] = "OFF";
+
         if(this.status == 0 || this.status == 4) {
             displayAlarmData[0] = this.tmpRepeat[this.currAlarm] + "";
             displayAlarmData[3] = (this.alarm[this.currAlarm].get(Calendar.MINUTE) < 10 ? "0" : "") + this.alarm[this.currAlarm].get(Calendar.MINUTE);
@@ -308,6 +309,7 @@ public class Alarm {
                 displayAlarmData[7] = (this.reservedAlarm[this.currAlarm].get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
             }
             if(blink > 50) {
+                /* [sonarqube][Switch statement found in Alarm.showAlarm() where default case is missing] */
                 switch (currSection) {
                     case 0: displayAlarmData[3] = ""; break;
                     case 1: displayAlarmData[6] = ""; break;
@@ -315,24 +317,31 @@ public class Alarm {
                     case 3: displayAlarmData[1] = ""; break;
                     case 4: displayAlarmData[0] = " "; break;
                     case 5: displayAlarmData[4] = ""; break;
+                    default: break;
                 }
             }
         }
-        return displayAlarmData;
+        /* [sonarqube][Alarm.showAlarm() may expose internal representation by returning displayAlarmData] */
+        return displayAlarmData.clone();
     }
 
     public int requestAlarmFlag(){ return this.status; }
 
     // Getters and Setters
-    public Calendar[] getReservated() { return reservedAlarm; }
+    /* [sonarqube][Alarm.getReservated() may expose internal representation by returning reservedAlarm] */
+    public Calendar[] getReservated() { return reservedAlarm.clone(); }
     public Calendar getReservated(int i){ return this.reservedAlarm[i]; }
-    public void setReservated(Calendar[] reservated) { this.reservedAlarm = reservated; }
+    /* [sonarqube][Alarm.setReservated(Calendar[]) may expose internal representation by storing an externally mutable object into reservedAlarm] */
+    public void setReservated(Calendar[] reservated) { this.reservedAlarm = reservated.clone(); }
     public void setReservated(Calendar reservated){this.reservedAlarm[this.currAlarm] = reservated;}
-    public Calendar[] getFrequency() { return frequency; }
+    /* [sonarqube][Alarm.getFrequency() may expose internal representation by returning frequency] */
+    public Calendar[] getFrequency() { return frequency.clone(); }
     public Calendar getFrequency(int i){ return frequency[i]; }
-    public void setFrequency(Calendar[] frequency) { this.frequency = frequency; }
+    /* [sonarqube][Alarm.setFrequency(Calendar[]) may expose internal representation by storing an externally mutable object into frequency] */
+    public void setFrequency(Calendar[] frequency) { this.frequency = frequency.clone(); }
     public void setFrequency(int i, Calendar frequency) { this.frequency[i] = frequency; }
-    public int[] getRepeat() { return repeat; }
+    /* [sonarqube][Alarm.getRepeat() may expose internal representation by returning repeat] */
+    public int[] getRepeat() { return repeat.clone(); }
     public int getRepeat(int i){ return repeat[i]; }
     public void setRepeat(int i, int repeat) { this.repeat[i] = repeat; this.tmpRepeat[i]=repeat; }
     public int getStatus() { return this.status; }
@@ -350,8 +359,8 @@ public class Alarm {
     }
     public int getBellIndex() {return bellIndex[currAlarm];}
     public boolean isRinging() {
-        if(RingingIndex == -1) return false;
-        else return true;
+        /* [sonarqube][Conditional logic can be removed.] */
+        return RingingIndex != -1;
     }
     public void setAlarm(Calendar tmp) {
         alarm[currAlarm] = tmp;
