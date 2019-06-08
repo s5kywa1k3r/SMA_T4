@@ -66,7 +66,10 @@ public class WatchGUI implements ActionListener {
             InputStream bufferedIn = new BufferedInputStream(fontSrc);
             this.mainFont = Font.createFont(Font.TRUETYPE_FONT, bufferedIn);
         } catch (Exception e) {
+            e.printStackTrace();
+            /* [sonarqube][Vuln #15] */
             // IDE Test
+            /*
             try {
                 this.mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(WatchSystem.class.getResource("").getPath() + "DS-DIGI.TTF"));
             } catch (FontFormatException ex) {
@@ -74,7 +77,8 @@ public class WatchGUI implements ActionListener {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            e.printStackTrace();
+
+             */
         }
         mainFont = mainFont.deriveFont(Font.PLAIN, 60f);
         subFont = mainFont.deriveFont(Font.PLAIN, 45f);

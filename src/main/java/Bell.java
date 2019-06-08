@@ -22,8 +22,13 @@ public class Bell extends Thread{
             // Make Jar File
             audioInputStream = AudioSystem.getAudioInputStream(bufferedIn);
         }catch(Exception e){
+            e.printStackTrace();
+            /* [sonarqube][Vuln #14] */
             // IDE Test
+            /*
+            System.out.println(getClass().getResource("").getPath()+"sounds/Alarm"+index+".wav");
             audioInputStream = AudioSystem.getAudioInputStream(new File(getClass().getResource("").getPath()+"sounds/Alarm"+index+".wav"));
+            */
         }
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
