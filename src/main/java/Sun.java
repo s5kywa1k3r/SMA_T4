@@ -119,6 +119,8 @@ public class Sun {
             this.currTime.add(Calendar.DATE, -1);
         }
 
+        /* [sonarqube]["if ... else if" constructs should end with "else" clauses.] */
+        else{}
     }
 
     public void requestSetRise(){ this.currMode = this.currMode == 0 ? 1 : 0; }

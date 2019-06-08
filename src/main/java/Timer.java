@@ -154,6 +154,9 @@ public class Timer {
         else if(this.status <= 1) this.status = 0; // [status] 1: Continued -> 0: Stopped
         // If Timer is ringing, Count will be up to 3,000 (Count increase every 10 milli sec)
         else if(this.status == 3 && ++startBellTime == 3000) ringOff();
+
+        /* [sonarqube]["if ... else if" constructs should end with "else" clauses.] */
+        else{}
     }
 
     public void requestExitSetTimerTime(){

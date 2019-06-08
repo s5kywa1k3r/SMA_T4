@@ -525,6 +525,8 @@ public class WatchGUI implements ActionListener {
                     case 0 :
                         if(this.flag == 0) system.enterSetTimerTime();
                         else if(this.flag == 2)system.nextTimerTimeSection();
+                        /* [sonarqube]["if ... else if" constructs should end with "else" clauses.] */
+                        else{}
                         break;
                     case 1 :
                         if(this.flag == 0) system.pressStartTimer();
@@ -561,6 +563,8 @@ public class WatchGUI implements ActionListener {
                     case 2 :
                         if(flag != 0 && flag != 4) system.exitSetAlarmSetting();
                         else if(flag == 0) system.pressChangeMode();
+                        /* [sonarqube]["if ... else if" constructs should end with "else" clauses.] */
+                        else{}
                         break;
                     case 3 :
                         if(flag == 0) system.pressNextAlarm();
