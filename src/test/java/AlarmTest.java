@@ -32,16 +32,17 @@ public class AlarmTest {
 
     @Test
     public void requestSettingAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
+
         alarm.requestSettingAlarm();
         assertEquals(1, alarm.getStatus());
     }
 
     @Test
     public void requestAlarmNextSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
 
         alarm.requestSettingAlarm();
         assertEquals(0, alarm.getCurrSection());    // 0 : Minute
@@ -70,8 +71,9 @@ public class AlarmTest {
 
     @Test
     public void requestExitAlarmSetting()throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
+
         alarm.setStatus(1);
         alarm.setCurrSection(2);
         assertEquals(1, alarm.getStatus());
@@ -84,8 +86,9 @@ public class AlarmTest {
 
     @Test
     public void increaseSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
+
         assertEquals(0, alarm.getCurrSection()); // 0: Minutes
 
         alarm.requestSettingAlarm();
@@ -146,8 +149,9 @@ public class AlarmTest {
 
     @Test
     public void decreaseSection() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
+
         assertEquals(0, alarm.getCurrSection()); // 0: Minutes
 
         // 1: Min Minute Decrease Test
@@ -195,8 +199,9 @@ public class AlarmTest {
 
     @Test
     public void requestNextAlarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
+
         alarm.setCurrAlarm(3); // [currAlarm] Point last alarm
         alarm.requestNextAlarm(); // [currAlarm] 3 -> 0
         alarm.requestNextAlarm(); // [currAlarm] 0 -> 1
@@ -205,8 +210,9 @@ public class AlarmTest {
 
     @Test
     public void requestStopRinging() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
+
         // Alarm Ringing Index not -1
         alarm.getBell(3).play();
         assertTrue(alarm.isRinging());
@@ -220,8 +226,9 @@ public class AlarmTest {
 
     @Test
     public void requestAlarmOnOff() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        RealTime realTime = new RealTime();
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(new RealTime());
+
         alarm.requestAlarmOnOff();
         assertTrue(alarm.getAlarmCurrAlarmStatus());
 
@@ -233,7 +240,9 @@ public class AlarmTest {
     public void ringProperly() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         RealTime realTime = new RealTime();
         realTime.requestRealTime().set(2000, Calendar.JANUARY, 1, 1, 1, 30);
-        Alarm alarm = new Alarm(realTime);
+        Alarm alarm = new Alarm();
+        alarm.setRealTime(realTime);
+
         Calendar tmp = Calendar.getInstance();
         Calendar tmpFre = Calendar.getInstance();
         tmp.clear();

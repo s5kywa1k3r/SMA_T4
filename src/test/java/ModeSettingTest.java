@@ -83,7 +83,7 @@ public class ModeSettingTest {
 
         // {SettingTime, Timer, Stopwatch} -> {Timer, Stopwatch, SettingTime}
         sys.pressConfirmSelectMode();
-        ArrayList confirmMode = (ArrayList)ms.getSys().getMenu().clone();
+        ArrayList confirmMode = (ArrayList)WatchSystem.getMenu().clone();
         assertThat(confirmMode.get(2), instanceOf(Timer.class));
         assertThat(confirmMode.get(3), instanceOf(Stopwatch.class));
         assertThat(confirmMode.get(4), instanceOf(SettingTime.class));

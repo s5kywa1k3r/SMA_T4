@@ -19,7 +19,7 @@ public class WatchGUI implements ActionListener {
     private int section;
     private JFrame jFrame;
     private JButton[] button = new JButton[4];
-    private WatchSystem system;
+    //private WatchSystem system;
     // Year, Name of Menu
     public JTextField year = new JTextField();
     // day of the week, month, day
@@ -51,7 +51,7 @@ public class WatchGUI implements ActionListener {
     public WatchGUI(WatchSystem system) {
         this.presentModeIndex = 0;
         this.flag = 0;
-        this.system = system;
+        //this.system = system;
         jFrame = new JFrame();
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -441,102 +441,102 @@ public class WatchGUI implements ActionListener {
         switch(presentModeIndex) {
             case 0 : // Mode Setting
                 switch(buttonIndex){
-                    case 0: system.pressConfirmSelectMode();break;
-                    case 1: system.pressSelectMode();break;
-                    case 2: system.pressChangeMode();break;
-                    case 3: system.pressNextMode();break;
+                    case 0: WatchSystem.pressConfirmSelectMode();break;
+                    case 1: WatchSystem.pressSelectMode();break;
+                    case 2: WatchSystem.pressChangeMode();break;
+                    case 3: WatchSystem.pressNextMode();break;
                     default:break;
                 }
                 break;
             case 1 : // RealTime
                 switch(buttonIndex){
-                    case 0 : system.enterModeSetting(); break;
+                    case 0 : WatchSystem.enterModeSetting(); break;
                     //case 1 : break;
-                    case 2 : system.pressChangeMode();break;
-                    case 3 : system.pressShowType();break;
+                    case 2 : WatchSystem.pressChangeMode();break;
+                    case 3 : WatchSystem.pressShowType();break;
                     default: break;
                 }
                 break;
 
             case 2 : // SettingTime
-                this.flag = system.getSettingTimeFlag();
+                this.flag = WatchSystem.getSettingTimeFlag();
                 switch(buttonIndex){
-                    case 0 : system.nextTimeSection();break;
+                    case 0 : WatchSystem.nextTimeSection();break;
                     case 1 :
-                        if(this.flag == 0) system.pressResetSecond();
-                        else system.increaseTimeSection();
+                        if(this.flag == 0) WatchSystem.pressResetSecond();
+                        else WatchSystem.increaseTimeSection();
                         break;
                     case 2 :
-                        system.exitSettingTime();
-                        system.pressChangeMode();
+                        WatchSystem.exitSettingTime();
+                        WatchSystem.pressChangeMode();
                         break;
                     case 3 :
-                        if(this.flag == 0) system.pressResetSecond();
-                        else system.decreaseTimeSection();break;
+                        if(this.flag == 0) WatchSystem.pressResetSecond();
+                        else WatchSystem.decreaseTimeSection();break;
                     default: break;
                 }
                 break;
 
             case 3 : // Stopwatch  0 : Stopped 1: Continued
-                this.flag = system.getStopwatchFlag();
+                this.flag = WatchSystem.getStopwatchFlag();
                 switch(buttonIndex){
-                    case 0 : system.pressSplitStopwatch();break;
+                    case 0 : WatchSystem.pressSplitStopwatch();break;
                     case 1 :
-                        if(this.flag == 0) system.pressStartStopwatch();
-                        else system.pressStopStopwatch();
+                        if(this.flag == 0) WatchSystem.pressStartStopwatch();
+                        else WatchSystem.pressStopStopwatch();
                         break;
-                    case 2 : system.pressChangeMode();break;
-                    case 3 : system.pressResetStopwatch();break;
+                    case 2 : WatchSystem.pressChangeMode();break;
+                    case 3 : WatchSystem.pressResetStopwatch();break;
                     default: break;
                 }
                 break;
             case 4 : // Timer
-                this.flag = system.getTimerFlag();
+                this.flag = WatchSystem.getTimerFlag();
                 switch(buttonIndex){
                     case 0 :
-                        if(this.flag == 0) system.enterSetTimerTime();
-                        else if(this.flag == 2)system.nextTimerTimeSection();
+                        if(this.flag == 0) WatchSystem.enterSetTimerTime();
+                        else if(this.flag == 2)WatchSystem.nextTimerTimeSection();
                         break;
                     case 1 :
-                        if(this.flag == 0) system.pressStartTimer();
-                        else if(this.flag == 1) system.pressStopTimer();
-                        else if(this.flag == 3) system.pressStopRingingTimer();
-                        else system.increaseTimerTimeSection();
+                        if(this.flag == 0) WatchSystem.pressStartTimer();
+                        else if(this.flag == 1) WatchSystem.pressStopTimer();
+                        else if(this.flag == 3) WatchSystem.pressStopRingingTimer();
+                        else WatchSystem.increaseTimerTimeSection();
                         break;
                     case 2 :
-                        if(flag == 2) system.exitSetTimerTime();
-                        else if(flag == 3) system.pressStopRingingTimer();
-                        else system.pressChangeMode();
+                        if(flag == 2) WatchSystem.exitSetTimerTime();
+                        else if(flag == 3) WatchSystem.pressStopRingingTimer();
+                        else WatchSystem.pressChangeMode();
                         break;
                     case 3:
-                        if(flag == 2) system.decreaseTimerTimeSection();
-                        else if(flag == 3) system.pressStopRingingTimer();
-                        else system.pressResetTimer();
+                        if(flag == 2) WatchSystem.decreaseTimerTimeSection();
+                        else if(flag == 3) WatchSystem.pressStopRingingTimer();
+                        else WatchSystem.pressResetTimer();
                         break;
                     default: break;
                 }
                 break;
             case 5 : // Alarm
-                this.flag = system.getAlarmFlag();
+                this.flag = WatchSystem.getAlarmFlag();
                 switch(buttonIndex){
                     case 0 :
-                        if(flag == 0) system.enterSetAlarmTime();
-                        else if(flag == 4) system.pressStopRingingAlarm();
-                        else system.nextAlarmTimeSection();
+                        if(flag == 0) WatchSystem.enterSetAlarmTime();
+                        else if(flag == 4) WatchSystem.pressStopRingingAlarm();
+                        else WatchSystem.nextAlarmTimeSection();
                         break;
                     case 1 :
-                        if(flag == 0) system.pressAlarmOnOff();
-                        else if(flag == 4) system.pressStopRingingAlarm();
-                        else system.increaseAlarmTime();
+                        if(flag == 0) WatchSystem.pressAlarmOnOff();
+                        else if(flag == 4) WatchSystem.pressStopRingingAlarm();
+                        else WatchSystem.increaseAlarmTime();
                         break;
                     case 2 :
-                        if(flag != 0 && flag != 4) system.exitSetAlarmSetting();
-                        else if(flag == 0) system.pressChangeMode();
+                        if(flag != 0 && flag != 4) WatchSystem.exitSetAlarmSetting();
+                        else if(flag == 0) WatchSystem.pressChangeMode();
                         break;
                     case 3 :
-                        if(flag == 0) system.pressNextAlarm();
-                        else if(flag == 4) system.pressStopRingingAlarm();
-                        else system.decreaseAlarmTime();
+                        if(flag == 0) WatchSystem.pressNextAlarm();
+                        else if(flag == 4) WatchSystem.pressStopRingingAlarm();
+                        else WatchSystem.decreaseAlarmTime();
                         break;
                     default: break;
                 }
@@ -544,18 +544,18 @@ public class WatchGUI implements ActionListener {
             case 6 : // Worldtime
                 switch(buttonIndex){
                     //case 0 : break;
-                    case 1 : system.nextWorldtimeNation();break;
-                    case 2 : system.pressChangeMode();break;
-                    case 3 : system.prevWorldtimeNation();break;
+                    case 1 : WatchSystem.nextWorldtimeNation();break;
+                    case 2 : WatchSystem.pressChangeMode();break;
+                    case 3 : WatchSystem.prevWorldtimeNation();break;
                     default: break;
                 }
                 break;
             case 7 : // Sun
                 switch(buttonIndex){
-                    case 0 : system.pressSetRise();break;
-                    case 1 : system.nextSunNation();break;
-                    case 2 : system.pressChangeMode();break;
-                    case 3 : system.prevSunNation();break;
+                    case 0 : WatchSystem.pressSetRise();break;
+                    case 1 : WatchSystem.nextSunNation();break;
+                    case 2 : WatchSystem.pressChangeMode();break;
+                    case 3 : WatchSystem.prevSunNation();break;
                     default: break;
                 }
                 break;

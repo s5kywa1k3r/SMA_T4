@@ -1,10 +1,8 @@
 public class TimeThread extends Thread {
 
     /* [sonarqube][Variable 'system' must be private and have accessor methods] */
-    private WatchSystem system;
-
-    public TimeThread(WatchSystem system) {
-        this.system = system;
+    public TimeThread() {
+        WatchSystem sys = WatchSystem.getInstance();
     }
 
     @Override
@@ -12,7 +10,7 @@ public class TimeThread extends Thread {
         try {
             while(true) {
                 sleep(10);
-                system.realTimeTask();
+                WatchSystem.realTimeTask();
             }
         } catch (InterruptedException e) {
             //e.printStackTrace();

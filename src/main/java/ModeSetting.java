@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ModeSetting {
-    private WatchSystem sys;
+    //private WatchSystem sys;
     private ModeDB db;
 
     private ArrayList<String> menu_all;
@@ -19,7 +19,6 @@ public class ModeSetting {
     private int blink;
 
     public ModeSetting(){
-        this.sys = null;
         this.db = new ModeDB();
 
         this.menu_all = new ArrayList<String>();
@@ -41,7 +40,7 @@ public class ModeSetting {
 
     public ModeSetting(WatchSystem sys) {
         this();
-        this.sys = sys;
+        //WatchSystem = sys;
     }
 
     // [ModeSetting] System Methods
@@ -49,10 +48,10 @@ public class ModeSetting {
         this.newMode.clear();
         this.prevMode.clear();
         this.prevModeObject.clear();
-        for(int i = 2; i < this.sys.getMaxCnt() + 2; i++) {
-            this.prevModeObject.add(this.sys.getMenu(i));
-            if (this.menu_all.indexOf(this.sys.getMenu(i).getClass().getTypeName()) != -1)
-                this.prevMode.add(this.sys.getMenu(i).getClass().getTypeName());
+        for(int i = 2; i < WatchSystem.getMaxCnt() + 2; i++) {
+            this.prevModeObject.add(WatchSystem.getMenu(i));
+            if (this.menu_all.indexOf(WatchSystem.getMenu(i).getClass().getTypeName()) != -1)
+                this.prevMode.add(WatchSystem.getMenu(i).getClass().getTypeName());
         }
     }
 
@@ -96,8 +95,8 @@ public class ModeSetting {
                 confirmMode.add(this.prevModeObject.get(this.prevMode.indexOf(newMode)));
 
                 /* [sonarqube][NPath Complexity is 325] */
-                this.prevMode.remove(this.prevMode.indexOf(newMode));
-                //this.prevMode.set(this.prevMode.indexOf(newMode), null);
+                //this.prevMode.remove(this.prevMode.indexOf(newMode));
+                this.prevMode.set(this.prevMode.indexOf(newMode), null);
             }
 
             // Load Data from DB
@@ -105,10 +104,10 @@ public class ModeSetting {
                 switch(newMode) { // 0: Stopwatch, 1: Timer, 2: Alarm, 3: Worldtime, 4: Sun, 5: SettingTime
                     case "Stopwatch":   confirmMode.add(new Stopwatch(db.loadData(this.menu_all.indexOf(newMode))));break;
                     case "Timer":       confirmMode.add(new Timer(db.loadData(this.menu_all.indexOf(newMode))));break;
-                    case "Alarm":       confirmMode.add(new Alarm((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));break;
-                    case "Worldtime":   confirmMode.add(new Worldtime((RealTime)this.sys.getMenu(1), db.loadData(this.menu_all.indexOf(newMode))));break;
-                    case "Sun":         confirmMode.add(new Sun((RealTime)this.sys.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));break;
-                    case "SettingTime": confirmMode.add(new SettingTime((RealTime)this.sys.getMenu(1)));break;
+                    case "Alarm":       confirmMode.add(new Alarm(db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "Worldtime":   confirmMode.add(new Worldtime((RealTime)WatchSystem.getMenu(1), db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "Sun":         confirmMode.add(new Sun((RealTime)WatchSystem.getMenu(1),db.loadData(this.menu_all.indexOf(newMode))));break;
+                    case "SettingTime": confirmMode.add(new SettingTime());break;
                     default: break;
                 }
             }
@@ -160,8 +159,8 @@ public class ModeSetting {
     public ArrayList getPrevModeObject(){ return this.prevModeObject; }
     public ModeDB getDb() { return db; }
     public void setDb(ModeDB db) { this.db = db; }
-    public WatchSystem getSys() { return sys; }
-    public void setSys(WatchSystem sys) { this.sys = sys; }
+    //public WatchSystem getSys() { return sys; }
+    //public void setSys(WatchSystem sys) { WatchSystem = sys; }
     public int getCurrIndex() { return currIndex; }
     public void setCurrIndex(int currIndex) { this.currIndex = currIndex; }
 }

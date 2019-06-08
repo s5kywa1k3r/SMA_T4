@@ -5,8 +5,8 @@ public class SettingTime {
     private int blink;
     private String [] displaySettingTimeData;
     // Constructor
-    public SettingTime(RealTime realTime){
-        this.realTime = realTime;
+    public SettingTime(){
+        this.realTime = (RealTime)WatchSystem.getMenu(1);
     }
 
     // [SettingTime] System Methods

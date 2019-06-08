@@ -25,7 +25,7 @@ public class Alarm {
     private int currAlarm;
     private int blink;
 
-    public Alarm(RealTime realTime) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public Alarm() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.reservedAlarm = new Calendar[4];
         for(int i = 0; i < 4; i++){
             this.reservedAlarm[i] = Calendar.getInstance();
@@ -58,11 +58,16 @@ public class Alarm {
 
         this.status = 0;
         this.currAlarm = 0;
-        this.realTime = realTime;
+        try{
+            this.realTime = (RealTime)WatchSystem.getMenu(1);
+
+        }catch(NullPointerException e) {
+            this.realTime = null;
+        }
     }
 
-    public Alarm(RealTime realTime, ArrayList db) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        this(realTime);
+    public Alarm(ArrayList db) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        this();
         if(db != null){
             this.reservedAlarm = (Calendar[])db.get(0);
             this.alarm = (Calendar[])db.get(1);

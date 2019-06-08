@@ -5,31 +5,41 @@ import java.util.ArrayList;
 
 public class WatchSystem {
 
-    private ArrayList menu;
-    private int currMode;
-    private int maxCnt;
-    private WatchGUI watchGUI;
+    private static ArrayList menu;
+    private static int currMode;
+    private static int maxCnt;
+    private static WatchGUI watchGUI;
+
+    //private static WatchSystem instance;
+
+    private static class Singleton{
+        private static final WatchSystem instance = new WatchSystem();
+    }
+
+    public static WatchSystem getInstance(){
+        return Singleton.instance;
+    }
 
     public WatchSystem(){
-        this.menu = new ArrayList(){};
+        WatchSystem.menu = new ArrayList(){};
 
-        menu.add(new ModeSetting(this));
+        menu.add(new ModeSetting());
         menu.add(new RealTime());
-        menu.add(new SettingTime((RealTime)menu.get(1)));
+        menu.add(new SettingTime());
         menu.add(new Stopwatch());
 
         /* [sonarqube][Bug #9] */
         try{
 
             menu.add(new Timer());
-            menu.add(new Alarm((RealTime)menu.get(1)));
+            menu.add(new Alarm());
         }
         catch(Exception e) {
             e.printStackTrace();
             return;
         }
 
-        this.currMode = 1; // [currMode] 1: Always RealTime
+        WatchSystem.currMode = 1; // [currMode] 1: Always RealTime
         this.maxCnt = 4;
 
         watchGUI = new WatchGUI(this);
@@ -39,145 +49,149 @@ public class WatchSystem {
 
     // [WatchSystem] System Method
     // Worked by thread
-    public void realTimeTask() {
-        if(this.currMode == 0)
+    public static void realTimeTask() {
+        if(WatchSystem.currMode == 0)
             watchGUI.realtimeGUI(((ModeSetting) menu.get(0)).showModeSetting());
 
-        for (int i = 1; i <= this.maxCnt + 1; i++) {
-            Object menu;
-            if((menu = this.menu.get(i)) == null) continue;
-            switch (menu.getClass().getTypeName()) {
-                case "RealTime":
-                    ((RealTime) this.menu.get(1)).calculateTime();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
-                    break;
+        for (int i = 1; i <= WatchSystem.maxCnt + 1; i++) {
+            //if((menu = WatchSystem.menu.get(i)) == null) continue;
 
-                case "SettingTime":
-                    // ((SettingTime) menu).realTimeTaskSettingTime();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((SettingTime) menu).showSettingTime());
-                    break;
+            try {
+                Object menu = WatchSystem.menu.get(i);
+                switch (menu.getClass().getTypeName()) {
+                    case "RealTime":
+                        ((RealTime) WatchSystem.menu.get(1)).calculateTime();
+                        if (WatchSystem.currMode == i) watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
+                        break;
 
-                case "Stopwatch":
-                    ((Stopwatch) menu).realTimeTaskStopwatch();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((Stopwatch) menu).showStopwatch());
-                    break;
+                    case "SettingTime":
+                        // ((SettingTime) menu).realTimeTaskSettingTime();
+                        if (WatchSystem.currMode == i) watchGUI.realtimeGUI(((SettingTime) menu).showSettingTime());
+                        break;
 
-                case "Timer":
-                    ((Timer) menu).realTimeTimerTask();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((Timer) menu).showTimer());
-                    break;
+                    case "Stopwatch":
+                        ((Stopwatch) menu).realTimeTaskStopwatch();
+                        if (WatchSystem.currMode == i) watchGUI.realtimeGUI(((Stopwatch) menu).showStopwatch());
+                        break;
 
-                case "Alarm":
-                    ((Alarm) menu).realTimeTaskAlarm();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((Alarm) menu).showAlarm());
-                    break;
+                    case "Timer":
+                        ((Timer) menu).realTimeTimerTask();
+                        if (WatchSystem.currMode == i) watchGUI.realtimeGUI(((Timer) menu).showTimer());
+                        break;
 
-                case "Worldtime":
-                    ((Worldtime) menu).realTimeTaskWorldtime();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((Worldtime) menu).showWorldTime());
-                    break;
+                    case "Alarm":
+                        ((Alarm) menu).realTimeTaskAlarm();
+                        if (WatchSystem.currMode == i) watchGUI.realtimeGUI(((Alarm) menu).showAlarm());
+                        break;
 
-                case "Sun":
-                    ((Sun) menu).realTimeTaskSun();
-                    if (this.currMode == i) watchGUI.realtimeGUI(((Sun) menu).showSun());
-                    break;
+                    case "Worldtime":
+                        ((Worldtime) menu).realTimeTaskWorldtime();
+                        if (WatchSystem.currMode == i) watchGUI.realtimeGUI(((Worldtime) menu).showWorldTime());
+                        break;
 
-                default:
-                    break;
+                    case "Sun":
+                        ((Sun) menu).realTimeTaskSun();
+                        if (WatchSystem.currMode == i) watchGUI.realtimeGUI(((Sun) menu).showSun());
+                        break;
+
+                    default:
+                        break;
+                }
             }
+            catch(NullPointerException e){}
         }
     }
 
-    public void pressChangeMode() {
+    public static void pressChangeMode() {
         watchGUI.designMode(false);
-        if(++this.currMode == this.maxCnt + 2)
-            this.currMode = 1; // 1: RealTime
-        watchGUI.setMode(menu.get(this.currMode));
+        if(++WatchSystem.currMode == WatchSystem.maxCnt + 2)
+            WatchSystem.currMode = 1; // 1: RealTime
+        watchGUI.setMode(menu.get(WatchSystem.currMode));
         watchGUI.designMode(true);
     }
 
     // RealTime
-    public void pressShowType() { ((RealTime)this.menu.get(1)).requestChangeType();}
+    public static void pressShowType() { ((RealTime)WatchSystem.menu.get(1)).requestChangeType();}
 
     // Mode Setting
-    public void enterModeSetting(){
+    public static void enterModeSetting(){
         watchGUI.designMode(false);
-        this.currMode = 0;
-        ((ModeSetting)this.menu.get(0)).requestModeSetting();
-        watchGUI.setMode(menu.get(this.currMode));
+        WatchSystem.currMode = 0;
+        ((ModeSetting)WatchSystem.menu.get(0)).requestModeSetting();
+        watchGUI.setMode(menu.get(WatchSystem.currMode));
         watchGUI.designMode(true);
     }
 
-    public void pressNextMode()  { ((ModeSetting)this.menu.get(0)).requestNextMode(); }
-    public void pressSelectMode(){ ((ModeSetting)this.menu.get(0)).requestSelectMode(); }
-    public void pressConfirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        ArrayList newList = ((ModeSetting)this.menu.get(0)).confirmSelectMode();
-        this.maxCnt = 0;
+    public static void pressNextMode()  { ((ModeSetting)WatchSystem.menu.get(0)).requestNextMode(); }
+    public static void pressSelectMode(){ ((ModeSetting)WatchSystem.menu.get(0)).requestSelectMode(); }
+    public static void pressConfirmSelectMode() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        ArrayList newList = ((ModeSetting)WatchSystem.menu.get(0)).confirmSelectMode();
+        WatchSystem.maxCnt = 0;
         for(int i = 0; i < 4; i++) {
             try{
-                this.maxCnt++;
-                this.menu.set(i+2, newList.get(i));
+                WatchSystem.maxCnt++;
+                WatchSystem.menu.set(i+2, newList.get(i));
             }
             /* [sonarqube][Catching 'Exception' is not allowed.] */
             catch(IndexOutOfBoundsException e){
-                this.maxCnt--;
-                this.menu.set(i+2, null);
+                WatchSystem.maxCnt--;
+                WatchSystem.menu.set(i+2, null);
             }
         }
-        this.pressChangeMode();
+        WatchSystem.pressChangeMode();
     }
 
     // Setting Time
-    public void nextTimeSection()    { ((SettingTime)this.menu.get(this.currMode)).requestPointNextTimeSection(); }
-    public void increaseTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestIncreaseTimeSection(); }
-    public void decreaseTimeSection(){ ((SettingTime)this.menu.get(this.currMode)).requestDecreaseTimeSection(); }
-    public void pressResetSecond()   { ((SettingTime)this.menu.get(this.currMode)).requestResetSecond(); }
-    public void exitSettingTime()    { ((SettingTime)this.menu.get(this.currMode)).requestExitSettingTime(); }
-    public int  getSettingTimeFlag() { return ((SettingTime)this.menu.get(this.currMode)).getCurrSection(); }
+    public static void nextTimeSection()    { ((SettingTime)WatchSystem.menu.get(WatchSystem.currMode)).requestPointNextTimeSection(); }
+    public static void increaseTimeSection(){ ((SettingTime)WatchSystem.menu.get(WatchSystem.currMode)).requestIncreaseTimeSection(); }
+    public static void decreaseTimeSection(){ ((SettingTime)WatchSystem.menu.get(WatchSystem.currMode)).requestDecreaseTimeSection(); }
+    public static void pressResetSecond()   { ((SettingTime)WatchSystem.menu.get(WatchSystem.currMode)).requestResetSecond(); }
+    public static void exitSettingTime()    { ((SettingTime)WatchSystem.menu.get(WatchSystem.currMode)).requestExitSettingTime(); }
+    public static int  getSettingTimeFlag() { return ((SettingTime)WatchSystem.menu.get(WatchSystem.currMode)).getCurrSection(); }
 
     // Stopwatch
-    public void pressStartStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestStartStopwatch(); }
-    public void pressStopStopwatch() { ((Stopwatch)this.menu.get(this.currMode)).requestStopStopwatch(); }
-    public void pressSplitStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestSplitStopwatch(); }
-    public void pressResetStopwatch(){ ((Stopwatch)this.menu.get(this.currMode)).requestResetStopwatch(); }
-    public int  getStopwatchFlag()   { return ((Stopwatch)this.menu.get(this.currMode)).requestStopwatchFlag(); }
+    public static void pressStartStopwatch(){ ((Stopwatch)WatchSystem.menu.get(WatchSystem.currMode)).requestStartStopwatch(); }
+    public static void pressStopStopwatch() { ((Stopwatch)WatchSystem.menu.get(WatchSystem.currMode)).requestStopStopwatch(); }
+    public static void pressSplitStopwatch(){ ((Stopwatch)WatchSystem.menu.get(WatchSystem.currMode)).requestSplitStopwatch(); }
+    public static void pressResetStopwatch(){ ((Stopwatch)WatchSystem.menu.get(WatchSystem.currMode)).requestResetStopwatch(); }
+    public static int  getStopwatchFlag()   { return ((Stopwatch)WatchSystem.menu.get(WatchSystem.currMode)).requestStopwatchFlag(); }
 
     // Timer
-    public void enterSetTimerTime()       { ((Timer)this.menu.get(this.currMode)).requestTimerTime(); }
-    public void nextTimerTimeSection()    { ((Timer)this.menu.get(this.currMode)).requestNextTimerTimeSection(); }
-    public void increaseTimerTimeSection(){ ((Timer)this.menu.get(this.currMode)).requestIncreaseTimerTimeSection(); }
-    public void decreaseTimerTimeSection(){ ((Timer)this.menu.get(this.currMode)).requestDecreaseTimerTimeSection(); }
-    public void exitSetTimerTime()        { ((Timer)this.menu.get(this.currMode)).requestExitSetTimerTime(); }
-    public void pressStartTimer()         { ((Timer)this.menu.get(this.currMode)).changeStatus(1); }
-    public void pressStopTimer()          { ((Timer)this.menu.get(this.currMode)).changeStatus(0); }
-    public void pressResetTimer()         { ((Timer)this.menu.get(this.currMode)).requestResetTimer(); }
-    public void pressStopRingingTimer()   { ((Timer)this.menu.get(this.currMode)).ringOff(); }
-    public int  getTimerFlag()            { return ((Timer)this.menu.get(this.currMode)).requestTimerFlag(); }
+    public static void enterSetTimerTime()       { ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).requestTimerTime(); }
+    public static void nextTimerTimeSection()    { ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).requestNextTimerTimeSection(); }
+    public static void increaseTimerTimeSection(){ ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).requestIncreaseTimerTimeSection(); }
+    public static void decreaseTimerTimeSection(){ ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).requestDecreaseTimerTimeSection(); }
+    public static void exitSetTimerTime()        { ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).requestExitSetTimerTime(); }
+    public static void pressStartTimer()         { ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).changeStatus(1); }
+    public static void pressStopTimer()          { ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).changeStatus(0); }
+    public static void pressResetTimer()         { ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).requestResetTimer(); }
+    public static void pressStopRingingTimer()   { ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).ringOff(); }
+    public static int  getTimerFlag()            { return ((Timer)WatchSystem.menu.get(WatchSystem.currMode)).requestTimerFlag(); }
 
     // Alarm
-    public void enterSetAlarmTime()    { ((Alarm)this.menu.get(this.currMode)).requestSettingAlarm(); }
-    public void nextAlarmTimeSection() { ((Alarm)this.menu.get(this.currMode)).requestAlarmNextSection();}
-    public void increaseAlarmTime()    { ((Alarm)this.menu.get(this.currMode)).increaseSection(); }
-    public void decreaseAlarmTime()    { ((Alarm)this.menu.get(this.currMode)).decreaseSection(); }
-    public void pressNextAlarm()       { ((Alarm)this.menu.get(this.currMode)).requestNextAlarm(); }
-    public void pressStopRingingAlarm(){ ((Alarm)this.menu.get(this.currMode)).requestStopRinging(); }
-    public void pressAlarmOnOff()      { ((Alarm)this.menu.get(this.currMode)).requestAlarmOnOff(); }
-    public void exitSetAlarmSetting()  { ((Alarm)this.menu.get(this.currMode)).requestExitAlarmSetting(); }
-    public int  getAlarmFlag()         { return ((Alarm)this.menu.get(this.currMode)).requestAlarmFlag(); }
+    public static void enterSetAlarmTime()    { ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).requestSettingAlarm(); }
+    public static void nextAlarmTimeSection() { ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).requestAlarmNextSection();}
+    public static void increaseAlarmTime()    { ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).increaseSection(); }
+    public static void decreaseAlarmTime()    { ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).decreaseSection(); }
+    public static void pressNextAlarm()       { ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).requestNextAlarm(); }
+    public static void pressStopRingingAlarm(){ ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).requestStopRinging(); }
+    public static void pressAlarmOnOff()      { ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).requestAlarmOnOff(); }
+    public static void exitSetAlarmSetting()  { ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).requestExitAlarmSetting(); }
+    public static int  getAlarmFlag()         { return ((Alarm)WatchSystem.menu.get(WatchSystem.currMode)).requestAlarmFlag(); }
 
     // Worldtime
-    public void nextWorldtimeNation(){ ((Worldtime)this.menu.get(this.currMode)).nextNation(); }
-    public void prevWorldtimeNation(){ ((Worldtime)this.menu.get(this.currMode)).prevNation(); }
+    public static void nextWorldtimeNation(){ ((Worldtime)WatchSystem.menu.get(WatchSystem.currMode)).nextNation(); }
+    public static void prevWorldtimeNation(){ ((Worldtime)WatchSystem.menu.get(WatchSystem.currMode)).prevNation(); }
     /* [Remove] public void pressSummerTime(){} */
 
     // Sun
-    public void pressSetRise() { ((Sun)this.menu.get(this.currMode)).requestSetRise(); }
-    public void nextSunNation(){ ((Sun)this.menu.get(this.currMode)).requestNextNation(); }
-    public void prevSunNation(){ ((Sun)this.menu.get(this.currMode)).requestPrevNation(); }
+    public static void pressSetRise() { ((Sun)WatchSystem.menu.get(WatchSystem.currMode)).requestSetRise(); }
+    public static void nextSunNation(){ ((Sun)WatchSystem.menu.get(WatchSystem.currMode)).requestNextNation(); }
+    public static void prevSunNation(){ ((Sun)WatchSystem.menu.get(WatchSystem.currMode)).requestPrevNation(); }
 
     // Getters and Setters
-    public ArrayList getMenu(){ return this.menu; }
-    public Object getMenu(int i){ return this.menu.get(i); }
-    public void setMenu(int i, Object o){ this.menu.set(i, o); }
-    public int getMaxCnt(){ return this.maxCnt; }
+    public static ArrayList getMenu(){ return WatchSystem.menu; }
+    public static Object getMenu(int i){ return WatchSystem.menu.get(i); }
+    public static void setMenu(int i, Object o){ WatchSystem.menu.set(i, o); }
+    public static int getMaxCnt(){ return WatchSystem.maxCnt; }
 }
