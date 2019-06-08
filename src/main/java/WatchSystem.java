@@ -10,15 +10,24 @@ public class WatchSystem {
     private int maxCnt;
     private WatchGUI watchGUI;
 
-    public WatchSystem() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+    public WatchSystem(){
         this.menu = new ArrayList(){};
 
         menu.add(new ModeSetting(this));
         menu.add(new RealTime());
         menu.add(new SettingTime((RealTime)menu.get(1)));
         menu.add(new Stopwatch());
-        menu.add(new Timer());
-        menu.add(new Alarm((RealTime)menu.get(1)));
+
+        /* [sonarqube][Bug #9] */
+        try{
+
+            menu.add(new Timer());
+            menu.add(new Alarm((RealTime)menu.get(1)));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
         this.currMode = 1; // [currMode] 1: Always RealTime
         this.maxCnt = 4;
