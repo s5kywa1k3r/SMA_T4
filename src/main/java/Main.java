@@ -9,9 +9,11 @@ public class Main {
 
     public static void main(String[] args)  {
 
-        WatchSystem watchSystem = new WatchSystem();
+        //WatchSystem watchSystem = new WatchSystem();
+        ImpleSystem watchSystem = new WatchSystem();
+
         /* [sonarqube][Bug #6] */
-        Thread timeThread = new TimeThread(watchSystem);
+        Thread timeThread = new TimeThread((WatchSystem)watchSystem);
         timeThread.start();
     }
 }

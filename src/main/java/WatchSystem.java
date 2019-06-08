@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WatchSystem {
+public class WatchSystem implements ImpleSystem {
 
 
     private ArrayList menu;
