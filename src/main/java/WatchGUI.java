@@ -183,41 +183,47 @@ public class WatchGUI implements ActionListener {
 
         // cities
         cities.setBounds(270, 407, 150, 35);
-
+        //[sonarqube][Remove this call from a constructor to the overridable "generalization" method]
         for (int i = 0; i < 3; i++) {
             showDate[i].setFont(subFont);
-            background.add(generalization(showDate[i]));
+            background.add(showDate[i]);
             showTime[i].setFont(mainFont);
-            background.add(generalization(showTime[i]));
+            generalization(showTime[i]);
+            background.add(showTime[i]);
             subTime[i].setFont(subFont);
-            background.add(generalization(subTime[i]));
+            generalization(subTime[i]);
+            background.add(subTime[i]);
             if (i < 2) {
                 colonForDate[i].setFont(subFont);
-                background.add(generalization(colonForDate[i]));
+                generalization(colonForDate[i]);
+                background.add(colonForDate[i]);
                 colonForTime[i].setFont(mainFont);
-                background.add(generalization(colonForTime[i]));
+                generalization(colonForTime[i]);
+                background.add(colonForTime[i]);
                 colonForSubTime[i].setFont(subFont);
-                background.add(generalization(colonForSubTime[i]));
+                generalization(colonForSubTime[i]);
+                background.add(colonForSubTime[i]);
             }
             if (i == 0) {
                 year.setFont(subsubFont);
-                background.add(generalization(year));
+                generalization(year);
+                background.add(year);
                 cities.setFont(subsubFont);
                 cities.setHorizontalAlignment(JTextField.CENTER);
-                background.add(generalization(cities));
+                generalization(cities);
+                background.add(cities);
             }
         }
         jFrame.add(background);
         jFrame.setVisible(true);
     }
 
-    public JTextField generalization(JTextField textField) {
+    private void generalization(JTextField textField) {
         textField.setEditable(false);
         textField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         textField.setBackground(new Color(206, 208, 205));
         textField.setForeground(Color.BLACK);
         textField.setEnabled(false);
-        return textField;
     }
 
     public void setMode(Object mode) {
