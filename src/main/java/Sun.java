@@ -183,7 +183,8 @@ public class Sun {
         }
         displaySunDisplay[7] = (this.sun[currMode].get(Calendar.MINUTE) < 10 ? "0" : "") + this.sun[currMode].get(Calendar.MINUTE);
         displaySunDisplay[8] = (this.nation[currNation])+ "";
-        return displaySunDisplay;
+        /* [sonarqube][Vuln #5] */
+        return displaySunDisplay.clone();
     }
 
     // Getters and Setters

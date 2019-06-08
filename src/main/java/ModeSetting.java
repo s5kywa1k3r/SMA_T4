@@ -148,7 +148,9 @@ public class ModeSetting {
             }
         }
         displayModeData[4] = menu_all.get(currIndex);
-        return displayModeData;
+
+        /* [sonarqube][Vuln #1] */
+        return displayModeData.clone();
     }
 
     // Getters and Setters for Unit Test

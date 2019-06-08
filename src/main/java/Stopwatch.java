@@ -89,7 +89,9 @@ public class Stopwatch {
             displaySWData[4] = (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
             displaySWData[5] = (this.splitTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.splitTime.get(Calendar.MILLISECOND) / 10);
         }
-        return displaySWData;
+
+        /* [sonarqube][Vuln #4] */
+        return displaySWData.clone();
     }
 
     public int requestStopwatchFlag(){ return this.status; }

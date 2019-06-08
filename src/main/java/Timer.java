@@ -185,7 +185,9 @@ public class Timer {
             displayTimerData[1] = (timerTime.get(Calendar.MINUTE) < 10 ? "0" : "") + timerTime.get(Calendar.MINUTE);
             displayTimerData[2] = (timerTime.get(Calendar.SECOND) < 10 ? "0" : "") + timerTime.get(Calendar.SECOND);
         }
-        return displayTimerData;
+
+        /* [sonarqube][Vuln #6] */
+        return displayTimerData.clone();
     }
 
     public int requestTimerFlag(){ return this.status; }

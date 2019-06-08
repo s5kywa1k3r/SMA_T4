@@ -31,7 +31,9 @@ public class SettingTime {
                 case 4: displaySettingTimeData[2] = ""; break;
                 case 5: displaySettingTimeData[0] = ""; break;
             }
-            return displaySettingTimeData;
+
+            /* [sonarqube][Vuln #3] */
+            return displaySettingTimeData.clone();
         }
         else return realTime.showRealTime();
     }

@@ -131,7 +131,9 @@ public class RealTime {
             displayRealTimeData[6] = (realTime.get(Calendar.HOUR) < 10 ? "0" : "")+realTime.get(Calendar.HOUR);
             displayRealTimeData[7] = (realTime.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM");
         }
-        return displayRealTimeData;
+
+        /* [sonarqube][Vuln #2] */
+        return displayRealTimeData.clone();
     }
     public boolean isIs24H(){return this.is24H;}
 
