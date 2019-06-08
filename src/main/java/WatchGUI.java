@@ -21,24 +21,24 @@ public class WatchGUI implements ActionListener {
     private JButton[] button = new JButton[4];
     private WatchSystem system;
     // Year, Name of Menu
-    public static JTextField year = new JTextField();
+    private JTextField year = new JTextField();
     // day of the week, month, day
-    public static JTextField[] showDate = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    private JTextField[] showDate = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between week, month, and month, day
     // It will always set the text, but disable to see
-    public static JTextField[] colonForDate = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    private JTextField[] colonForDate = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // Hour, Minute, Second
-    public static JTextField[] showTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    private JTextField[] showTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between Hour, Minute, and Minute, Second
     // It will always set the text, but disable to see
-    public static JTextField[] colonForTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    private JTextField[] colonForTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // Split time, ring number, or AM/PM
-    public static JTextField[] subTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    private JTextField[] subTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between Hour, Minute, and Minute, Second
     // It will always set the text, but disable to see
-    public static JTextField[] colonForSubTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    private JTextField[] colonForSubTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // City information, on off
-    public static JTextField cities = new JTextField();
+    private JTextField cities = new JTextField();
     // Biggest Size
     private Font mainFont;
     // Middle Size
