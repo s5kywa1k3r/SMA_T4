@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 public class WatchSystem {
 
-    private Logger logger = Logger.getLogger(WatchSystem.class.getName());
 
     private ArrayList menu;
     private int currMode;
@@ -30,6 +29,7 @@ public class WatchSystem {
         }
         catch(Exception e) {
             /* [sonarqube][Use a logger to log this exception] */
+            Logger logger = Logger.getLogger(WatchSystem.class.getName());
             logger.log(Level.ALL, "context", e);
             return;
         }

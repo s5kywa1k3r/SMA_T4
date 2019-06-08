@@ -1,6 +1,8 @@
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -20,7 +22,10 @@ public class Bell extends Thread{
             // Make Jar File
             audioInputStream = AudioSystem.getAudioInputStream(bufferedIn);
         }catch(Exception e){
-            e.printStackTrace();
+            /* [sonarqube][Use a logger to log this exception] */
+            Logger logger = Logger.getLogger(Bell.class.getName());
+            logger.log(Level.ALL, "[Bell] Exception", e);
+            Thread.currentThread().interrupt();
             /* [sonarqube][Vuln #14] */
             // IDE Test
             /*

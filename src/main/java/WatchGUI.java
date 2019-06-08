@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WatchGUI implements ActionListener {
     // 0 : Mode Setting, 1 : RealTime, 2 : SettingTime, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
@@ -66,16 +68,28 @@ public class WatchGUI implements ActionListener {
             InputStream bufferedIn = new BufferedInputStream(fontSrc);
             this.mainFont = Font.createFont(Font.TRUETYPE_FONT, bufferedIn);
         } catch (Exception e) {
-            e.printStackTrace();
+
+            /* [sonarqube][Use a logger to log this exception] */
+            Logger logger = Logger.getLogger(WatchGUI.class.getName());
+            logger.log(Level.ALL, "[WatchGUI] Exception", e);
+
             /* [sonarqube][Vuln #15] */
             // IDE Test
             /*
             try {
                 this.mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(WatchSystem.class.getResource("").getPath() + "DS-DIGI.TTF"));
             } catch (FontFormatException ex) {
-                ex.printStackTrace();
+
+            // [sonarqube][Use a logger to log this exception] //
+            Logger logger = Logger.getLogger(WatchGUI.class.getName());
+            logger.log(Level.ALL, "[WatchGUI] Exception", e);
+
             } catch (IOException ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
+
+            // [sonarqube][Use a logger to log this exception] //
+            Logger logger = Logger.getLogger(WatchGUI.class.getName());
+            logger.log(Level.ALL, "[WatchGUI] Exception", e);
             }
 
              */
@@ -102,7 +116,10 @@ public class WatchGUI implements ActionListener {
                 } catch (IOException e) {
                     // IDE Test
                     g.drawImage(new ImageIcon("background.jpg").getImage(), 0, 0, null);
-                    e.printStackTrace();
+
+                    /* [sonarqube][Use a logger to log this exception] */
+                    Logger logger = Logger.getLogger(WatchGUI.class.getName());
+                    logger.log(Level.ALL, "[WatchGUI] IOException", e);
                 }
                 setOpaque(false);
                 super.paintComponent(g);
@@ -429,11 +446,19 @@ public class WatchGUI implements ActionListener {
         try {
             reaction(index);
         } catch (UnsupportedAudioFileException ex) {
-            ex.printStackTrace();
+            // [sonarqube][Use a logger to log this exception] //
+            Logger logger = Logger.getLogger(WatchGUI.class.getName());
+            logger.log(Level.ALL, "[WatchGUI] UnsupportAudioFileException", e);
+
         } catch (IOException ex) {
-            ex.printStackTrace();
+            // [sonarqube][Use a logger to log this exception] //
+            Logger logger = Logger.getLogger(WatchGUI.class.getName());
+            logger.log(Level.ALL, "[WatchGUI] IOException", e);
         } catch (LineUnavailableException ex) {
-            ex.printStackTrace();
+
+            // [sonarqube][Use a logger to log this exception] //
+            Logger logger = Logger.getLogger(WatchGUI.class.getName());
+            logger.log(Level.ALL, "[WatchGUI] LineUnavailableException", e);
         }
     }
 

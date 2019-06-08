@@ -3,6 +3,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Alarm {
 
@@ -230,7 +232,9 @@ public class Alarm {
 
         /* [sonarqube][Bug #1] */
         try { Thread.sleep(3000);} catch(InterruptedException e) {
-            e.printStackTrace();
+            /* [sonarqube][Use a logger to log this exception] */
+            Logger logger = Logger.getLogger(Alarm.class.getName());
+            logger.log(Level.ALL, "[Alarm] InterruptedException", e);
             Thread.currentThread().interrupt();
         }
 
@@ -274,7 +278,9 @@ public class Alarm {
 
         /* [sonarqube][Bug #2] */
         try { Thread.sleep(3000);} catch(InterruptedException e) {
-            e.printStackTrace();
+            /* [sonarqube][Use a logger to log this exception] */
+            Logger logger = Logger.getLogger(Alarm.class.getName());
+            logger.log(Level.ALL, "[Alarm] InterruptedException", e);
             Thread.currentThread().interrupt();
         }
         bell[bellIndex[this.currAlarm]-1].pause();
