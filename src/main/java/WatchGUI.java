@@ -29,24 +29,24 @@ public class WatchGUI implements ActionListener {
     private JButton[] button = new JButton[4];
     private WatchSystem system;
     // Year, Name of Menu
-    private JTextField year = new JTextField();
+    private static JTextField year = new JTextField();
     // day of the week, month, day
-    private JTextField[] showDate = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    private static JTextField[] showDate = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between week, month, and month, day
     // It will always set the text, but disable to see
-    private JTextField[] colonForDate = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    private static JTextField[] colonForDate = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // Hour, Minute, Second
-    private JTextField[] showTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    private static JTextField[] showTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between Hour, Minute, and Minute, Second
     // It will always set the text, but disable to see
-    private JTextField[] colonForTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    private static JTextField[] colonForTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // Split time, ring number, or AM/PM
-    private JTextField[] subTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    private static JTextField[] subTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between Hour, Minute, and Minute, Second
     // It will always set the text, but disable to see
-    private JTextField[] colonForSubTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    private static JTextField[] colonForSubTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // City information, on off
-    private JTextField cities = new JTextField();
+    private static JTextField cities = new JTextField();
     // Biggest Size
     private Font mainFont;
     // Middle Size
@@ -188,6 +188,7 @@ public class WatchGUI implements ActionListener {
         //[sonarqube][Remove this call from a constructor to the overridable "generalization" method]
         for (int i = 0; i < 3; i++) {
             showDate[i].setFont(subFont);
+            generalization(showDate[i]);
             background.add(showDate[i]);
             showTime[i].setFont(mainFont);
             generalization(showTime[i]);
