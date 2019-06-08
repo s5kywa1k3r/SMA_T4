@@ -227,7 +227,13 @@ public class Alarm {
         if(++bellIndex[this.currAlarm] == 5)
             bellIndex[this.currAlarm] = 1;
         bell[bellIndex[this.currAlarm]-1].play();
-        try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
+
+        /* [sonarqube][Bug #1] */
+        try { Thread.sleep(3000);} catch(InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
+
         bell[bellIndex[this.currAlarm]-1].pause();
     }
 
@@ -265,7 +271,12 @@ public class Alarm {
         if(--bellIndex[this.currAlarm] == 0)
             bellIndex[this.currAlarm] = 4;
         bell[bellIndex[this.currAlarm]-1].play();
-        try { Thread.sleep(3000);} catch(InterruptedException e) {e.printStackTrace();}
+
+        /* [sonarqube][Bug #2] */
+        try { Thread.sleep(3000);} catch(InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
         bell[bellIndex[this.currAlarm]-1].pause();
     }
 
