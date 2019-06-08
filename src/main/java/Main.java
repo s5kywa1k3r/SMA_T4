@@ -1,4 +1,4 @@
-/* Main Class*/
+/* Main Class */
 
 public class Main {
 
@@ -9,11 +9,9 @@ public class Main {
 
     public static void main(String[] args)  {
 
-        //WatchSystem watchSystem = new WatchSystem();
-        ImpleSystem watchSystem = new WatchSystem();
-
+        WatchSystem watchSystem = new WatchSystem();
         /* [sonarqube][Bug #6] */
-        Thread timeThread = new TimeThread((WatchSystem)watchSystem);
+        Thread timeThread = new TimeThread(watchSystem);
         timeThread.start();
     }
 }

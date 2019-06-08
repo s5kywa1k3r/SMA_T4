@@ -2,19 +2,18 @@
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WatchSystem implements ImpleSystem {
+public class WatchSystem {
 
 
     private ArrayList menu;
     private int currMode;
     private int maxCnt;
-    private ActionListener watchGUI;
+    private WatchGUI watchGUI;
 
     public WatchSystem(){
         this.menu = new ArrayList(){};
@@ -41,15 +40,15 @@ public class WatchSystem implements ImpleSystem {
         this.maxCnt = 4;
 
         watchGUI = new WatchGUI(this);
-        ((WatchGUI)watchGUI).setMode(menu.get(1));
-        ((WatchGUI)watchGUI).designMode(true);
+        watchGUI.setMode(menu.get(1));
+        watchGUI.designMode(true);
     }
 
     // [WatchSystem] System Method
     // Worked by thread
     public void realTimeTask() {
         if(this.currMode == 0)
-            ((WatchGUI)watchGUI).realtimeGUI(((ModeSetting) menu.get(0)).showModeSetting());
+            watchGUI.realtimeGUI(((ModeSetting) menu.get(0)).showModeSetting());
 
         for (int i = 1; i <= this.maxCnt + 1; i++) {
             Object menu;
@@ -57,37 +56,37 @@ public class WatchSystem implements ImpleSystem {
             switch (menu.getClass().getTypeName()) {
                 case "RealTime":
                     ((RealTime) this.menu.get(1)).calculateTime();
-                    if (this.currMode == i)((WatchGUI)watchGUI).realtimeGUI(((RealTime) menu).showRealTime());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((RealTime) menu).showRealTime());
                     break;
 
                 case "SettingTime":
                     // ((SettingTime) menu).realTimeTaskSettingTime();
-                    if (this.currMode == i) ((WatchGUI)watchGUI).realtimeGUI(((SettingTime) menu).showSettingTime());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((SettingTime) menu).showSettingTime());
                     break;
 
                 case "Stopwatch":
                     ((Stopwatch) menu).realTimeTaskStopwatch();
-                    if (this.currMode == i) ((WatchGUI)watchGUI).realtimeGUI(((Stopwatch) menu).showStopwatch());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Stopwatch) menu).showStopwatch());
                     break;
 
                 case "Timer":
                     ((Timer) menu).realTimeTimerTask();
-                    if (this.currMode == i) ((WatchGUI)watchGUI).realtimeGUI(((Timer) menu).showTimer());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Timer) menu).showTimer());
                     break;
 
                 case "Alarm":
                     ((Alarm) menu).realTimeTaskAlarm();
-                    if (this.currMode == i) ((WatchGUI)watchGUI).realtimeGUI(((Alarm) menu).showAlarm());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Alarm) menu).showAlarm());
                     break;
 
                 case "Worldtime":
                     ((Worldtime) menu).realTimeTaskWorldtime();
-                    if (this.currMode == i) ((WatchGUI)watchGUI).realtimeGUI(((Worldtime) menu).showWorldTime());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Worldtime) menu).showWorldTime());
                     break;
 
                 case "Sun":
                     ((Sun) menu).realTimeTaskSun();
-                    if (this.currMode == i) ((WatchGUI)watchGUI).realtimeGUI(((Sun) menu).showSun());
+                    if (this.currMode == i) watchGUI.realtimeGUI(((Sun) menu).showSun());
                     break;
 
                 default:
@@ -97,11 +96,11 @@ public class WatchSystem implements ImpleSystem {
     }
 
     public void pressChangeMode() {
-        ((WatchGUI)watchGUI).designMode(false);
+        watchGUI.designMode(false);
         if(++this.currMode == this.maxCnt + 2)
             this.currMode = 1; // 1: RealTime
-        ((WatchGUI)watchGUI).setMode(menu.get(this.currMode));
-        ((WatchGUI)watchGUI).designMode(true);
+        watchGUI.setMode(menu.get(this.currMode));
+        watchGUI.designMode(true);
     }
 
     // RealTime
@@ -109,11 +108,11 @@ public class WatchSystem implements ImpleSystem {
 
     // Mode Setting
     public void enterModeSetting(){
-        ((WatchGUI)watchGUI).designMode(false);
+        watchGUI.designMode(false);
         this.currMode = 0;
         ((ModeSetting)this.menu.get(0)).requestModeSetting();
-        ((WatchGUI)watchGUI).setMode(menu.get(this.currMode));
-        ((WatchGUI)watchGUI).designMode(true);
+        watchGUI.setMode(menu.get(this.currMode));
+        watchGUI.designMode(true);
     }
 
     public void pressNextMode()  { ((ModeSetting)this.menu.get(0)).requestNextMode(); }
