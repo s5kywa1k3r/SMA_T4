@@ -2,8 +2,12 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WatchSystem {
+
+    private Logger logger = Logger.getLogger(WatchSystem.class.getName());
 
     private ArrayList menu;
     private int currMode;
@@ -25,7 +29,8 @@ public class WatchSystem {
             menu.add(new Alarm((RealTime)menu.get(1)));
         }
         catch(Exception e) {
-            e.printStackTrace();
+            /* [sonarqube][Use a logger to log this exception] */
+            logger.log(Level.ALL, "context", e);
             return;
         }
 
