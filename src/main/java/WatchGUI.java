@@ -2,15 +2,15 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class WatchGUI implements ActionListener {
     // 0 : Mode Setting, 1 : RealTime, 2 : SettingTime, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
@@ -21,24 +21,24 @@ public class WatchGUI implements ActionListener {
     private JButton[] button = new JButton[4];
     private WatchSystem system;
     // Year, Name of Menu
-    public JTextField year = new JTextField();
+    public static JTextField year = new JTextField();
     // day of the week, month, day
-    public JTextField[] showDate = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    public static JTextField[] showDate = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between week, month, and month, day
     // It will always set the text, but disable to see
-    public JTextField[] colonForDate = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    public static JTextField[] colonForDate = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // Hour, Minute, Second
-    public JTextField[] showTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    public static JTextField[] showTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between Hour, Minute, and Minute, Second
     // It will always set the text, but disable to see
-    public JTextField[] colonForTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    public static JTextField[] colonForTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // Split time, ring number, or AM/PM
-    public JTextField[] subTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
+    public static JTextField[] subTime = new JTextField[]{new JTextField(), new JTextField(), new JTextField()};
     // Colon between Hour, Minute, and Minute, Second
     // It will always set the text, but disable to see
-    public JTextField[] colonForSubTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
+    public static JTextField[] colonForSubTime = new JTextField[]{new JTextField(":"), new JTextField(":")};
     // City information, on off
-    public JTextField cities = new JTextField();
+    public static JTextField cities = new JTextField();
     // Biggest Size
     private Font mainFont;
     // Middle Size
