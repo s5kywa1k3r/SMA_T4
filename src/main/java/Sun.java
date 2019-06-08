@@ -134,7 +134,9 @@ public class Sun {
     }
 
     // Calculate sun at constructor, requestNextNation, requestPrevNation
-    public void initSun(){
+
+    /* [sonarqube][Bug #10] */
+    public final void initSun(){
         // Apply World Time Zone
         this.location.setLocation(this.nationLatitude[this.currNation], this.nationLongitude[this.currNation]);
         this.calculatorSun = new SunriseSunsetCalculator(this.location, this.nationTimeZone[this.currNation]);
