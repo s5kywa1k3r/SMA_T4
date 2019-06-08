@@ -177,6 +177,8 @@ public class Timer {
                     case 0: displayTimerData[2] = "";break;
                     case 1: displayTimerData[1] = "";break;
                     case 2: displayTimerData[0] = "";break;
+                    /* [sonarqube][Add a default case to this switch] */
+                    default: break;
                 }
             }
         }

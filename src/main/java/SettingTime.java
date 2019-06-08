@@ -30,6 +30,8 @@ public class SettingTime {
                 case 3: displaySettingTimeData[3] = ""; break;
                 case 4: displaySettingTimeData[2] = ""; break;
                 case 5: displaySettingTimeData[0] = ""; break;
+                /* [sonarqube][Add a default case to this switch] */
+                default: break;
             }
 
             /* [sonarqube][Vuln #3] */

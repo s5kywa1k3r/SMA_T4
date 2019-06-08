@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+/* [sonarqube][Redeclaration Header file] */
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextField;
