@@ -103,7 +103,9 @@ public class Sun {
     // [Sun] System Methods
     public void realTimeTaskSun(){
         this.currTime = this.realTime.requestRealTime();
-        if(this.currTime.getTimeInMillis() >= this.sun[1].getTimeInMillis()){
+
+        /* [sonarqube][Bug #4] */
+        if(this.currTime.getTimeInMillis() >= this.getSun(1).getTimeInMillis()){
             // Tomorrow's Sun Set
             this.currTime.add(Calendar.DATE, 1);
             this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
@@ -145,14 +147,16 @@ public class Sun {
         this.sun[0] = this.calculatorSun.getOfficialSunriseCalendarForDate(this.currTime);
         this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
 
-        if(this.currTime.getTimeInMillis() > this.sun[0].getTimeInMillis()){
+        /* [sonarqube][Bug #5] */
+        if(this.currTime.getTimeInMillis() > this.getSun(0).getTimeInMillis()){
             // Tomorrow's Sun Rise
             this.currTime.add(Calendar.DATE, 1);
             this.sun[0] = this.calculatorSun.getOfficialSunriseCalendarForDate(this.currTime);
             this.currTime.add(Calendar.DATE, -1);
         }
 
-        if(this.currTime.getTimeInMillis() > this.sun[1].getTimeInMillis()){
+        /* [sonarqube][Bug #5] */
+        if(this.currTime.getTimeInMillis() > this.getSun(1).getTimeInMillis()){
             // Tomorrow's Sun Set
             this.currTime.add(Calendar.DATE, 1);
             this.sun[1] = this.calculatorSun.getOfficialSunsetCalendarForDate(this.currTime);
