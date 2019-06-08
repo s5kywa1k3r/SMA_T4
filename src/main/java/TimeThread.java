@@ -1,3 +1,5 @@
+/* TimeThread Class */
+
 public class TimeThread extends Thread {
 
     /* [sonarqube][Variable 'system' must be private and have accessor methods] */

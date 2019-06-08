@@ -1,7 +1,11 @@
+/* Main Class*/
+
 public class Main {
 
     /* [sonarqube][Class should define a constructor] */
-    public Main(){}
+    public Main(){
+        /* Not Used */
+    }
 
     public static void main(String[] args)  {
 

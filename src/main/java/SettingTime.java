@@ -1,3 +1,4 @@
+/* SettingTIme Class */
 // Make Simplify
 public class SettingTime {
 

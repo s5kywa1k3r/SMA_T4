@@ -1,3 +1,4 @@
+/* ModeDB Class */
 import java.util.ArrayList;
 
 public class ModeDB {

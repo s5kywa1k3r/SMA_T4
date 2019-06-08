@@ -1,3 +1,5 @@
+/* Sun Class*/
+
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.luckycatlabs.sunrisesunset.dto.Location;
 
