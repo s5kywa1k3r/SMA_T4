@@ -96,8 +96,8 @@ public class ModeSetting {
                 confirmMode.add(this.prevModeObject.get(this.prevMode.indexOf(newMode)));
 
                 /* [sonarqube][NPath Complexity is 325] */
-                this.prevMode.remove(this.prevMode.indexOf(newMode));
-                //this.prevMode.set(this.prevMode.indexOf(newMode), null);
+                //this.prevMode.remove(this.prevMode.indexOf(newMode));
+                this.prevMode.set(this.prevMode.indexOf(newMode), null);
             }
 
             // Load Data from DB
@@ -154,10 +154,17 @@ public class ModeSetting {
     }
 
     // Getters and Setters for Unit Test
-    public ArrayList<String> getNewMode() { return newMode; }
-    public void setNewMode(ArrayList<String> newMode) { this.newMode = newMode; }
-    public void setOldMode(ArrayList oldMode) { this.prevModeObject = oldMode; }
-    public ArrayList getPrevModeObject(){ return this.prevModeObject; }
+    /* [sonarqube][Return a copy of] */
+    public ArrayList<String> getNewMode() { return (ArrayList)newMode.clone(); }
+
+    /* [sonarqube][Return a copy of] */
+    public void setNewMode(ArrayList<String> newMode) { this.newMode = (ArrayList)newMode.clone(); }
+
+    /* [sonarqube][Store a copy of] */
+    //public void setOldMode(ArrayList oldMode) { this.prevModeObject = (ArrayList)oldMode.clone(); }
+
+    /* [sonarqube][Store a copy of] */
+    public ArrayList getPrevModeObject(){ return (ArrayList)this.prevModeObject.clone(); }
     public ModeDB getDb() { return db; }
     public void setDb(ModeDB db) { this.db = db; }
     public WatchSystem getSys() { return sys; }

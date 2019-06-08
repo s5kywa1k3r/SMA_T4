@@ -181,7 +181,9 @@ public class WatchSystem {
     public void prevSunNation(){ ((Sun)this.menu.get(this.currMode)).requestPrevNation(); }
 
     // Getters and Setters
-    public ArrayList getMenu(){ return this.menu; }
+
+    /* [sonarqube][Return a copy of "menu"] */
+    public ArrayList getMenu(){ return (ArrayList)this.menu.clone(); }
     public Object getMenu(int i){ return this.menu.get(i); }
     public void setMenu(int i, Object o){ this.menu.set(i, o); }
     public int getMaxCnt(){ return this.maxCnt; }
