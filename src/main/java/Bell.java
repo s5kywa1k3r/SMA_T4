@@ -31,7 +31,11 @@ public class Bell extends Thread{
 
     public void play() {
         clip.loop(1);
-        this.run();
+        //this.run();
+
+        /* [sonarqube][Bug #7] */
+        if(this.getState() == State.NEW)
+            this.start();
     }
 
     public void pause() {
