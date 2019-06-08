@@ -7,7 +7,7 @@ import java.util.Calendar;
 public class Alarm {
 
     private RealTime realTime;
-    private Calendar currTime;
+    //private Calendar currTime;
 
     private Calendar[] reservedAlarm;
     private Calendar[] alarm;
@@ -83,14 +83,17 @@ public class Alarm {
     }
 
     public void realTimeTaskAlarm(){
-        this.currTime = this.realTime.requestRealTime();
+
+        /* [sonarqube][Bug #8] */
+        Calendar currTime = this.realTime.requestRealTime();
+        //this.currTime = this.realTime.requestRealTime();
         for(int i = 0; i < 4; i++){
             /* [sonarqube][Nested if-else depth is 2] */
             if(
                 (this.alarmState[i]) &&
-                (this.currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
-                (this.currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
-                (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
+                (currTime.get(Calendar.HOUR_OF_DAY) == this.alarm[i].get(Calendar.HOUR_OF_DAY)) &&
+                (currTime.get(Calendar.MINUTE) == this.alarm[i].get(Calendar.MINUTE)) &&
+                (currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND))
             ){
                 this.status = 4;
                 if(RingingIndex != -1) {
@@ -108,7 +111,7 @@ public class Alarm {
                     alarm[i] = (Calendar)reservedAlarm[i].clone();
                 }
             }
-            if(this.status == 4 && (this.currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND) + 30)) {
+            if(this.status == 4 && (currTime.get(Calendar.SECOND) == this.alarm[i].get(Calendar.SECOND) + 30)) {
                 // If Alarm index is Ringing, but Actual bell is Stopped, status should be changed
                 requestStopRinging();
             }
