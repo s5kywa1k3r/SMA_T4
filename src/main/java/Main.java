@@ -10,7 +10,8 @@ public class Main {
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 
         WatchSystem watchSystem = new WatchSystem();
-        TimeThread timeThread = new TimeThread(watchSystem);
-        timeThread.run();
+        /* [sonarqube][Bug #6] */
+        Thread timeThread = new TimeThread(watchSystem);
+        timeThread.start();
     }
 }
