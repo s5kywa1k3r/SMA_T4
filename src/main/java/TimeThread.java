@@ -9,13 +9,16 @@ public class TimeThread extends Thread {
 
     @Override
     public void run() {
-        while(true) {
-            try {
+        try {
+            while(true) {
                 sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                system.realTimeTask();
             }
-            system.realTimeTask();
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+            /* [sonarqube][Bug #3] */
+            Thread.currentThread().interrupt();
+            return;
         }
     }
 }
