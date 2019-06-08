@@ -69,25 +69,21 @@ public class Stopwatch {
     // String -> String[]
     public String[] showStopwatch() {
 
-        if (this.stpTime.get(Calendar.HOUR_OF_DAY) > 0) {
-            displaySWData[0] = (this.stpTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.stpTime.get(Calendar.HOUR_OF_DAY);
-            displaySWData[1] = (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
-            displaySWData[2] = (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
-        }
         if (this.stpTime.get(Calendar.HOUR_OF_DAY) == 0) {
             displaySWData[0] = (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
             displaySWData[1] = (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
             displaySWData[2] = (this.stpTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.stpTime.get(Calendar.MILLISECOND) / 10);
-        }
-        if (this.splitTime.get(Calendar.HOUR_OF_DAY) > 0) {
-            displaySWData[3] = (this.splitTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.splitTime.get(Calendar.HOUR_OF_DAY);
-            displaySWData[4] = (this.splitTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.splitTime.get(Calendar.MINUTE);
-            displaySWData[5] = (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
-        }
-        if (this.splitTime.get(Calendar.HOUR_OF_DAY) == 0) {
             displaySWData[3] = (this.splitTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.splitTime.get(Calendar.MINUTE);
             displaySWData[4] = (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
             displaySWData[5] = (this.splitTime.get(Calendar.MILLISECOND) < 100 ? "0" : "") + (this.splitTime.get(Calendar.MILLISECOND) / 10);
+        }
+        else {
+            displaySWData[0] = (this.stpTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.stpTime.get(Calendar.HOUR_OF_DAY);
+            displaySWData[1] = (this.stpTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.stpTime.get(Calendar.MINUTE);
+            displaySWData[2] = (this.stpTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.stpTime.get(Calendar.SECOND);
+            displaySWData[3] = (this.splitTime.get(Calendar.HOUR_OF_DAY) < 10 ? "0" : "") + this.splitTime.get(Calendar.HOUR_OF_DAY);
+            displaySWData[4] = (this.splitTime.get(Calendar.MINUTE) < 10 ? "0" : "") + this.splitTime.get(Calendar.MINUTE);
+            displaySWData[5] = (this.splitTime.get(Calendar.SECOND) < 10 ? "0" : "") + this.splitTime.get(Calendar.SECOND);
         }
 
         /* [sonarqube][Vuln #4] */

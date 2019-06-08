@@ -1,7 +1,11 @@
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Color;
@@ -18,7 +22,6 @@ public class WatchGUI implements ActionListener {
     // 0 : Mode Setting, 1 : RealTime, 2 : SettingTime, 3 : StopWatch, 4 : Timer, 5 : Alarm, 6 : WorldTime, 7 : Sun
     private int presentModeIndex;
     private int flag;
-    private int section;
     private JFrame jFrame;
     private JButton[] button = new JButton[4];
     private WatchSystem system;
